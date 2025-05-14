@@ -1,0 +1,125 @@
+:root {
+  /* default theme color */
+  /* can be overrided by uses `themeConfig` option */
+
+  /* Color */
+  --slidev-theme-kon: #0f2540;
+  --slidev-theme-gunJyo: #51a8dd;
+  --slidev-theme-tamago: #f9bf45;
+  --slidev-theme-jinZamOmi: #eb7a77;
+
+
+  --slidev-theme-primary: var(--slidev-theme-gunJyo);
+  --slidev-theme-secondary: var(--slidev-theme-tamago);
+
+  --slidev-theme-black: #232323;
+  --slidev-theme-white: #ffffff;
+  --slidev-theme-gray: #7a7a7a;
+  --slidev-theme-red: var(--slidev-theme-jinZamOmi);
+  --slidev-theme-yellow: var(--slidev-theme-tamago);
+  --slidev-theme-blue: var(--slidev-theme-gunJyo);
+
+  --slidev-theme-fontSansLight: 'Futura PT';
+}
+
+.sidebar {
+  @apply relative w-full;
+  @apply top-0 lg:bottom-0 lg:w-50;
+  @apply pt-8 lg:py-8;
+  @apply mr-4;
+
+  @apply bg-$slidev-theme-kon text-white;
+  @apply border-r border-b border-$slidev-theme-kon;
+
+  @apply after:bg-$slidev-theme-kon after:content-[''];
+
+  @apply after:absolute after:top-full after:left-0;
+  @apply after:h-12 after:w-full;
+
+  @apply lg:after:top-0 lg:after:left-full;
+  @apply lg:after:w-12 lg:after:h-full;
+
+  &:after {
+    clip-path: polygon(0 0, 100% 0%, 0 100%);
+  }
+
+  .logo {
+    @apply max-w-70%;
+    @apply mx-auto;
+  }
+}
+
+.slidev-page {
+  @apply flex h-full;
+}
+
+.slidev-layout {
+  @apply flex-1;
+  @apply text-$slidev-theme-kon;
+
+  p {
+    font-family: var(--slidev-theme-fontSansLight), ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  }
+
+  .slidev-toc-list {
+    @apply list-none;
+  }
+
+  .slidev-toc-item {
+    @apply relative;
+    @apply mb-4;
+    @apply text-$slidev-theme-primary;
+
+    @apply before:absolute before:left-0 before:bottom-0
+    @apply before:h-full before:w-1;
+    @apply before:bg-$slidev-theme-primary before:content-[''];
+
+    a {
+      @apply block;
+      @apply pl-3;
+
+      @apply border-none;
+
+      &:hover {
+        @apply text-white;
+        @apply bg-$slidev-theme-primary;
+      }
+    }
+  }
+}
+
+.slidev-layout.cover,
+.slidev-layout.intro {
+  @apply grid h-full;
+
+  h1 {
+    @apply text-4xl leading-20;
+  }
+
+  h1 + p {
+    @apply text-$slidev-theme-primary;
+    @apply -mt-8 mb-4;
+  }
+}
+
+.slidev-layout.section {
+  h1 {
+    @apply text-4xl leading-20;
+  }
+
+  h1 + p {
+    @apply text-$slidev-theme-primary;
+    @apply -mt-8 mb-4;
+  }
+}
+
+.slidev-layout.statement {
+  h1 {
+    @apply text-3xl leading-10;
+  }
+
+  h1 + p {
+    @apply text-$slidev-theme-primary;
+    @apply -mt-4 mb-4;
+  }
+}
