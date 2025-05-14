@@ -23,7 +23,8 @@
 }
 
 .sidebar {
-  @apply relative w-full;
+  @apply relative;
+  @apply flex-basis-12.5rem;
   @apply top-0 lg:bottom-0 lg:w-50;
   @apply pt-8 lg:py-8;
   @apply mr-4;
