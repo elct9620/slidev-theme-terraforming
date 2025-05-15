@@ -5,7 +5,7 @@ on:
 
 permissions:
   contents: write
-  issue: write
+  issues: write
   pull-requests: write
   id-token: write
 
