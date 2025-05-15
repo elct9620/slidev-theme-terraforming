@@ -2,22 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@aotoki/slidev-theme-terraforming?color=3AB9D4&label=)](https://www.npmjs.com/package/@aotoki/slidev-theme-terraforming)
 
-A (...) theme for [Slidev](https://github.com/slidevjs/slidev).
-
-<!--
-  Learn more about how to write a theme:
-  https://sli.dev/guide/write-theme.html
---->
-
-<!--
-  run `npm run dev` to check out the slides for more details of how to start writing a theme
--->
-
-<!--
-  Put some screenshots here to demonstrate your theme
-
-  Live demo: [...]
--->
+A personal theme for [Slidev](https://github.com/slidevjs/slidev) by Aotokitsuruya.
 
 ## Install
 
@@ -29,17 +14,32 @@ theme: <b>@aotoki/terraforming</b>
 
 Learn more about [how to use a theme](https://sli.dev/guide/theme-addon#use-theme).
 
+### Fonts
+
+This theme uses following fonts:
+
+- [Futura](https://zh.wikipedia.org/zh-tw/Futura)
+- [Futura PT](https://fonts.adobe.com/fonts/futura-pt)
+- [Excalifont](https://plus.excalidraw.com/excalifont) for Mermaid
+- [XiaolaiSC](https://github.com/lxgw/kose-font) for Mermaid
+
+You may need to install them manually.
+
 ## Layouts
 
 This theme provides the following layouts:
 
-> TODO:
+- `default`
+- `intro`
+- `cover`
+- `section`
+- `statement`
 
 ## Components
 
 This theme provides the following components:
 
-> TODO:
+> WIP
 
 ## Contributing
 

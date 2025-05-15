@@ -48,6 +48,18 @@ function updateUser(id: number, update: Partial<User>) {
 ```
 
 ---
+
+# Mermaid
+
+```mermaid
+graph TD
+  A[Client] -->|HTTP Request| B[Server]
+  B -->|HTTP Response| A
+  A -->|WebSocket Message| B
+  B -->|WebSocket Message| A
+```
+
+---
 layout: center
 class: "text-center"
 ---
