@@ -9,7 +9,7 @@ A personal theme for [Slidev](https://github.com/slidevjs/slidev) by Aotokitsuru
 Add the following frontmatter to your `slides.md`. Start Slidev then it will prompt you to install the theme automatically.
 
 <pre><code>---
-theme: <b>@aotoki/terraforming</b>
+theme: <b>'@aotoki/slidev-theme-terraforming'</b>
 ---</code></pre>
 
 Learn more about [how to use a theme](https://sli.dev/guide/theme-addon#use-theme).
@@ -32,6 +32,7 @@ This theme provides the following layouts:
 - `default`
 - `intro`
 - `cover`
+- `center`
 - `section`
 - `statement`
 
