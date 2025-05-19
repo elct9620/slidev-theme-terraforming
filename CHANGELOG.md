@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.0...v0.3.1) (2025-05-19)
+
+
+### Bug Fixes
+
+* update logo import path and file extension ([bd4cbc8](https://github.com/elct9620/slidev-theme-terraforming/commit/bd4cbc86434d46c7949eb300b27a452373c4232c))
+
 ## [0.3.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.2.0...v0.3.0) (2025-05-19)
 
 
