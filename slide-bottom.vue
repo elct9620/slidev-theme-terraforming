@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { resolveAssetUrl } from "../LayoutHelper";
+import { resolveAssetUrl } from "./LayoutHelper";
 
-const logoSrc = computed(() => resolveAssetUrl("/public/logo.png"));
+const logoSrc = computed(() => resolveAssetUrl("/logo.svg"));
 </script>
