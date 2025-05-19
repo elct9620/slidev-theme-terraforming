@@ -19,11 +19,15 @@ jobs:
         id: release
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v4
         if: ${{ steps.release.outputs.release_created }}
         with:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
           scope: '@aotoki'
       - run: pnpm install --frozen-lockfile
         if: ${{ steps.release.outputs.release_created }}
