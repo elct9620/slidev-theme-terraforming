@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.1...v0.3.2) (2025-05-19)
+
+
+### Bug Fixes
+
+* remove LayoutHelper and simplify logo import ([f878397](https://github.com/elct9620/slidev-theme-terraforming/commit/f8783975fa88efacedac842a0a377cd0d0ae624a))
+
 ## [0.3.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.0...v0.3.1) (2025-05-19)
 
 
