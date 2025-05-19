@@ -1,5 +1,13 @@
 <template>
   <div class="sidebar">
-    <img src="/assets/logo.svg" class="logo" />
+    <img :src="logoSrc" class="logo" />
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+
+import { resolveAssetUrl } from "../LayoutHelper";
+
+const logoSrc = computed(() => resolveAssetUrl("/public/logo.png"));
+</script>
