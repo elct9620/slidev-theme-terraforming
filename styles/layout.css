@@ -131,3 +131,7 @@
     @apply -mt-4 mb-4;
   }
 }
+
+.slidev-code code {
+  text-wrap: 'auto';
+}
