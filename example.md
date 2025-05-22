@@ -11,6 +11,15 @@ Presentation slides for developers
 <Toc />
 
 ---
+layout: center
+---
+
+<About>
+https://blog.aotoki.me/<br />
+@elct9620
+</About>
+
+---
 layout: section
 ---
 
