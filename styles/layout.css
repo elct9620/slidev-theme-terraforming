@@ -29,6 +29,27 @@
   src: url('https://excalidraw.nyc3.cdn.digitaloceanspaces.com/fonts/Excalifont-Regular.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'Senobi-Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/Senobi-Gothic-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Senobi-Gothic';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/assets/fonts/Senobi-Gothic-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Senobi-Gothic';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/fonts/Senobi-Gothic-Bold.woff2') format('woff2');
+}
+
 .sidebar {
   @apply relative;
   @apply flex-basis-12.5rem;
