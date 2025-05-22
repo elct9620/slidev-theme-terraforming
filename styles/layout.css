@@ -99,7 +99,7 @@
     @apply mb-4;
     @apply text-$slidev-theme-primary;
 
-    @apply before:absolute before:left-0 before:bottom-0
+    @apply before:absolute before:left-0 before:bottom-0;
     @apply before:h-full before:w-1;
     @apply before:bg-$slidev-theme-primary before:content-[''];
 
