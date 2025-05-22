@@ -22,6 +22,8 @@ This theme uses following fonts:
 - [Futura PT](https://fonts.adobe.com/fonts/futura-pt)
 - [Excalifont](https://plus.excalidraw.com/excalifont) for Mermaid
 - [XiaolaiSC](https://github.com/lxgw/kose-font) for Mermaid
+- [Senobi Gothic](https://modi.jpn.org/font_senobi.php)
+    - Convert to woff2 is required for web usage.
 
 You may need to install them manually.
 
