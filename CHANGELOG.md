@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.2...v0.4.0) (2025-05-22)
+
+
+### Features
+
+* add About component, avatar, and Senobi Gothic fonts ([f7c6bcf](https://github.com/elct9620/slidev-theme-terraforming/commit/f7c6bcf2ccd0196a5cf439b9fd8a89d97b96bb1d))
+* add Senobi-Gothic font-face declarations to layout.css ([aa8219b](https://github.com/elct9620/slidev-theme-terraforming/commit/aa8219b44b3381bef3c1d35ce668983edf315c94))
+
 ## [0.3.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.1...v0.3.2) (2025-05-19)
 
 
