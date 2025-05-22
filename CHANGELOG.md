@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.0...v0.4.1) (2025-05-22)
+
+
+### Miscellaneous Chores
+
+* release 0.4.1 ([1425d08](https://github.com/elct9620/slidev-theme-terraforming/commit/1425d0886e6023be7efb3cab41f77833a4822744))
+
 ## [0.4.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.3.2...v0.4.0) (2025-05-22)
 
 
