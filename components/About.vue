@@ -36,7 +36,7 @@
 .name {
   margin-left: -0.5rem;
 
-  font-family: 'Senobi-Gothic', sans-serif;
+  font-family: 'Senobi Gothic', sans-serif;
   font-size: 3rem;
 }
 
