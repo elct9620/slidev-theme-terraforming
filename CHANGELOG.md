@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.1...v0.4.2) (2025-05-22)
+
+
+### Bug Fixes
+
+* update Senobi Gothic font family name and font-face declarations ([9f716c7](https://github.com/elct9620/slidev-theme-terraforming/commit/9f716c7edff3764742c4a5577a21f5f21816563b))
+
 ## [0.4.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.0...v0.4.1) (2025-05-22)
 
 
