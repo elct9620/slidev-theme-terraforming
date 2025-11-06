@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.2...v0.4.3) (2025-11-06)
+
+
+### Bug Fixes
+
+* trigger release for security updates ([b48fa2c](https://github.com/elct9620/slidev-theme-terraforming/commit/b48fa2c1caf2cf80b76d7baba64b9f8e20e9f396))
+
 ## [0.4.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.1...v0.4.2) (2025-05-22)
 
 
