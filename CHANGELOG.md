@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.3...v0.4.4) (2026-07-01)
+
+
+### Bug Fixes
+
+* **layout:** keep sidebar width consistent across slides ([3df7a80](https://github.com/elct9620/slidev-theme-terraforming/commit/3df7a804ded7ce6dc7e288bba9b5489fcfe408a2))
+
 ## [0.4.3](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.2...v0.4.3) (2025-11-06)
 
 
