@@ -2,6 +2,10 @@
   "name": "@aotoki/slidev-theme-terraforming",
   "version": "0.4.5",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elct9620/slidev-theme-terraforming.git"
+  },
   "keywords": [
     "slidev-theme",
     "slidev"
