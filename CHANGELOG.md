@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.6](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.5...v0.4.6) (2026-07-01)
+
+
+### Bug Fixes
+
+* add repository metadata for npm provenance ([a6eb43b](https://github.com/elct9620/slidev-theme-terraforming/commit/a6eb43b5db943d2f08802ea347bdf044fa58f154))
+
 ## [0.4.5](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.4...v0.4.5) (2026-07-01)
 
 
