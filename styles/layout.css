@@ -52,7 +52,7 @@
 
 .sidebar {
   @apply relative;
-  @apply flex-basis-12.5rem;
+  @apply flex-basis-12.5rem flex-shrink-0;
   @apply top-0 lg:bottom-0 lg:w-50;
   @apply pt-8 lg:py-8;
   @apply mr-4;
@@ -83,7 +83,7 @@
 }
 
 .slidev-layout {
-  @apply flex-1;
+  @apply flex-1 min-w-0;
   @apply text-$slidev-theme-kon;
 
   p {
