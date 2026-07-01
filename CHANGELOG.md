@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.5](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.4...v0.4.5) (2026-07-01)
+
+
+### Bug Fixes
+
+* **ci:** publish to npm via OIDC trusted publishing ([d674c18](https://github.com/elct9620/slidev-theme-terraforming/commit/d674c181f0467c28040438f4592778ff9bd39695))
+
 ## [0.4.4](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.3...v0.4.4) (2026-07-01)
 
 
