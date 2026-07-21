@@ -23,7 +23,7 @@
     "@slidev/types": "^52.18.0"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.16.0"
+    "@slidev/cli": "^52.18.0"
   },
   "//": "Learn more: https://sli.dev/guide/write-theme.html",
   "slidev": {
