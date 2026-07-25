@@ -1,0 +1,41 @@
+/**
+ * Font declarations.
+ *
+ * Senobi Gothic ships with the theme (About uses it for the name). Excalifont backs
+ * Mermaid's hand-drawn look; it is large and only diagrams need it, so it loads from
+ * a CDN rather than the bundle.
+ * The body faces (Futura, PingFang TC, …) are system fonts declared in --font-sans
+ * and are deliberately not repeated here.
+ *
+ * The Senobi URLs are relative so that the bundler resolves and emits them: a
+ * root-absolute path would only resolve on a machine that already has the face
+ * installed locally, which is exactly the case the URL exists to cover.
+ */
+
+@font-face {
+  font-family: 'Excalifont';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://excalidraw.nyc3.cdn.digitaloceanspaces.com/fonts/Excalifont-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Senobi Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Senobi Gothic'), url('../assets/fonts/Senobi-Gothic-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Senobi Gothic';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Senobi Gothic'), url('../assets/fonts/Senobi-Gothic-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Senobi Gothic';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Senobi Gothic'), url('../assets/fonts/Senobi-Gothic-Bold.woff2') format('woff2');
+}

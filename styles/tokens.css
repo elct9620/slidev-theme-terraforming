@@ -1,0 +1,130 @@
+/**
+ * Design tokens — two layers.
+ *
+ * The first layer is raw tokens. Their names describe *what a value is*, using the
+ * --color-* / --text-* / --font-* / --spacing-* / --container-* namespaces so the
+ * vocabulary matches Tailwind v4's @theme convention.
+ * The second layer is --slidev-theme-*, describing *what role a value plays* in the
+ * theme; its values always reference the first layer. Keeping them apart means
+ * recolouring reads as colour names and re-assigning roles reads as roles, without
+ * the two dragging each other around.
+ *
+ * setup/unocss.ts wires these into the UnoCSS theme so slides.md can write
+ * bg-gunJyo-500 / text-body / font-sans directly. The values live here only —
+ * UnoCSS stores var() references rather than copies, so overriding a variable in a
+ * deck's own style.css also changes what the utilities emit.
+ *
+ * Lengths are always rem. With a 1920 canvas and a 16px root, a px measurement from
+ * the Figma file divided by 16 is the rem value here, with no correction factor in
+ * between.
+ */
+
+:root {
+  /* ── Palette ─────────────────────────────────────────────
+     Traditional Japanese colours, named after the colour itself rather than its
+     use. Steps follow the usual 50–950 convention; only one step per hue exists
+     today, so filling in the rest later will not touch anything that consumes it. */
+  --color-white: #ffffff;
+  --color-black: #232323;
+
+  --color-gray-200: #e3e3e3;
+  --color-gray-500: #7a7a7a;
+
+  --color-kon-500: #0f2540;       /* 紺 */
+  --color-gunJyo-500: #51a8dd;    /* 群青 */
+  --color-tamago-500: #f9bf45;    /* 卵 */
+  --color-jinZamOmi-500: #eb7a77; /* 人参臙脂 */
+
+  /* ── Type scale ──────────────────────────────────────────
+     The design file has exactly five steps, so this has five steps: adding a sixth
+     means going back to Figma first. Line height is pinned to 1 (the file uses
+     100%); vertical rhythm is stated with margins rather than padded by leading. */
+  --text-title: 4rem;      /* 64  cover title / section title */
+  --text-heading: 3rem;    /* 48  cover subtitle / content-page title */
+  --text-body: 2.25rem;    /* 36  body copy / block label / chart label */
+  --text-sub: 2rem;        /* 32  block sub-label / annotation */
+  --text-note: 1rem;       /* 16  source links */
+
+  /* Headings hug their glyphs at 100% in the design file, which leaves a wrapped
+     heading with its lines touching. This is the leading they actually get; the
+     margins that position them compensate for it, so raising it opens up a second
+     line without moving the first. */
+  --tf-heading-leading: 1.25;
+
+  /* ── Font stacks ─────────────────────────────────────────
+     The design file sets Latin in Futura and CJK in PingFang TC / LiHei Pro. Futura
+     has no CJK glyphs, so putting a CJK face after it satisfies both from a single
+     stack: Latin resolves to Futura, CJK falls through to the next entry. The tail
+     is the degradation path for presenting from a machine that lacks them.
+     These are all system faces; fonts.local in package.json keeps Slidev from
+     issuing webfont requests for them. */
+  --font-sans: 'Futura', 'Futura PT', 'PingFang TC', 'LiHei Pro', 'Heiti TC',
+               'Microsoft JhengHei', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Fira Code', monospace;
+
+  /* ── Named lengths ───────────────────────────────────────
+     Only sizes that recur *and* must change together are worth a name. One-off
+     spacing uses the UnoCSS numeric scale instead: on a 1920 canvas a Figma px
+     divided by 4 is that number (16→4, 32→8, 48→12, 72→18), so a second spacing
+     scale would only be a synonym for the built-in one. */
+  --spacing-line: 0.3125rem;    /* 5    stroke and frame width */
+  --spacing-shadow: 0.625rem;   /* 10   shadow offset, down and to the right */
+  --spacing-sidebar: 18.5rem;   /* 296  solid part of the sidebar */
+  --spacing-slash: 6.25rem;     /* 100  the diagonal cut on its right edge */
+  --spacing-block-w: 16.875rem; /* 270  block body, border included */
+  --spacing-block-h: 10.125rem; /* 162 */
+
+  /* How much air the focus frame leaves around what it frames, and how far apart a
+     stage sets its pieces. The two are one decision: the gap has to clear a frame or
+     it lands on the neighbouring block, while every unit of gap comes out of how much
+     a row can hold. At 24 and 48 a lone frame keeps 24 of clearance, two frames on
+     neighbouring blocks meet without overlapping, and the widest arrangement the
+     theme composes — a group of three, a stroke and a block — still fits the content
+     width with room to spare. */
+  --tf-focus-inset: 1.5rem;     /* 24 */
+  --tf-stage-gap: 3rem;         /* 48 */
+
+  /* A stroke is as long as the widest caption it will ever carry, plus room at each
+     end for a chevron and clear space between the two — an arrowhead reaching under
+     the text reads as a line that is too short for what it is labelling.
+     `pad` is that clear space, which is the number worth adjusting; the arm is added
+     to it automatically. The floor applies when there is no caption at all. The
+     caption sits `label-gap` from the line itself rather than from the head's box, so
+     resizing the head does not drag it along. */
+  --tf-stroke-arm: 1.125rem;    /* 18  chevron arm — matches the geometry in Stroke.vue */
+  --tf-stroke-pad: 1rem;        /* 16  chevron to caption */
+  --tf-stroke-min: 6.25rem;     /* 100 length with no caption */
+  --tf-stroke-head: 2.5rem;     /* 40  chevron box */
+  --tf-stroke-label-gap: 2.25rem; /* 36  line to caption */
+
+  /* Content width: the shared left/right boundary for every full-width element.
+     The sidebar's diagonal tapers away down the page, so the whitespace it leaves on
+     the left averages wider than a matching padding on the right would. The right
+     padding carries that difference (96 against 48) to put the content box on the
+     optical centre rather than the arithmetic one.
+     1920 − 396 sidebar − 48 left − 96 right. */
+  --container-content: 86.25rem; /* 1380 */
+
+  /* ── Semantic layer ──────────────────────────────────────
+     `primary` and `secondary` are the names Slidev's own shortcuts read
+     (text-primary, bg-primary, border-primary), so they cannot be renamed. */
+  --slidev-theme-primary: var(--color-gunJyo-500);
+  --slidev-theme-secondary: var(--color-tamago-500);
+  --slidev-theme-accent: var(--color-jinZamOmi-500);  /* focus frame */
+  --slidev-theme-neutral: var(--color-gray-500);      /* annotations, neutral rules */
+
+  --slidev-theme-text: var(--color-kon-500);
+  --slidev-theme-surface: var(--color-kon-500);       /* sidebar fill */
+  --slidev-theme-on-surface: var(--color-white);
+
+  /* Slidev's code variables default to hard pixels (12/18/8), which are unreadable
+     on a 1920 canvas. Pointing them at the same scale makes them track the canvas.
+     The design file specifies JetBrains Mono 400 / 36 / 150%, with no background,
+     no radius and no padding — code is content here, not an attachment in a box. */
+  --slidev-code-font-size: var(--text-body);
+  --slidev-code-line-height: 1.5;
+  --slidev-code-padding: 0;
+  --slidev-code-margin: 0;
+  --slidev-code-radius: 0;
+  --slidev-code-background: transparent;
+}

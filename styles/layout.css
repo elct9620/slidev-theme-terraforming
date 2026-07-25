@@ -1,158 +1,191 @@
-:root {
-  /* default theme color */
-  /* can be overrided by uses `themeConfig` option */
+/**
+ * Page skeleton — aligned to the 1920×1080 Figma canvas.
+ *
+ * The root is 16px, so a px measurement from the design file divided by 16 is written
+ * straight in as rem, with no correction factor in between.
+ * 1920 = 396 sidebar (296 solid + 100 diagonal) + 1524 main (48 left, 96 right, and
+ * 1380 of content between them).
+ *
+ * The skeleton is plain CSS over tokens so that specificity stays readable at the
+ * point of use: @apply expands to longhand that sorts after user styles and wins on
+ * a tie, which is the right trade on the slides.md side but the wrong one for rules
+ * a deck is expected to override.
+ */
 
-  /* Color */
-  --slidev-theme-kon: #0f2540;
-  --slidev-theme-gunJyo: #51a8dd;
-  --slidev-theme-tamago: #f9bf45;
-  --slidev-theme-jinZamOmi: #eb7a77;
-
-
-  --slidev-theme-primary: var(--slidev-theme-gunJyo);
-  --slidev-theme-secondary: var(--slidev-theme-tamago);
-
-  --slidev-theme-black: #232323;
-  --slidev-theme-white: #ffffff;
-  --slidev-theme-gray: #7a7a7a;
-  --slidev-theme-red: var(--slidev-theme-jinZamOmi);
-  --slidev-theme-yellow: var(--slidev-theme-tamago);
-  --slidev-theme-blue: var(--slidev-theme-gunJyo);
-
-  --slidev-theme-fontSansLight: 'Futura PT';
-}
-
-@font-face {
-  font-family: 'Excalifont';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://excalidraw.nyc3.cdn.digitaloceanspaces.com/fonts/Excalifont-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Senobi Gothic';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Senobi Gothic'), url('/assets/fonts/Senobi-Gothic-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Senobi Gothic';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Senobi Gothic'), url('/assets/fonts/Senobi-Gothic-Medium.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Senobi Gothic';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Senobi Gothic'), url('/assets/fonts/Senobi-Gothic-Bold.woff2') format('woff2');
-}
-
-.sidebar {
-  @apply relative;
-  @apply flex-basis-12.5rem flex-shrink-0;
-  @apply top-0 lg:bottom-0 lg:w-50;
-  @apply pt-8 lg:py-8;
-  @apply mr-4;
-
-  @apply bg-$slidev-theme-kon text-white;
-  @apply border-r border-b border-$slidev-theme-kon;
-
-  @apply after:bg-$slidev-theme-kon after:content-[''];
-
-  @apply after:absolute after:top-full after:left-0;
-  @apply after:h-12 after:w-full;
-
-  @apply lg:after:top-0 lg:after:left-full;
-  @apply lg:after:w-12 lg:after:h-full;
-
-  &:after {
-    clip-path: polygon(0 0, 100% 0%, 0 100%);
-  }
-
-  .logo {
-    @apply max-w-70%;
-    @apply mx-auto;
-  }
+/* No responsive behaviour on a fixed canvas: Slidev renders through a transform
+   scale, so media queries read the browser viewport rather than the canvas width.
+   Breakpoints here would only tear the layout apart as the window narrows. */
+html {
+  font-size: 16px;
 }
 
 .slidev-page {
-  @apply flex h-full;
+  display: flex;
+  height: 100%;
 }
 
+/* ── Sidebar ───────────────────────────────────────────────
+   Three parts: the solid block, a margin reserving room for the diagonal, and an
+   ::after that draws it. The diagonal is absolutely positioned and takes no space,
+   so margin-right is what pushes main out to 396. */
+.sidebar {
+  position: relative;
+  flex: none;
+  width: var(--spacing-sidebar);
+  padding: 3rem;                        /* 48 */
+  margin-right: var(--spacing-slash);
+  background: var(--slidev-theme-surface);
+  color: var(--slidev-theme-on-surface);
+}
+
+.sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: var(--spacing-slash);
+  height: 100%;
+  background: var(--slidev-theme-surface);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* 296 − 48×2 = 200, exactly the logo width in the design file, so it need not be
+   stated a second time */
+.sidebar .logo {
+  width: 100%;
+}
+
+/* ── Main ──────────────────────────────────────────────────
+   Padding sets the content width on its own, so individual elements never need one.
+   The right side is the wider of the two: the sidebar's diagonal tapers away down the
+   page and leaves more air on the left than a matching padding would.
+   Grid is what lets a layout choose its vertical position through auto margins: a
+   centred layout wraps its content in my-auto and the auto margins absorb the
+   leftover space, while a content page omits it so the wrapper stretches full height
+   and the content flows from the top edge. */
 .slidev-layout {
-  @apply flex-1 min-w-0;
-  @apply text-$slidev-theme-kon;
-
-  p {
-    font-family: var(--slidev-theme-fontSansLight), ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  }
-
-  .slidev-toc-list {
-    @apply list-none;
-  }
-
-  .slidev-toc-item {
-    @apply relative;
-    @apply mb-4;
-    @apply text-$slidev-theme-primary;
-
-    @apply before:absolute before:left-0 before:bottom-0;
-    @apply before:h-full before:w-1;
-    @apply before:bg-$slidev-theme-primary before:content-[''];
-
-    a {
-      @apply block;
-      @apply pl-3;
-
-      @apply border-none;
-
-      &:hover {
-        @apply text-white;
-        @apply bg-$slidev-theme-primary;
-      }
-    }
-  }
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  padding: 4.5rem 6rem 4.5rem 3rem;     /* 72 / 96 right / 48 left */
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  color: var(--slidev-theme-text);
 }
 
-.slidev-layout.cover,
-.slidev-layout.intro {
-  @apply grid h-full;
-
-  h1 {
-    @apply text-4xl leading-20;
-  }
-
-  h1 + p {
-    @apply text-$slidev-theme-primary;
-    @apply -mt-8 mb-4;
-  }
+/* ── Heading scale ─────────────────────────────────────────
+   Vertical rhythm is stated as margins so it can be read off directly, and the
+   leading is kept out of it: the negative top margin hands back exactly the
+   half-leading a taller line box adds above the glyphs. A one-line heading therefore
+   sits where the design file's 100% leading put it, while a heading that wraps still
+   gets room between its lines. Being in em, the correction follows whichever step of
+   the scale is in play. */
+.slidev-layout h1,
+.slidev-layout h2 {
+  font-size: var(--text-heading);
+  line-height: var(--tf-heading-leading);
+  margin: calc((1 - var(--tf-heading-leading)) * 0.5em) 0 1rem;   /* 16  title → subtitle */
 }
 
-.slidev-layout.section {
-  h1 {
-    @apply text-4xl leading-20;
-  }
-
-  h1 + p {
-    @apply text-$slidev-theme-primary;
-    @apply -mt-8 mb-4;
-  }
+.slidev-layout h1 + p,
+.slidev-layout h2 + p {
+  font-size: var(--text-body);
+  line-height: var(--tf-heading-leading);
+  margin: calc((1 - var(--tf-heading-leading)) * 0.5em) 0 2rem;   /* 32  subtitle → content */
+  color: var(--slidev-theme-primary);
 }
 
-.slidev-layout.statement {
-  h1 {
-    @apply text-3xl leading-10;
-  }
-
-  h1 + p {
-    @apply text-$slidev-theme-primary;
-    @apply -mt-4 mb-4;
-  }
+/* Chapter pages take the display size, and their subtitle follows one step up */
+.slidev-layout.cover h1,
+.slidev-layout.intro h1,
+.slidev-layout.section h1 {
+  font-size: var(--text-title);
 }
 
+.slidev-layout.cover h1 + p,
+.slidev-layout.intro h1 + p,
+.slidev-layout.section h1 + p {
+  font-size: var(--text-heading);
+}
+
+/* ── Table of contents ─────────────────────────────────────
+   The design file gives items a 68 height with 16/32 padding, 36px type and a 32 gap;
+   the current item is a solid fill with white text, the rest carry a 10px rule in
+   the primary colour on their left edge.
+
+   The rule is a border so that it occupies space: swapping the current item to a
+   solid fill then leaves its width untouched, and the item's height falls out of
+   "16 padding twice + 36 line" = 68 without being written down anywhere.
+
+   ⚠ The selectors need the .slidev-toc prefix to reach (0,2,0). layouts-base styles
+   `.slidev-layout li` at (0,1,1), and its margin-left / padding-left would otherwise
+   beat a single class. */
+.slidev-toc .slidev-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;                            /* 32 */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* An entry is a destination rather than body copy, so it takes the primary colour
+   and reads as something to navigate to. */
+.slidev-toc .slidev-toc-item {
+  box-sizing: border-box;
+  /* layouts-base indents every list item by 1.1em and pads it by 0.2em. Both have to
+     go, or the anchor starts short of the rule and the fill it carries on hover
+     leaves a sliver of page showing between the two. */
+  margin: 0;
+  padding: 0;
+  border-left: var(--spacing-shadow) solid var(--slidev-theme-primary);
+  font-size: var(--text-body);
+  line-height: 1;
+  color: var(--slidev-theme-primary);
+}
+
+.slidev-toc .slidev-toc-item a {
+  display: block;
+  padding: 1rem 2rem;                   /* 16 / 32 */
+  border: none;
+}
+
+/* Hovering previews the state the entry is about to be in, so it borrows the current
+   item's appearance rather than inventing a third one. */
+.slidev-toc .slidev-toc-item a:hover {
+  background: var(--slidev-theme-primary);
+  color: var(--slidev-theme-on-surface);
+}
+
+.slidev-toc .slidev-toc-item p {
+  margin: 0;
+  line-height: 1;
+}
+
+/* Current item: solid fill, white text. The left rule takes the same colour and
+   merges into the fill, so the outer dimensions match every other item. */
+.slidev-toc .slidev-toc-item-active {
+  background: var(--slidev-theme-primary);
+}
+
+.slidev-toc .slidev-toc-item-active a {
+  color: var(--slidev-theme-on-surface);
+}
+
+/* ── Code ──────────────────────────────────────────────────
+   Code is content in this design, not an attachment inside a box: no background, no
+   radius, no padding. Size and family come off the shared scale through the
+   --slidev-code-* tokens.
+   Shiki writes its theme background as an inline custom property, so it has to be
+   painted back to transparent here. */
+.slidev-code,
+.slidev-code pre,
+.shiki,
+.shiki span {
+  background-color: transparent;
+}
+
+/* Keep long lines from spilling off the canvas */
 .slidev-code code {
   text-wrap: auto;
 }

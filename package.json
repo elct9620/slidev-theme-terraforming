@@ -31,11 +31,11 @@
   "slidev": {
     "colorSchema": "light",
     "defaults": {
+      "canvasWidth": 1920,
       "aspectRatio": "16/9",
       "transition": "view-transition",
       "fonts": {
-        "sans": "Futura",
-        "mono": "Fira Code"
+        "mono": "JetBrains Mono"
       }
     }
   }

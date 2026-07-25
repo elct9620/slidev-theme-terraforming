@@ -1,0 +1,507 @@
+/**
+ * Diagram vocabulary.
+ *
+ * Every diagram in this theme is built from the same four ideas, so that a deck only
+ * ever has to teach its audience one visual language:
+ *
+ *   fill    a right-angled block of flat colour, with a same-hue shadow at 40% offset
+ *           down and to the right — never scaled, never softened
+ *   focus   a frame drawn over whatever is being spoken about right now, which moves
+ *           and resizes rather than cutting from one place to the next
+ *   stroke  a 5px line with a 45° chevron, standing in for Figma's line tool
+ *   absence opacity, so a not-yet-revealed element still holds its place
+ *
+ * Emphasis is colour and framing only: nothing grows, shrinks or bolds. That is what
+ * lets a diagram animate across clicks without the layout shifting underneath it,
+ * which is the property every rule below is protecting.
+ *
+ * Class names carry a tf- prefix because they live in the global stylesheet; decks
+ * compose the components rather than these classes, so the prefix costs nothing at
+ * the point of use.
+ */
+
+/* ── Stage ─────────────────────────────────────────────────
+   Owns direction only. Spacing belongs to the elements being arranged, so swapping
+   in a third block or turning the row into a column needs no measurements here.
+
+   Sizes are fixed, so a row has a real capacity: four blocks, or three with strokes
+   between them, inside the content width. Past that the row simply runs wide —
+   deliberately, because silently shrinking blocks would make the same block a
+   different size from one page to the next. `fit` opts a single stage into scaling. */
+.tf-stage-frame {
+  display: flex;
+  justify-content: center;
+}
+
+.tf-stage {
+  position: relative;                   /* the origin a Focus measures against */
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tf-stage-gap);
+  transform-origin: center center;
+}
+
+.tf-stage--column {
+  flex-direction: column;
+}
+
+/* ── Group ─────────────────────────────────────────────────
+   A sub-arrangement that reads as one thing. It carries no frame of its own — being
+   framed is the Focus's job — so all it contributes is how its contents sit. */
+.tf-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tf-stage-gap);
+}
+
+.tf-group--column {
+  flex-direction: column;
+}
+
+/* ── Focus ─────────────────────────────────────────────────
+   The selection box. It floats over the arrangement instead of sitting inside it, so
+   the pieces underneath keep their positions no matter where the focus goes — and the
+   spacing between them belongs to the stage's gap rather than to this frame.
+
+   Position and size are transitioned rather than the whole box being faded, which
+   makes moving the focus read as one rectangle travelling and resizing, the way a
+   selection box behaves in Figma. */
+.tf-focus {
+  position: absolute;
+  /* left/top/width/height are the measured box of what is being framed. The frame
+     grows outward from it here rather than in the measurement, so --tf-focus-inset
+     alone decides how much air it leaves. The extra on the right and bottom is the
+     block's shadow, which falls outside its border box. */
+  box-sizing: content-box;
+  padding: var(--tf-focus-inset)
+           calc(var(--tf-focus-inset) + var(--spacing-shadow))
+           calc(var(--tf-focus-inset) + var(--spacing-shadow))
+           var(--tf-focus-inset);
+  margin: calc(-1 * (var(--tf-focus-inset) + var(--spacing-line))) 0 0
+          calc(-1 * (var(--tf-focus-inset) + var(--spacing-line)));
+  pointer-events: none;
+  border: var(--spacing-line) solid currentColor;
+  transition:
+    left 0.6s ease,
+    top 0.6s ease,
+    width 0.6s ease,
+    height 0.6s ease,
+    opacity 0.3s ease;
+}
+
+/* Red is the everyday focus; the other hues are for framing a second, different kind
+   of grouping on the same page — "these belong to one layer" alongside "this is what
+   I am talking about". */
+.tf-focus--jinZamOmi { color: var(--color-jinZamOmi-500); }
+.tf-focus--gunJyo    { color: var(--color-gunJyo-500); }
+.tf-focus--tamago    { color: var(--color-tamago-500); }
+.tf-focus--gray      { color: var(--color-gray-500); }
+
+/* Nothing to frame at this step. Only the box fades; it keeps its last geometry so
+   that coming back does not make it fly in from a corner. */
+.tf-focus.is-off {
+  opacity: 0;
+}
+
+/* Not yet revealed: still occupies its place, just cannot be seen. Taking it out of
+   the DOM instead would reflow the whole row on every click. */
+.tf-block.is-hidden,
+.tf-group.is-hidden,
+.tf-stroke-group.is-hidden {
+  opacity: 0;
+}
+
+/* ── Block ─────────────────────────────────────────────────
+   270×162 including the border, with the label optically centred over two lines.
+   The fill colour is held in one custom property so the shadow derives from it; a
+   new palette entry then needs one declaration rather than a matching pair. */
+.tf-block {
+  --tf-block-fill: var(--color-gunJyo-500);
+
+  box-sizing: border-box;
+  min-width: var(--spacing-block-w);
+  min-height: var(--spacing-block-h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--tf-block-fill);
+  box-shadow: var(--spacing-shadow) var(--spacing-shadow) 0 0
+              color-mix(in srgb, var(--tf-block-fill) 40%, transparent);
+  text-align: center;
+  font-size: var(--text-body);
+  font-weight: 500;
+  transition: opacity 0.6s ease;
+}
+
+.tf-block--gunJyo {
+  --tf-block-fill: var(--color-gunJyo-500);
+  color: var(--color-white);
+}
+
+.tf-block--tamago {
+  --tf-block-fill: var(--color-tamago-500);
+  color: var(--color-kon-500);
+}
+
+.tf-block--jinZamOmi {
+  --tf-block-fill: var(--color-jinZamOmi-500);
+  color: var(--color-white);
+}
+
+.tf-block--gray {
+  --tf-block-fill: var(--color-gray-500);
+  color: var(--color-white);
+}
+
+.tf-block-sub {
+  font-size: var(--text-sub);
+  color: inherit;
+}
+
+/* ── Stroke ────────────────────────────────────────────────
+   A drawn line rather than a glyph, so it shares the 5px weight with every other rule
+   on the slide. */
+.tf-stroke-group {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.6s ease;
+}
+
+.tf-stroke-group--y {
+  flex-direction: row;
+}
+
+/* Reserves width from the longest label this stroke will ever show, measured rather
+   than estimated, so the line stays wider than its text and the row does not shift
+   when the label changes or disappears. Each candidate takes its own line, so the
+   container simply ends up as wide as the widest one. */
+.tf-stroke-sizer {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  padding: 0 calc(var(--tf-stroke-arm) + var(--tf-stroke-pad));
+  font-size: var(--text-sub);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tf-stroke-sizer > span {
+  display: block;
+}
+
+.tf-stroke-group--y .tf-stroke-sizer {
+  display: none;
+}
+
+/* The label floats beside the line instead of participating in layout, so its length
+   has no bearing on where anything sits. Horizontal lines label above, vertical lines
+   label to the right; flip moves the label to the opposite side. */
+.tf-stroke-label {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
+  font-size: var(--text-sub);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--slidev-theme-primary);
+  transition: opacity 0.6s ease;
+}
+
+.tf-stroke-group--flip .tf-stroke-label {
+  bottom: auto;
+  top: 100%;
+  margin-bottom: 0;
+  margin-top: calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
+}
+
+.tf-stroke-group--y .tf-stroke-label {
+  bottom: auto;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  margin: 0 0 0 calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
+}
+
+.tf-stroke-group--y.tf-stroke-group--flip .tf-stroke-label {
+  left: auto;
+  right: 100%;
+  margin: 0 calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2) 0 0;
+}
+
+.tf-stroke-label.is-off {
+  opacity: 0;
+}
+
+/* The box the mark is drawn in. Its width is what the caption dictates; the svg
+   inside is taken out of the flow because an svg with no resolvable width falls back
+   to a 300px intrinsic size, which would otherwise decide the length for it. */
+.tf-stroke-line {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: var(--tf-stroke-min);
+  height: var(--tf-stroke-head);
+}
+
+.tf-stroke-line--y {
+  width: var(--tf-stroke-head);
+  min-width: 0;
+  height: var(--tf-stroke-min);
+}
+
+/* The line and its heads are one vector, so the 5px weight survives any transform the
+   slide applies to it. Every coordinate is a percentage of the box or an offset from
+   one, so the mark redraws correctly whatever size the box takes. */
+.tf-stroke {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--slidev-theme-primary);
+  stroke-width: var(--spacing-line);
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+
+
+/* ── Bars ──────────────────────────────────────────────────
+   Each row is itself a focus frame, so the emphasis vocabulary matches the flow
+   diagrams. The name and value columns are fixed width and the track takes what is
+   left, which is what makes the bars line up with each other. */
+/* Bars lays its own rows out, so a row carries its frame directly rather than having
+   one measured over it. The border is always present and only changes colour, which
+   is what keeps the chart still as the emphasis moves down it.
+
+   The columns are declared once on the chart and inherited by every row through
+   subgrid, so each text column ends up as wide as the widest entry in it rather than
+   a width guessed in advance. The track takes the rest: a bar that stops short of the
+   space available reads as a smaller number than it is.
+
+   The two text columns sit close together because a label and how it was achieved are
+   one fact stated twice; the gap before the track is wider, so the bars separate from
+   the text rather than floating among it. */
+.tf-bars {
+  display: grid;
+  grid-template-columns: max-content max-content 1fr max-content;
+}
+
+.tf-bar-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  box-sizing: border-box;
+  border: var(--spacing-line) solid transparent;
+  padding: 1rem calc(1rem + var(--spacing-shadow)) calc(1rem + var(--spacing-shadow)) 1rem;
+  transition: border-color 0.6s ease;
+}
+
+.tf-bar-row.is-active {
+  border-color: var(--slidev-theme-accent);
+}
+
+/* A shared line height gives the two text columns boxes of equal height, so centring
+   them in the row lines their baselines up despite the step in size. */
+.tf-bar-label,
+.tf-bar-via {
+  font-weight: 500;
+  line-height: 2.25rem;
+  white-space: nowrap;
+}
+
+.tf-bar-label {
+  padding-right: 1rem;                  /* 16  label to its annotation */
+  font-size: var(--text-body);
+}
+
+/* An annotation rather than the subject, so it takes the neutral colour and drops a
+   step in size — secondary information changes hue instead of fading the primary. */
+.tf-bar-via {
+  padding-right: 3rem;                  /* 48  text block to the bars */
+  font-size: var(--text-sub);
+  color: var(--slidev-theme-neutral);
+}
+
+.tf-bar-track {
+  min-width: 0;
+}
+
+/* The shadow is a fixed 10px offset, so a short bar would otherwise disappear behind
+   it. The floor keeps the fill visibly larger than its own shadow; the clamped bars
+   are no longer proportional, but their figure is printed alongside and the figure is
+   what gets read. */
+.tf-bar-fill {
+  display: block;
+  min-width: 3rem;
+  height: 4rem;
+  background: var(--slidev-theme-primary);
+  box-shadow: var(--spacing-shadow) var(--spacing-shadow) 0 0
+              color-mix(in srgb, var(--slidev-theme-primary) 40%, transparent);
+}
+
+/* On a log axis the lengths already separate cleanly, and a floor would flatten two
+   bars a hundredfold apart into the same apparent magnitude. */
+.tf-bar-fill--log {
+  min-width: 0.5rem;
+}
+
+.tf-bar-value {
+  padding-left: 2.25rem;                /* clears the fill's shadow */
+  font-size: var(--text-body);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Units at both ends. A log axis without them invites the lengths to be read as
+   linear, so the axis row is mandatory whenever log is on. Derived from the column
+   widths so renaming a column carries the axis along with it. */
+.tf-bar-axis {
+  display: flex;
+  justify-content: space-between;
+  grid-column: 3;
+  padding-top: 1rem;
+  font-size: var(--text-sub);
+  font-weight: 500;
+  color: var(--slidev-theme-neutral);
+}
+
+/* ── Axis ──────────────────────────────────────────────────
+   One line spanning the full content width with meaning at each end, for when the
+   row above it is a continuous spectrum rather than a set of exclusive options.
+   The stroke reuses .tf-stroke so it shares the visual language. */
+.tf-axis {
+  box-sizing: border-box;
+  width: var(--container-content);
+  padding: 0 11.25rem;                  /* 180  inset, leaving the line at 1068 */
+  margin-top: 2rem;
+}
+
+.tf-axis .tf-stroke-group {
+  display: flex;
+  width: 100%;
+}
+
+.tf-axis-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;                   /* 40 */
+}
+
+.tf-axis-end {
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--slidev-theme-primary);
+}
+
+/* ── Map ───────────────────────────────────────────────────
+   Two axes read at once, which is what shows a combination rather than a winner on
+   any single measure. The stage is a fixed size and points are placed by percentage,
+   so adding or removing a point leaves the others where they were. */
+/* The Y units sit outside the axis line, so they get a column of their own sized to
+   whatever they say. Reserving a fixed gutter instead would put the longest label
+   partly outside the content box, where it collides with the sidebar. Sizing the
+   column to its content means the stage gives up width and the chart stays inside its
+   container no matter how the units are worded. */
+.tf-map {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  width: var(--container-content);
+  margin-top: 2rem;
+  padding-bottom: 3.25rem;              /* room for the X units under the line */
+}
+
+.tf-map-units {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 1rem;
+}
+
+.tf-map-stage {
+  position: relative;
+  height: 40rem;
+  border-left: var(--spacing-line) solid var(--color-gray-200);
+  border-bottom: var(--spacing-line) solid var(--color-gray-200);
+}
+
+/* Units mark the ends only; there are no ticks in between, because this chart is
+   about relative position and printed numbers would be taken for measurements. */
+.tf-map-end {
+  font-size: var(--text-sub);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--slidev-theme-neutral);
+}
+
+.tf-map-end--x-left,
+.tf-map-end--x-right {
+  position: absolute;
+  bottom: -3.25rem;
+}
+
+.tf-map-end--x-left  { left: 0; }
+.tf-map-end--x-right { right: 0; }
+
+/* A label centred on its point would hang outside the stage at either extreme, so the
+   outermost positions anchor by their near edge instead and stay within the chart. */
+.tf-map-point {
+  position: absolute;
+  padding: 0.375rem 0.875rem;
+  border: var(--spacing-line) solid transparent;
+  font-size: var(--text-body);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.6s ease;
+  transform: translate(-50%, 50%);
+}
+
+.tf-map-point--start { transform: translate(0, 50%); }
+.tf-map-point--end   { transform: translate(-100%, 50%); }
+
+.tf-map-point::before {
+  content: '●';
+  margin-right: 0.4rem;
+}
+
+.tf-map-point--gray { color: var(--slidev-theme-neutral); }
+.tf-map-point--gunJyo { color: var(--slidev-theme-primary); }
+
+.tf-map-point.is-active {
+  border-color: var(--slidev-theme-accent);
+}
+
+/* ── Caption ───────────────────────────────────────────────
+   One line of narration under a diagram. The height is fixed at two lines so that
+   swapping in a longer or shorter sentence leaves the diagram above it in place. */
+.tf-caption {
+  display: flex;
+  justify-content: center;
+  height: 4.875rem;                     /* 78 */
+  margin-top: 3rem;
+  text-align: center;
+  font-size: var(--text-body);
+  font-weight: 400;
+}
+
+/* Emphasis inside narration is colour, matching the rule the diagrams follow */
+.tf-caption strong {
+  color: var(--slidev-theme-primary);
+  font-weight: inherit;
+}

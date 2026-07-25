@@ -1,3 +1,11 @@
+<!--
+  The speaker introduction: portrait, name, role, and whatever contact lines the deck
+  passes through the slot.
+
+  The three text sizes are the top three steps of the type scale, so the introduction
+  is proportioned by the same system as every other page rather than by its own set
+  of numbers.
+-->
 <template>
   <div class="container">
     <img :src="props.avatar" class="avatar" />
@@ -16,11 +24,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .avatar {
-  width: 8rem;
+  width: 16rem;
   border-radius: 50%;
 }
 
@@ -33,22 +41,29 @@
   text-align: left;
 }
 
+/* Senobi Gothic sets the name. All three lines share one left edge, so the block
+   reads as a single column regardless of whether the name is Latin or CJK. */
 .name {
-  margin-left: -0.5rem;
+  margin: 0;
 
   font-family: 'Senobi Gothic', sans-serif;
-  font-size: 3rem;
+  font-size: var(--text-title);
+  line-height: 1;
 }
 
 .title {
-  margin-top: -0.5rem;
+  margin: 1rem 0 0;
 
-  font-size: 1.5rem;
+  font-size: var(--text-heading);
+  line-height: 1;
   text-transform: uppercase;
 }
 
 .extra {
-  font-size: 1.25rem;
+  margin-top: 1rem;
+
+  font-size: var(--text-body);
+  line-height: 1.4;
   color: var(--slidev-theme-primary);
 }
 </style>
