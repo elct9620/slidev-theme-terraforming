@@ -70,7 +70,7 @@
 }
 </style>
 
-<script setup language="ts">
+<script setup lang="ts">
 import avatar from "../assets/avatar.png";
 
 const props = defineProps({

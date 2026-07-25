@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "paths": {
+      "@slidev/client": ["./types/slidev-client.d.ts"]
+    },
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "components/**/*.vue",
+    "composables/**/*.ts",
+    "layouts/**/*.vue",
+    "setup/**/*.ts",
+    "styles/*.ts",
+    "tests/**/*.ts",
+    "types/**/*.d.ts",
+    "slide-bottom.vue",
+    "vitest.config.ts"
+  ]
+}

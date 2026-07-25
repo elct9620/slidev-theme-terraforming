@@ -309,5 +309,12 @@ whatever the frontmatter says.
 
 - `pnpm install`
 - `pnpm dev` to preview `example.md`, which exercises every layout and component
+- `pnpm test` for the click and arrival protocols, `pnpm test:watch` while working on them
+- `pnpm typecheck` for the theme's own files
 - `pnpm export` to generate the preview PDF
 - `pnpm screenshot` to generate the preview PNG
+
+What a test can answer here stops short of what a slide looks like: the suite covers the
+parts that fail silently — a component declaring the wrong length, a figure deciding it
+should be arriving — while how a rule cascades and how long a transition takes are still
+read off a running deck.
