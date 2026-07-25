@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.6...v0.5.0) (2026-07-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* the canvas is 1920 wide. A deck built against the old 980 canvas needs `canvasWidth: 980` in its headmatter.
+
+### Features
+
+* rebuild the theme on the 1920 design canvas ([ea692c0](https://github.com/elct9620/slidev-theme-terraforming/commit/ea692c044b8756f5dcdf360c64796bd58a85ebb5))
+
 ## [0.4.6](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.4.5...v0.4.6) (2026-07-01)
 
 
