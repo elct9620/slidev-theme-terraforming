@@ -192,6 +192,33 @@ hideInToc: true
 </Caption>
 
 ---
+layout: diagram
+hideInToc: true
+---
+
+<Stage column gap="4.5rem">
+  <Group name="sandbox" gap="1.5rem">
+    <Block name="guest" color="tamago" sub="untrusted">Guest</Block>
+    <Block color="gray" sub="linear memory">Memory</Block>
+  </Group>
+
+  <Stroke dir="up" label="trap" flip length="9rem" />
+
+  <Block name="host" color="gunJyo">Host</Block>
+
+  <Focus of="sandbox" color="gunJyo" />
+  <Focus :steps="[null, 'guest', 'host']" />
+</Stage>
+
+<Caption>
+<v-switch>
+<template #0><span>A second frame says what belongs to <strong>one layer</strong> for the whole page.</span></template>
+<template #1><span>The red one is what is being spoken about <strong>right now</strong>.</span></template>
+<template #2><span>It leaves the layer; the blue frame stays where it was.</span></template>
+</v-switch>
+</Caption>
+
+---
 hideInToc: true
 ---
 
@@ -258,6 +285,28 @@ Two measures at once, showing a combination rather than a single winner
   ]"
   :steps="[null, 'eval', 'Container', 'WebAssembly']"
 />
+
+---
+hideInToc: true
+clicks: 2
+---
+
+# Driven by the deck
+
+A chart stepped from a `$clicks` expression says how long its page is
+
+<Bars
+  :max="2000"
+  :active="$clicks - 1"
+  :items="[
+    { label: 'Process', value: 1200, text: '1.2 ms' },
+    { label: 'Container', value: 220, text: '220 μs' },
+  ]"
+/>
+
+<Caption>
+<span>The bars are measured against a stated ceiling, so two charts can be compared.</span>
+</Caption>
 
 ---
 layout: section
