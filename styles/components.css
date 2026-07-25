@@ -42,7 +42,7 @@
 }
 
 [data-tf-enter] {
-  animation: tf-enter var(--tf-enter-duration) ease backwards;
+  animation: tf-enter var(--tf-enter-duration) var(--tf-enter-ease) backwards;
   animation-delay: calc(var(--tf-enter-place, 0) * var(--tf-enter-stagger));
 }
 
@@ -338,7 +338,7 @@
   box-sizing: border-box;
   border: var(--spacing-line) solid transparent;
   padding: 1rem calc(1rem + var(--spacing-shadow)) calc(1rem + var(--spacing-shadow)) 1rem;
-  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) ease;
+  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) var(--tf-enter-ease);
 }
 
 .tf-bar-row.is-active {
@@ -500,7 +500,7 @@
   font-size: var(--text-body);
   font-weight: 500;
   white-space: nowrap;
-  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) ease;
+  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) var(--tf-enter-ease);
   transform: translate(-50%, 50%);
 }
 

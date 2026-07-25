@@ -99,9 +99,20 @@
      apart, so the narration has a moment on each before the next one lands. The rise
      is a `translate`, which composes with whatever `transform` a piece already
      carries and leaves the layout untouched — the figure has to be measurable while
-     it arrives, since a Focus takes its geometry from the pieces themselves. */
-  --tf-enter-duration: 0.4s;
-  --tf-enter-stagger: 0.08s;
+     it arrives, since a Focus takes its geometry from the pieces themselves.
+
+     The timings are Material 3's motion durations rather than numbers arrived at by
+     eye: long2 for a piece's own movement, short2 for the gap between one piece and
+     the next, which is a wait rather than a movement and belongs on the short end of
+     the same scale. A slide is read from further away and with less urgency than an
+     interface, so the movement takes the slower of the two lengths on offer.
+
+     Arriving decelerates. M3 gives entering elements `emphasized-decelerate`, which
+     is off the mark quickly and then settles, so a piece reads as coming to rest
+     where it belongs rather than sliding in at a constant rate and stopping dead. */
+  --tf-enter-duration: 500ms;
+  --tf-enter-stagger: 100ms;
+  --tf-enter-ease: cubic-bezier(0.05, 0.7, 0.1, 1);
   --tf-enter-rise: 1.25rem;     /* 20 */
 
   /* A stroke is as long as the widest caption it will ever carry, plus room at each

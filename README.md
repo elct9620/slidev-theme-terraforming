@@ -230,8 +230,8 @@ or `--tf-bar-via-w` on `.tf-bars` for longer text.
 
 A figure's pieces land in the order they are read rather than all at once, so the
 narration has a moment on each before the next one arrives. A `Stage` deals its
-`Block`s and `Groups` out along the row; `Bars` and `Map2D` deal out their rows and
-points. A `Group` arrives whole — it exists so that several pieces read as one thing.
+pieces out along the row; `Bars` and `Map2D` deal out their rows and points. A `Group`
+arrives whole — it exists so that several pieces read as one thing.
 
 Nothing is asked of the deck: the arrival plays when the slide is reached. It is
 purely additive, so a context that never reports reaching a slide — export, print,
@@ -247,10 +247,15 @@ The prop is on the charts alone because they own their pieces. A `Stage`'s piece
 written by the deck, so a deck paces those with `v-click` or `hidden` — see
 [Clicks](#clicks).
 
+The timings come off [Material 3's motion durations](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)
+rather than being chosen by eye, and an arriving piece decelerates on the curve M3
+gives elements entering the screen.
+
 | Token | |
 |-------|--|
-| `--tf-enter-duration` | 0.4s, how long one piece takes to arrive |
-| `--tf-enter-stagger`  | 0.08s, the gap between one piece and the next |
+| `--tf-enter-duration` | 500ms — M3 `duration.long2`, how long one piece takes to arrive |
+| `--tf-enter-stagger`  | 100ms — M3 `duration.short2`, the gap between one piece and the next |
+| `--tf-enter-ease`     | M3 `easing.emphasized.decelerate` |
 | `--tf-enter-rise`     | 20, how far a piece travels on the way in — set it to 0 for a plain fade |
 
 ## Clicks
