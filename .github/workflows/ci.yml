@@ -32,3 +32,7 @@ jobs:
       # The fixture deck exercises every layout and component, so building it is what
       # says the theme still loads.
       - run: pnpm build
+      # Slower than the rest put together: it boots Slidev and a browser to ask what the
+      # deck turned out to be. The browser is already here, since playwright-chromium
+      # fetches it on install.
+      - run: pnpm test:deck

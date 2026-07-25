@@ -314,15 +314,17 @@ whatever the frontmatter says.
 - `pnpm install`
 - `pnpm dev` to preview `example.md`, which exercises every layout and component
 - `pnpm test` for the click and arrival protocols, `pnpm test:watch` while working on them
+- `pnpm test:deck` to walk `example.md` through Slidev in a real browser
 - `pnpm typecheck` for the theme's own files
 - `pnpm lint`, or `pnpm lint:fix` to have the style applied for you
 - `pnpm export` to generate the preview PDF
 - `pnpm screenshot` to generate the preview PNG
 
-What a test can answer here stops short of what a slide looks like: the suite covers the
-parts that fail silently — a component declaring the wrong length, a figure deciding it
-should be arriving — while how a rule cascades and how long a transition takes are still
-read off a running deck.
+What a test can answer here stops short of what a slide looks like. The unit suite covers
+what a component decides — the length it declares, whether it thinks it is arriving, where
+it puts its frame — and the deck suite covers what Slidev makes of that, by walking
+`example.md` in a browser and asking how long each page turned out to be. How a rule
+cascades and how long a transition takes are still read off a running deck.
 
 `package.json` lists what ships. A new file at the top level that Slidev is meant to load
 has to be added there, or it will be missing from the published package while working

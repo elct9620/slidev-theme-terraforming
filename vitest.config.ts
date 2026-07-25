@@ -2,20 +2,39 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 
 /**
- * What is worth testing here is the click and arrival protocols: a component that
- * declares its own length, and a figure that decides whether it should be arriving.
- * Both fail silently — a slide sits at the wrong length, or a piece is simply already
- * there — so they are the parts that cannot be checked by looking at a slide.
+ * Two suites, because they answer different kinds of question.
  *
- * happy-dom carries no layout engine, so every offset it reports is zero: nothing here
- * can measure a real element, and anything geometric has to be reached as arithmetic over
- * stand-in values. What only a browser can answer — how a rule cascades, how long a
- * transition takes — stays with driving an actual deck.
+ * `unit` is what a component decides: whether it declares the right length, whether a
+ * figure thinks it should be arriving, where a frame puts itself. It runs against
+ * happy-dom, which carries no layout engine, so every offset it reports is zero and
+ * anything geometric has to be reached as arithmetic over stand-in values.
+ *
+ * `deck` drives the fixture through Slidev's own server and a real browser, which is the
+ * only place the answers Slidev gives back can be seen: how long a slide turned out to be
+ * once every registration on it was resolved, and what a page being printed renders. It
+ * costs a browser and half a minute, so it is kept out of the suite that runs while
+ * working.
  */
 export default defineConfig({
-  plugins: [vue()],
   test: {
-    environment: 'happy-dom',
-    include: ['tests/**/*.test.ts'],
+    projects: [
+      {
+        plugins: [vue()],
+        test: {
+          name: 'unit',
+          environment: 'happy-dom',
+          include: ['tests/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'deck',
+          environment: 'node',
+          include: ['tests/deck/*.test.ts'],
+          testTimeout: 60_000,
+          hookTimeout: 120_000,
+        },
+      },
+    ],
   },
 })
