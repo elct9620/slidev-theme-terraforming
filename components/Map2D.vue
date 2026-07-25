@@ -22,9 +22,8 @@
   speaker instead — one point per click, before whatever `steps` goes on to do.
 -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { pointAnchor, useHighlight } from '../composables/chart'
 import { useArriving, useReveal } from '../composables/entrance'
-import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
   xStart: string
@@ -37,25 +36,14 @@ const props = defineProps<{
   reveal?: boolean
 }>()
 
-const step = useSteps(() => props.steps)
 const arriving = useArriving()
 const held = useReveal(() => props.points.length, () => props.reveal)
 
-// Naming a point that is not there leaves the chart unframed rather than throwing, the
-// same answer an out-of-range `active` already gave.
-const current = computed(() => props.steps
-  ? props.points.findIndex(point => point.label === step.value)
-  : props.active ?? -1)
-
-// Points near either end anchor by their near edge so the label stays on the chart;
-// everything in between reads better centred on its position.
-function anchor(x: number) {
-  if (x <= 12)
-    return 'tf-map-point--start'
-  if (x >= 88)
-    return 'tf-map-point--end'
-  return ''
-}
+const current = useHighlight(
+  () => props.points.map(point => point.label),
+  () => props.steps,
+  () => props.active,
+)
 </script>
 
 <template>
@@ -75,7 +63,7 @@ function anchor(x: number) {
         class="tf-map-point"
         :class="[
           `tf-map-point--${point.tone ?? 'gray'}`,
-          anchor(point.x),
+          pointAnchor(point.x),
           { 'is-active': current === i },
         ]"
         :data-tf-enter="!reveal && arriving || undefined"

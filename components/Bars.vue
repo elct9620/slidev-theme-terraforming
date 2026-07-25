@@ -27,8 +27,8 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
+import { barScale, useHighlight } from '../composables/chart'
 import { useArriving, useReveal } from '../composables/entrance'
-import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
   items: { label: string, value: number, text: string, via?: string }[]
@@ -41,30 +41,19 @@ const props = defineProps<{
   axisEnd?: string
 }>()
 
-const step = useSteps(() => props.steps)
 const arriving = useArriving()
 const held = useReveal(() => props.items.length, () => props.reveal)
 
-// Naming a row that is not there leaves the chart unframed rather than throwing, the
-// same answer an out-of-range `active` already gave.
-const current = computed(() => props.steps
-  ? props.items.findIndex(item => item.label === step.value)
-  : props.active ?? -1)
+const current = useHighlight(
+  () => props.items.map(item => item.label),
+  () => props.steps,
+  () => props.active,
+)
 
-const values = computed(() => props.items.map(i => i.value))
-
-// The log range is rounded out to powers of ten, with one extra decade below the
-// smallest value so that the shortest bar still has a visible length.
-const logMin = computed(() => Math.floor(Math.log10(Math.min(...values.value))) - 1)
-const logMax = computed(() => Math.ceil(Math.log10(props.max ?? Math.max(...values.value))))
-const linearMax = computed(() => props.max ?? Math.max(...values.value))
-
-const width = (value: number) => {
-  if (!props.log)
-    return `${(value / linearMax.value) * 100}%`
-  const ratio = (Math.log10(value) - logMin.value) / (logMax.value - logMin.value)
-  return `${Math.max(ratio, 0) * 100}%`
-}
+const width = computed(() => barScale(
+  props.items.map(item => item.value),
+  { max: props.max, log: props.log },
+))
 </script>
 
 <template>

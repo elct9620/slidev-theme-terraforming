@@ -26,9 +26,10 @@
     <Focus v-drag="[420, 180, 660, 220]" />
 -->
 <script setup lang="ts">
+import type { Box } from '../composables/stage'
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useEntrance } from '../composables/entrance'
-import { StageKey } from '../composables/stage'
+import { bounds, namesOf, piecesNamed, placeIn, StageKey } from '../composables/stage'
 import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
@@ -48,15 +49,10 @@ const entrance = useEntrance()
 // The last geometry measured, kept even while the box frames nothing, so that a
 // focus which comes back resumes from where it was rather than flying in from the
 // corner the element would otherwise collapse to.
-const box = ref<{ left: number, top: number, width: number, height: number }>()
+const box = ref<Box>()
 const framing = ref(false)
 
-const names = computed(() => {
-  const value = props.steps ? step.value : props.of
-  if (!value)
-    return []
-  return (Array.isArray(value) ? value : value.split(',')).map(n => n.trim()).filter(Boolean)
-})
+const names = computed(() => namesOf(props.steps ? step.value : props.of))
 
 // Placing the box by hand is the one case where framing nothing is the point, so
 // the fade applies only once a deck has said what to frame.
@@ -64,31 +60,9 @@ const off = computed(() => (props.of !== undefined || props.steps !== undefined)
 
 let observer: ResizeObserver | undefined
 
-// Where a piece sits on the stage, counted up the chain rather than read off the
-// piece. offsetLeft is measured against the offsetParent, and which ancestor that is
-// changes while a figure arrives: the rise is a `translate`, and a translated element
-// becomes the containing block for everything inside it. A piece in a group would then
-// report its place within that group — nought, for the first one — while the frame
-// around it is placed against the stage.
-function placeIn(el: HTMLElement, root: HTMLElement) {
-  let left = 0
-  let top = 0
-
-  for (let node: HTMLElement | null = el; node && node !== root; node = node.offsetParent as HTMLElement | null) {
-    left += node.offsetLeft
-    top += node.offsetTop
-  }
-
-  return { left, top }
-}
-
 function measure() {
   const root = stage?.value
-  const targets = root && names.value.length
-    ? names.value
-        .map(name => root.querySelector(`[data-tf-name="${CSS.escape(name)}"]`))
-        .filter((el): el is HTMLElement => el instanceof HTMLElement)
-    : []
+  const targets = root ? piecesNamed(root, names.value) : []
 
   framing.value = targets.length > 0
   if (!root || !framing.value)
@@ -97,14 +71,11 @@ function measure() {
   // offsetLeft and friends report layout values from before any transform. Client
   // rects would be measured after the stage's own scale and then scaled a second time
   // by being placed inside it.
-  const places = targets.map(el => ({ ...placeIn(el, root), width: el.offsetWidth, height: el.offsetHeight }))
-
-  const left = Math.min(...places.map(p => p.left))
-  const top = Math.min(...places.map(p => p.top))
-  const right = Math.max(...places.map(p => p.left + p.width))
-  const bottom = Math.max(...places.map(p => p.top + p.height))
-
-  box.value = { left, top, width: right - left, height: bottom - top }
+  box.value = bounds(targets.map(el => ({
+    ...placeIn(el, root),
+    width: el.offsetWidth,
+    height: el.offsetHeight,
+  })))
 }
 
 onMounted(() => {
