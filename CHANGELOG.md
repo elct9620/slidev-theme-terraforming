@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.6.0...v0.6.1) (2026-07-25)
+
+
+### Bug Fixes
+
+* **focus:** measure a piece against the stage, not against its arrival ([b86b41e](https://github.com/elct9620/slidev-theme-terraforming/commit/b86b41e0db83ba4fa78dbf7ad047f06c4e6726b2))
+
 ## [0.6.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.5.0...v0.6.0) (2026-07-25)
 
 
