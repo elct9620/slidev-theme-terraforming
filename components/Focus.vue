@@ -26,6 +26,7 @@
     <Focus v-drag="[420, 180, 660, 220]" />
 -->
 <script setup lang="ts">
+import type { Colour } from '../composables/palette'
 import type { Box } from '../composables/stage'
 import { computed, inject, ref, watch } from 'vue'
 import { useEntrance } from '../composables/entrance'
@@ -36,7 +37,7 @@ import { useSteps } from '../composables/steps'
 const props = defineProps<{
   of?: string | string[]
   steps?: (string | string[] | null)[]
-  color?: 'jinZamOmi' | 'gunJyo' | 'tamago' | 'gray'
+  color?: Colour
 }>()
 
 const step = useSteps(() => props.steps)

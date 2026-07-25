@@ -571,3 +571,56 @@
   color: var(--slidev-theme-primary);
   font-weight: inherit;
 }
+
+/* ── About ─────────────────────────────────────────────────
+   The speaker introduction. Its three lines are the top three steps of the type scale,
+   so the page is proportioned by the same system as every other rather than by its own
+   set of numbers.
+
+   ⚠ The selectors need the .tf-about prefix to reach (0,2,0). Both this theme's
+   layout.css and Slidev's layouts-base style `.slidev-layout h1` at (0,1,1), and their
+   size, leading and margin would otherwise beat a single class. */
+.tf-about {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.tf-about .tf-about-portrait {
+  width: 16rem;
+  border-radius: 50%;
+}
+
+.tf-about .tf-about-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  text-align: left;
+}
+
+/* Senobi Gothic sets the name. All three lines share one left edge, so the block reads
+   as a single column whether the name is Latin or CJK. */
+.tf-about .tf-about-name {
+  margin: 0;
+  font-family: 'Senobi Gothic', sans-serif;
+  font-size: var(--text-title);
+  line-height: var(--leading-none);
+}
+
+.tf-about .tf-about-title {
+  margin: 1rem 0 0;
+  font-size: var(--text-heading);
+  line-height: var(--leading-none);
+  text-transform: uppercase;
+}
+
+/* The contact lines are the one part a deck fills in, so they take the copy leading:
+   whatever it puts here may run to several lines. */
+.tf-about .tf-about-extra {
+  margin-top: 1rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--slidev-theme-primary);
+}

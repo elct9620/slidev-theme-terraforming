@@ -15,10 +15,11 @@
   pace the row by hand instead, a deck reaches for `v-click` or `hidden`.
 -->
 <script setup lang="ts">
+import type { Colour } from '../composables/palette'
 import { useEntrance } from '../composables/entrance'
 
 defineProps<{
-  color?: 'gunJyo' | 'tamago' | 'jinZamOmi' | 'gray'
+  color?: Colour
   name?: string
   hidden?: boolean
   sub?: string
