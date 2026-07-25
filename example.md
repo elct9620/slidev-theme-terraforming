@@ -155,6 +155,33 @@ hideInToc: true
 ---
 
 <Stage column>
+  <Group>
+    <Block name="source" color="tamago">Source</Block>
+    <Stroke dir="right" label="compile" />
+    <Block name="module" color="gunJyo">Module</Block>
+  </Group>
+
+  <Stroke dir="down" label="instantiate" />
+
+  <Group name="instances">
+    <Block color="gunJyo">Instance</Block>
+    <Block color="gunJyo">Instance</Block>
+    <Block color="gunJyo">Instance</Block>
+  </Group>
+
+  <Focus :steps="['source', 'module', 'instances']" />
+</Stage>
+
+<Caption>
+<span>A narrower row sits centred over the widest one, and the frame follows it there.</span>
+</Caption>
+
+---
+layout: diagram
+hideInToc: true
+---
+
+<Stage column>
   <Block color="gunJyo">Host</Block>
   <Stroke dir="both-y" label="host functions" />
   <Block color="tamago">Guest</Block>

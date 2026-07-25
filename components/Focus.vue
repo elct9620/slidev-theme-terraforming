@@ -65,6 +65,24 @@ const off = computed(() => (props.of !== undefined || props.steps !== undefined)
 
 let observer: ResizeObserver | undefined
 
+// Where a piece sits on the stage, counted up the chain rather than read off the
+// piece. offsetLeft is measured against the offsetParent, and which ancestor that is
+// changes while a figure arrives: the rise is a `translate`, and a translated element
+// becomes the containing block for everything inside it. A piece in a group would then
+// report its place within that group — nought, for the first one — while the frame
+// around it is placed against the stage.
+function placeIn(el: HTMLElement, root: HTMLElement) {
+  let left = 0
+  let top = 0
+
+  for (let node: HTMLElement | null = el; node && node !== root; node = node.offsetParent as HTMLElement | null) {
+    left += node.offsetLeft
+    top += node.offsetTop
+  }
+
+  return { left, top }
+}
+
 function measure() {
   const root = stage?.value
   const targets = root && names.value.length
@@ -74,17 +92,18 @@ function measure() {
     : []
 
   framing.value = targets.length > 0
-  if (!framing.value)
+  if (!root || !framing.value)
     return
 
-  // offsetLeft and friends report layout values from before any transform, measured
-  // against the offsetParent — which is the stage, since it is the positioned
-  // ancestor. Client rects would be measured after the stage's own scale and then
-  // scaled a second time by being placed inside it.
-  const left = Math.min(...targets.map(el => el.offsetLeft))
-  const top = Math.min(...targets.map(el => el.offsetTop))
-  const right = Math.max(...targets.map(el => el.offsetLeft + el.offsetWidth))
-  const bottom = Math.max(...targets.map(el => el.offsetTop + el.offsetHeight))
+  // offsetLeft and friends report layout values from before any transform. Client
+  // rects would be measured after the stage's own scale and then scaled a second time
+  // by being placed inside it.
+  const places = targets.map(el => ({ ...placeIn(el, root), width: el.offsetWidth, height: el.offsetHeight }))
+
+  const left = Math.min(...places.map(p => p.left))
+  const top = Math.min(...places.map(p => p.top))
+  const right = Math.max(...places.map(p => p.left + p.width))
+  const bottom = Math.max(...places.map(p => p.top + p.height))
 
   box.value = { left, top, width: right - left, height: bottom - top }
 }
