@@ -27,8 +27,9 @@
 -->
 <script setup lang="ts">
 import type { Box } from '../composables/stage'
-import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
 import { useEntrance } from '../composables/entrance'
+import { useMeasured } from '../composables/measure'
 import { bounds, namesOf, piecesNamed, placeIn, StageKey } from '../composables/stage'
 import { useSteps } from '../composables/steps'
 
@@ -58,12 +59,13 @@ const names = computed(() => namesOf(props.steps ? step.value : props.of))
 // the fade applies only once a deck has said what to frame.
 const off = computed(() => (props.of !== undefined || props.steps !== undefined) && !framing.value)
 
-let observer: ResizeObserver | undefined
-
-function measure() {
+/** The stage the frame is placed against, and the pieces its geometry comes from. */
+function framed() {
   const root = stage?.value
-  const targets = root ? piecesNamed(root, names.value) : []
+  return root ? [root, ...piecesNamed(root, names.value)] : []
+}
 
+function measure([root, ...targets]: HTMLElement[]) {
   framing.value = targets.length > 0
   if (!root || !framing.value)
     return
@@ -78,19 +80,9 @@ function measure() {
   })))
 }
 
-onMounted(() => {
-  if (!stage?.value)
-    return
+const remeasure = useMeasured(framed, measure)
 
-  observer = new ResizeObserver(measure)
-  observer.observe(stage.value)
-  document.fonts?.ready.then(measure)
-  measure()
-})
-
-onBeforeUnmount(() => observer?.disconnect())
-
-watch(names, measure)
+watch(names, remeasure)
 </script>
 
 <template>

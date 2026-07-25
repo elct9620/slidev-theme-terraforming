@@ -13,7 +13,8 @@
   blocks no longer matching the rest of the deck.
 -->
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { provide, ref, watch } from 'vue'
+import { useMeasured } from '../composables/measure'
 import { StageKey, StagePlaceKey } from '../composables/stage'
 
 const props = defineProps<{
@@ -33,8 +34,6 @@ provide(StageKey, stage)
 let places = 0
 provide(StagePlaceKey, () => places++)
 
-let observer: ResizeObserver | undefined
-
 // offsetWidth reports the pre-transform layout size, so the measurement stays stable
 // whatever scale is already applied and cannot oscillate between two values.
 function measure() {
@@ -47,24 +46,12 @@ function measure() {
   scale.value = available > 0 && natural > available ? available / natural : 1
 }
 
-onMounted(() => {
-  if (!props.fit)
-    return
+// Watched whether or not this stage fits, so that one told to fit after it was mounted is
+// already being followed. A stage that never fits pays for an observer whose readings it
+// throws away, which is cheaper than the page where the scaling silently never happened.
+const remeasure = useMeasured(() => [frame.value, stage.value], measure)
 
-  observer = new ResizeObserver(measure)
-  if (frame.value)
-    observer.observe(frame.value)
-  if (stage.value)
-    observer.observe(stage.value)
-
-  // Labels settle at their real width only once the display face has loaded.
-  document.fonts?.ready.then(measure)
-  measure()
-})
-
-onBeforeUnmount(() => observer?.disconnect())
-
-watch(() => props.fit, measure)
+watch(() => props.fit, remeasure)
 </script>
 
 <template>
