@@ -236,7 +236,7 @@ hideInToc: true
 
 For a row that is a spectrum rather than a set of options
 
-<Axis start-label="Fully isolated" end-label="Fully permissive" />
+<Axis start="Fully isolated" end="Fully permissive" />
 
 ---
 hideInToc: true

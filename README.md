@@ -202,8 +202,12 @@ longer matching the rest of the deck.
 | Component | Props |
 |-----------|-------|
 | `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `reveal`, `log`, `axisStart`, `axisEnd` |
-| `Axis`    | `startLabel`, `endLabel` |
+| `Axis`    | `start`, `end` |
 | `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `steps`, `active`, `reveal` |
+
+The two ends of an axis are `start` and `end`. Where the axis is one part of a chart
+rather than the whole of it, they say which axis: `axisStart` and `axisEnd` on `Bars`,
+`xStart` and `yStart` on `Map2D`.
 
 Both charts take the same red frame as a block, and move it with `steps` the way a
 `Focus` does — each entry naming the row or point under discussion, `null` for none:
