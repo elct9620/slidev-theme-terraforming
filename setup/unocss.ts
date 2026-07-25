@@ -52,11 +52,13 @@ export default defineUnoSetup(() => ({
       travel: 'var(--tf-motion-travel)',
       settle: 'var(--tf-motion-settle)',
       touch: 'var(--tf-motion-touch)',
+      delay: 'var(--tf-motion-delay)',
       stagger: 'var(--tf-motion-stagger)',
     },
 
     easing: {
-      motion: 'var(--tf-motion-ease)',
+      move: 'var(--tf-motion-ease-move)',
+      fade: 'var(--tf-motion-ease-fade)',
     },
 
     fontFamily: {

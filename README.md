@@ -61,7 +61,7 @@ for what they are, using the Tailwind v4 `@theme` namespaces:
 | `--text-*`     | `title` 64 · `heading` 48 · `body` 36 · `sub` 32 · `note` 16    |
 | `--leading-*`  | `none` 1 · `heading` 1.25 · `body` 1.5                          |
 | `--font-*`     | `sans` `mono`                                                   |
-| `--tf-motion-*`| `travel` 600ms · `settle` 500ms · `touch` 200ms · `stagger` 100ms · `ease` · `rise` 20 |
+| `--tf-motion-*`| `travel` 600ms · `settle` 500ms · `touch` 200ms · `delay` 300ms · `stagger` 100ms · `ease-move` · `ease-fade` · `rise` 20 |
 | `--spacing-*`  | `line` 5 · `shadow` 10 · `sidebar` 296 · `slash` 100 · `block-w` 270 · `block-h` 162 |
 | `--container-*`| `content` 1380                                                  |
 
@@ -261,12 +261,20 @@ urgency than an interface, so each takes the slower end of what M3 offers.
 | `--tf-motion-travel`  | 600ms · M3 `long4`  | something moving or resizing, which has ground to cover — the focus frame crossing a diagram, the red frame stepping down a chart |
 | `--tf-motion-settle`  | 500ms · M3 `long2`  | something arriving or leaving in place, which has none. Slidev's slide transition follows it |
 | `--tf-motion-touch`   | 200ms · M3 `short4` | direct feedback to the pointer, where anything slower reads as lag |
+| `--tf-motion-delay`   | 300ms · M3 `medium2` | how long a figure waits before arriving, so it does not run while the page is still fading in |
 | `--tf-motion-stagger` | 100ms · M3 `short2` | the wait between one arriving piece and the next |
-| `--tf-motion-ease`    | M3 `emphasized.decelerate` | off the mark quickly and then settling, so a piece reads as coming to rest where it belongs |
 | `--tf-motion-rise`    | 20 | how far an arriving piece travels — set it to 0 for a plain fade |
 
+There are two curves, because a curve describes how ground is covered and not every
+change covers any:
+
+| Token | | |
+|-------|--|--|
+| `--tf-motion-ease-move` | M3 `emphasized.decelerate` | position, size, the rise a piece makes — off the mark quickly and then settling, so it reads as coming to rest where it belongs |
+| `--tf-motion-ease-fade` | `ease-in-out` | opacity and colour, which have no ground to cover. The move curve spends a fade in a twentieth of the time it was given, so the duration stops meaning anything |
+
 They reach UnoCSS too, so motion a deck adds itself keeps time with the theme's:
-`duration-travel`, `duration-settle`, `duration-touch`, `ease-motion`.
+`duration-travel`, `duration-settle`, `duration-touch`, `ease-move`, `ease-fade`.
 
 ## Clicks
 

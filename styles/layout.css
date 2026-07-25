@@ -38,7 +38,7 @@ html {
    keeps every transition on a deck the same length whichever one is in play. */
 .tf-fade-enter-active .slidev-layout,
 .tf-fade-leave-active .slidev-layout {
-  transition: opacity var(--slidev-transition-duration) var(--tf-motion-ease);
+  transition: opacity var(--slidev-transition-duration) var(--tf-motion-ease-fade);
 }
 
 .tf-fade-enter-from .slidev-layout,
@@ -180,7 +180,7 @@ html {
      the way out and reads as a blink. Giving the change a length means that frame
      shows almost none of it, and the marker moving between sections is legible in
      its own right. */
-  transition: background-color var(--tf-motion-travel) var(--tf-motion-ease);
+  transition: background-color var(--tf-motion-travel) var(--tf-motion-ease-fade);
 }
 
 /* The pointer gets its answer straight away; anything on the travel length would
@@ -190,8 +190,8 @@ html {
   padding: 1rem 2rem;                   /* 16 / 32 */
   border: none;
   transition:
-    background-color var(--tf-motion-touch) var(--tf-motion-ease),
-    color var(--tf-motion-touch) var(--tf-motion-ease);
+    background-color var(--tf-motion-touch) var(--tf-motion-ease-fade),
+    color var(--tf-motion-touch) var(--tf-motion-ease-fade);
 }
 
 /* Hovering previews the state the entry is about to be in, so it borrows the current

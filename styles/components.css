@@ -33,17 +33,30 @@
    figure that is never told to arrive simply shows itself whole.
 
    `backwards` is what holds a piece back through its own delay; without it every
-   piece would be visible until its turn came and then blink. */
-@keyframes tf-enter {
+   piece would be visible until its turn came and then blink.
+
+   Two animations rather than one, because a keyframe animation carries a single
+   timing function for everything it touches: the rise covers ground and decelerates
+   into place, while the fade has none to cover and spreads itself evenly instead. */
+@keyframes tf-enter-fade {
   from {
     opacity: 0;
+  }
+}
+
+@keyframes tf-enter-rise {
+  from {
     translate: 0 var(--tf-motion-rise);
   }
 }
 
 [data-tf-enter] {
-  animation: tf-enter var(--tf-motion-settle) var(--tf-motion-ease) backwards;
-  animation-delay: calc(var(--tf-enter-place, 0) * var(--tf-motion-stagger));
+  animation:
+    tf-enter-fade var(--tf-motion-settle) var(--tf-motion-ease-fade) backwards,
+    tf-enter-rise var(--tf-motion-settle) var(--tf-motion-ease-move) backwards;
+  animation-delay: calc(
+    var(--tf-motion-delay) + var(--tf-enter-place, 0) * var(--tf-motion-stagger)
+  );
 }
 
 /* Waiting for the click that calls it in. This one is a state rather than an
@@ -119,11 +132,11 @@
   /* The geometry travels; only the presence settles. Fading the box out faster than
      it moves would let it vanish part-way through a journey it is still making. */
   transition:
-    left var(--tf-motion-travel) var(--tf-motion-ease),
-    top var(--tf-motion-travel) var(--tf-motion-ease),
-    width var(--tf-motion-travel) var(--tf-motion-ease),
-    height var(--tf-motion-travel) var(--tf-motion-ease),
-    opacity var(--tf-motion-settle) var(--tf-motion-ease);
+    left var(--tf-motion-travel) var(--tf-motion-ease-move),
+    top var(--tf-motion-travel) var(--tf-motion-ease-move),
+    width var(--tf-motion-travel) var(--tf-motion-ease-move),
+    height var(--tf-motion-travel) var(--tf-motion-ease-move),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
 /* Red is the everyday focus; the other hues are for framing a second, different kind
@@ -170,7 +183,7 @@
   text-align: center;
   font-size: var(--text-body);
   font-weight: 500;
-  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
 .tf-block[data-tf-color="gunJyo"] {
@@ -206,7 +219,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
 .tf-stroke-group[data-tf-axis="y"] {
@@ -249,7 +262,7 @@
   line-height: var(--leading-none);
   white-space: nowrap;
   color: var(--slidev-theme-primary);
-  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
 .tf-stroke-group[data-tf-flip] .tf-stroke-label {
@@ -341,8 +354,8 @@
   border: var(--spacing-line) solid transparent;
   padding: 1rem calc(1rem + var(--spacing-shadow)) calc(1rem + var(--spacing-shadow)) 1rem;
   transition:
-    border-color var(--tf-motion-travel) var(--tf-motion-ease),
-    opacity var(--tf-motion-settle) var(--tf-motion-ease);
+    border-color var(--tf-motion-travel) var(--tf-motion-ease-fade),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
 .tf-bar-row.is-active {
@@ -505,8 +518,8 @@
   font-weight: 500;
   white-space: nowrap;
   transition:
-    border-color var(--tf-motion-travel) var(--tf-motion-ease),
-    opacity var(--tf-motion-settle) var(--tf-motion-ease);
+    border-color var(--tf-motion-travel) var(--tf-motion-ease-fade),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
   transform: translate(-50%, 50%);
 }
 

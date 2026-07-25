@@ -107,9 +107,22 @@
      eye: long4, long2 and short4. A slide is read from further away and with less
      urgency than an interface, so each takes the slower end of what M3 offers.
 
-     Motion decelerates. M3 gives entering elements `emphasized-decelerate`, off the
-     mark quickly and then settling, so a piece reads as coming to rest where it
-     belongs rather than moving at a constant rate and stopping dead.
+     There are two curves, because a curve describes how ground is covered and not
+     every change covers any. `move` is M3's `emphasized-decelerate`, off the mark
+     quickly and then settling, so something travelling reads as coming to rest where
+     it belongs rather than stopping dead. It is only for the properties that carry
+     distance — position, size, the rise an arriving piece makes.
+
+     `fade` is for everything else: opacity, colour, anything that changes in place.
+     Lent the move curve, a fade is half over in a twentieth of the time it was
+     given and then spends the rest imperceptible, so the duration stops meaning
+     anything and a slide change reads as a cut. Spreading it across the duration is
+     the whole job, and the ends are softened so it neither snaps on nor stops dead.
+
+     `delay` is how long a figure waits before it starts arriving. The page it sits on
+     is fading in at the same time, and two opacities multiply, so a figure that
+     arrives alongside the page is over before the page is legible enough to watch it
+     happen. Waiting lets the page turn up first and the figure build on it.
 
      `stagger` is the wait between one arriving piece and the next — a pause rather
      than a movement, so it comes off the short end of the same scale. `rise` is how
@@ -120,8 +133,10 @@
   --tf-motion-travel: 600ms;    /* M3 duration.long4 */
   --tf-motion-settle: 500ms;    /* M3 duration.long2 */
   --tf-motion-touch: 200ms;     /* M3 duration.short4 */
+  --tf-motion-delay: 300ms;     /* M3 duration.medium2 */
   --tf-motion-stagger: 100ms;   /* M3 duration.short2 */
-  --tf-motion-ease: cubic-bezier(0.05, 0.7, 0.1, 1);  /* M3 emphasized-decelerate */
+  --tf-motion-ease-move: cubic-bezier(0.05, 0.7, 0.1, 1);  /* M3 emphasized-decelerate */
+  --tf-motion-ease-fade: ease-in-out;
   --tf-motion-rise: 1.25rem;    /* 20 */
 
   /* Slidev times its own slide transitions off this, so pointing it at the same
