@@ -29,14 +29,21 @@ export default defineUnoSetup(() => ({
       neutral: 'var(--slidev-theme-neutral)',
     },
 
-    // Line height is 100% throughout the design file, so every step carries a
-    // line-height of 1 along with it.
+    // A size utility is reached for when placing a single line — a label, a caption —
+    // so each step carries the leading that case wants. Copy that wraps asks for
+    // leading-body instead, or gets it from the element rules in layout.css.
     fontSize: {
-      title: ['var(--text-title)', '1'],
-      heading: ['var(--text-heading)', '1'],
-      body: ['var(--text-body)', '1'],
-      sub: ['var(--text-sub)', '1'],
-      note: ['var(--text-note)', '1'],
+      title: ['var(--text-title)', 'var(--leading-none)'],
+      heading: ['var(--text-heading)', 'var(--leading-none)'],
+      body: ['var(--text-body)', 'var(--leading-none)'],
+      sub: ['var(--text-sub)', 'var(--leading-none)'],
+      note: ['var(--text-note)', 'var(--leading-none)'],
+    },
+
+    lineHeight: {
+      none: 'var(--leading-none)',
+      heading: 'var(--leading-heading)',
+      body: 'var(--leading-body)',
     },
 
     fontFamily: {

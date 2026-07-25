@@ -218,7 +218,7 @@
   margin-bottom: calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
   font-size: var(--text-sub);
   font-weight: 500;
-  line-height: 1;
+  line-height: var(--leading-none);
   white-space: nowrap;
   color: var(--slidev-theme-primary);
   transition: opacity 0.6s ease;
@@ -319,12 +319,12 @@
   border-color: var(--slidev-theme-accent);
 }
 
-/* A shared line height gives the two text columns boxes of equal height, so centring
-   them in the row lines their baselines up despite the step in size. */
+/* Both text columns take a line box the height of body type whatever size they are
+   set at, so centring them in the row lines their baselines up despite the step. */
 .tf-bar-label,
 .tf-bar-via {
   font-weight: 500;
-  line-height: 2.25rem;
+  line-height: var(--text-body);
   white-space: nowrap;
 }
 
@@ -409,7 +409,7 @@
 .tf-axis-end {
   font-size: var(--text-body);
   font-weight: 500;
-  line-height: 1;
+  line-height: var(--leading-none);
   white-space: nowrap;
   color: var(--slidev-theme-primary);
 }

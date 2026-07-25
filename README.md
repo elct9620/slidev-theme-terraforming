@@ -41,9 +41,17 @@ for what they are, using the Tailwind v4 `@theme` namespaces:
 |----------------|----------------------------------------------------------------|
 | `--color-*`    | `kon-500` `gunJyo-500` `tamago-500` `jinZamOmi-500` `gray-200` `gray-500` `white` `black` |
 | `--text-*`     | `title` 64 · `heading` 48 · `body` 36 · `sub` 32 · `note` 16    |
+| `--leading-*`  | `none` 1 · `heading` 1.25 · `body` 1.5                          |
 | `--font-*`     | `sans` `mono`                                                   |
 | `--spacing-*`  | `line` 5 · `shadow` 10 · `sidebar` 296 · `slash` 100 · `block-w` 270 · `block-h` 162 |
 | `--container-*`| `content` 1380                                                  |
+
+Leading answers a question about the text rather than about its size. `none` is for a
+line laid out as a single line, where the line box has to equal the type size for the
+box around it to measure out; `body` is for anything that may wrap; `heading` sits
+between and hands the extra back through a negative margin, so a one-line heading
+still lands where the design file's 100% put it. Space between blocks is always a
+margin, never leading.
 
 The second layer names them for the role they play: `--slidev-theme-primary`,
 `--slidev-theme-secondary`, `--slidev-theme-accent`, `--slidev-theme-neutral`,

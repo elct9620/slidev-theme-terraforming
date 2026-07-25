@@ -37,19 +37,30 @@
 
   /* ── Type scale ──────────────────────────────────────────
      The design file has exactly five steps, so this has five steps: adding a sixth
-     means going back to Figma first. Line height is pinned to 1 (the file uses
-     100%); vertical rhythm is stated with margins rather than padded by leading. */
+     means going back to Figma first. */
   --text-title: 4rem;      /* 64  cover title / section title */
   --text-heading: 3rem;    /* 48  cover subtitle / content-page title */
   --text-body: 2.25rem;    /* 36  body copy / block label / chart label */
   --text-sub: 2rem;        /* 32  block sub-label / annotation */
   --text-note: 1rem;       /* 16  source links */
 
-  /* Headings hug their glyphs at 100% in the design file, which leaves a wrapped
-     heading with its lines touching. This is the leading they actually get; the
-     margins that position them compensate for it, so raising it opens up a second
-     line without moving the first. */
-  --tf-heading-leading: 1.25;
+  /* ── Leading ─────────────────────────────────────────────
+     The design file sets every line at 100%, which is the right measure for a line
+     that cannot wrap and the wrong one for a line that can: at 100% the ascenders of
+     a second line land on the descenders of the first. So leading answers a question
+     about the text rather than about its size, and there are three answers.
+
+     `none` is for text laid out as a single line, where the line box has to equal the
+     type size for the box around it to measure out — a chart label, a table of
+     contents entry, a block caption. `body` is for anything that may wrap. `heading`
+     sits between and hands the extra back through a negative margin, so a one-line
+     heading still lands where 100% put it while a wrapped one opens up.
+
+     Distance between blocks is a margin and never leading, so that changing the air
+     around a paragraph and changing the air inside it stay separate decisions. */
+  --leading-none: 1;
+  --leading-heading: 1.25;
+  --leading-body: 1.5;
 
   /* ── Font stacks ─────────────────────────────────────────
      The design file sets Latin in Futura and CJK in PingFang TC / LiHei Pro. Futura
@@ -122,7 +133,7 @@
      The design file specifies JetBrains Mono 400 / 36 / 150%, with no background,
      no radius and no padding — code is content here, not an attachment in a box. */
   --slidev-code-font-size: var(--text-body);
-  --slidev-code-line-height: 1.5;
+  --slidev-code-line-height: var(--leading-body);
   --slidev-code-padding: 0;
   --slidev-code-margin: 0;
   --slidev-code-radius: 0;

@@ -48,22 +48,24 @@
 
   font-family: 'Senobi Gothic', sans-serif;
   font-size: var(--text-title);
-  line-height: 1;
+  line-height: var(--leading-none);
 }
 
 .title {
   margin: 1rem 0 0;
 
   font-size: var(--text-heading);
-  line-height: 1;
+  line-height: var(--leading-none);
   text-transform: uppercase;
 }
 
+/* The contact lines are the one part a deck fills in, so they take the copy leading:
+   whatever it puts here may run to several lines. */
 .extra {
   margin-top: 1rem;
 
   font-size: var(--text-body);
-  line-height: 1.4;
+  line-height: var(--leading-body);
   color: var(--slidev-theme-primary);
 }
 </style>

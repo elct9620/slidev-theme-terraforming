@@ -83,15 +83,15 @@ html {
 .slidev-layout h1,
 .slidev-layout h2 {
   font-size: var(--text-heading);
-  line-height: var(--tf-heading-leading);
-  margin: calc((1 - var(--tf-heading-leading)) * 0.5em) 0 1rem;   /* 16  title → subtitle */
+  line-height: var(--leading-heading);
+  margin: calc((1 - var(--leading-heading)) * 0.5em) 0 1rem;   /* 16  title → subtitle */
 }
 
 .slidev-layout h1 + p,
 .slidev-layout h2 + p {
   font-size: var(--text-body);
-  line-height: var(--tf-heading-leading);
-  margin: calc((1 - var(--tf-heading-leading)) * 0.5em) 0 2rem;   /* 32  subtitle → content */
+  line-height: var(--leading-heading);
+  margin: calc((1 - var(--leading-heading)) * 0.5em) 0 2rem;   /* 32  subtitle → content */
   color: var(--slidev-theme-primary);
 }
 
@@ -106,6 +106,17 @@ html {
 .slidev-layout.intro h1 + p,
 .slidev-layout.section h1 + p {
   font-size: var(--text-heading);
+}
+
+/* ── Copy ──────────────────────────────────────────────────
+   Anything that can run to a second line takes the copy leading. Slidev's base states
+   it as an absolute length chosen for its own 980 canvas; carried onto 1920 that
+   leaves the line box shorter than the type it holds, so a paragraph overlaps itself
+   the moment it wraps. A ratio ties the leading to whatever size the text turns out
+   to be, and the space between one block and the next stays with the margins. */
+.slidev-layout p,
+.slidev-layout li {
+  line-height: var(--leading-body);
 }
 
 /* ── Table of contents ─────────────────────────────────────
@@ -140,7 +151,7 @@ html {
   padding: 0;
   border-left: var(--spacing-shadow) solid var(--slidev-theme-primary);
   font-size: var(--text-body);
-  line-height: 1;
+  line-height: var(--leading-none);
   color: var(--slidev-theme-primary);
 }
 
@@ -159,7 +170,7 @@ html {
 
 .slidev-toc .slidev-toc-item p {
   margin: 0;
-  line-height: 1;
+  line-height: var(--leading-none);
 }
 
 /* Current item: solid fill, white text. The left rule takes the same colour and
