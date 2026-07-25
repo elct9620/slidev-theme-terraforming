@@ -1,0 +1,8 @@
+# esbuild's platform binary arrives through optionalDependencies
+# (@esbuild/<platform>), so its postinstall has nothing left to fetch and the build
+# is declined. pnpm refuses to install while any dependency build is unstated, so the
+# decision has to be recorded even when the answer is "not needed".
+allowBuilds:
+  esbuild: false
+  # This one does need its build: the postinstall is how the browser binary arrives.
+  playwright-chromium: true
