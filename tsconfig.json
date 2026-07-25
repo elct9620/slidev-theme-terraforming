@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
     "paths": {
       "@slidev/client": ["./types/slidev-client.d.ts"]
     },
+    "resolveJsonModule": true,
+    "types": ["vite/client"],
     "strict": true,
     "noEmit": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true
   },
   "include": [

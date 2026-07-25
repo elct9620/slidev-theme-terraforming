@@ -58,7 +58,7 @@ describe('pointAnchor', () => {
 describe('useHighlight', () => {
   const rows = () => ['Container', 'WebAssembly']
 
-  it("frames the row a step names, and declares the walk as the slide's length", () => {
+  it('frames the row a step names, and declares the walk as the slide\'s length', () => {
     const { result: current } = withSetup(() =>
       useHighlight(rows, () => [null, 'WebAssembly'], () => undefined))
 

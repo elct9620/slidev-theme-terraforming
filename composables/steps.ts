@@ -1,5 +1,5 @@
-import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
+import { computed } from 'vue'
 import { useDeclaredClicks } from './clicks'
 
 /**

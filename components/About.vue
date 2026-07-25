@@ -22,10 +22,14 @@ withDefaults(defineProps<{
 
 <template>
   <div class="tf-about">
-    <img :src="avatar" :alt="name" class="tf-about-portrait" />
+    <img :src="avatar" :alt="name" class="tf-about-portrait">
     <div class="tf-about-lines">
-      <h1 class="tf-about-name">{{ name }}</h1>
-      <h2 class="tf-about-title">{{ title }}</h2>
+      <h1 class="tf-about-name">
+        {{ name }}
+      </h1>
+      <h2 class="tf-about-title">
+        {{ title }}
+      </h2>
       <div class="tf-about-extra">
         <slot />
       </div>

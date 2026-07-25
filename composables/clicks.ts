@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted } from 'vue'
 import { useSlideContext } from '@slidev/client'
+import { onMounted, onUnmounted } from 'vue'
 
 let sequence = 0
 

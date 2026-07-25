@@ -69,10 +69,10 @@ export default defineUnoSetup(() => ({
     // The numeric scale is left alone: on a 1920 canvas a Figma px divided by 4 is
     // already the UnoCSS number. Only the recurring layout constants earn a name.
     spacing: {
-      line: 'var(--spacing-line)',
-      shadow: 'var(--spacing-shadow)',
-      sidebar: 'var(--spacing-sidebar)',
-      slash: 'var(--spacing-slash)',
+      'line': 'var(--spacing-line)',
+      'shadow': 'var(--spacing-shadow)',
+      'sidebar': 'var(--spacing-sidebar)',
+      'slash': 'var(--spacing-slash)',
       'block-w': 'var(--spacing-block-w)',
       'block-h': 'var(--spacing-block-h)',
     },

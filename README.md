@@ -311,6 +311,7 @@ whatever the frontmatter says.
 - `pnpm dev` to preview `example.md`, which exercises every layout and component
 - `pnpm test` for the click and arrival protocols, `pnpm test:watch` while working on them
 - `pnpm typecheck` for the theme's own files
+- `pnpm lint`, or `pnpm lint:fix` to have the style applied for you
 - `pnpm export` to generate the preview PDF
 - `pnpm screenshot` to generate the preview PNG
 

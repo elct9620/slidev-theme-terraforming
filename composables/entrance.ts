@@ -1,5 +1,5 @@
-import { computed, inject, ref, watch } from 'vue'
 import { useIsSlideActive, useNav, useSlideContext } from '@slidev/client'
+import { computed, inject, ref, watch } from 'vue'
 import { useDeclaredClicks } from './clicks'
 import { StagePlaceKey } from './stage'
 

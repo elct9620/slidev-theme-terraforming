@@ -79,7 +79,7 @@ describe('a focus', () => {
     expect(watcherOf(piece)).toBeDefined()
   })
 
-  it("takes the piece's new size even when the stage never changed size", async () => {
+  it('takes the piece\'s new size even when the stage never changed size', async () => {
     const { stage, piece, frame } = framing()
 
     sized(piece, { offsetWidth: 270, offsetHeight: 162 })

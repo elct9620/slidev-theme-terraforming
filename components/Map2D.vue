@@ -68,7 +68,7 @@ const current = useHighlight(
         ]"
         :data-tf-enter="!reveal && arriving || undefined"
         :data-tf-held="held(i) || undefined"
-        :style="{ left: `${point.x}%`, bottom: `${point.y}%`, '--tf-enter-place': i }"
+        :style="{ 'left': `${point.x}%`, 'bottom': `${point.y}%`, '--tf-enter-place': i }"
       >{{ point.label }}</span>
     </div>
   </div>

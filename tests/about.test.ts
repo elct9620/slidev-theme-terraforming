@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import About from '../components/About.vue'
 
-describe('About', () => {
+describe('the speaker introduction', () => {
   it('introduces the speaker the theme was written for, portrait included', () => {
     const about = mount(About)
 

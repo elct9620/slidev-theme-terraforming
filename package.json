@@ -1,7 +1,7 @@
 {
   "name": "@aotoki/slidev-theme-terraforming",
-  "version": "0.6.1",
   "type": "module",
+  "version": "0.6.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/elct9620/slidev-theme-terraforming.git"
@@ -10,24 +10,26 @@
     "slidev-theme",
     "slidev"
   ],
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "files": [
+    "CHANGELOG.md",
     "assets",
     "components",
     "composables",
     "layouts",
     "setup",
-    "styles",
     "slide-bottom.vue",
-    "CHANGELOG.md"
+    "styles"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",
     "export": "slidev export example.md",
     "screenshot": "slidev export example.md --format png",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "vue-tsc --noEmit"
@@ -36,10 +38,12 @@
     "@slidev/types": "^52.18.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^9.2.0",
     "@slidev/cli": "^52.18.0",
     "@slidev/client": "^52.18.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/test-utils": "^2.4.11",
+    "eslint": "^10.7.0",
     "happy-dom": "^20.11.1",
     "playwright-chromium": "^1.61.1",
     "typescript": "^6.0.3",
