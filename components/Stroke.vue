@@ -18,9 +18,14 @@
 
   `flip` puts the label on the other side, and `length` is for a line that has to
   span a whole arrangement.
+
+  A stroke on a stage arrives in its turn along the row, like the pieces it joins — a
+  line drawn between two blocks that have not turned up yet has nothing to connect.
 -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
+import { useArriving } from '../composables/entrance'
+import { StagePlaceKey } from '../composables/stage'
 
 const props = defineProps<{
   dir?: 'right' | 'left' | 'both' | 'up' | 'down' | 'both-y' | 'none'
@@ -42,6 +47,9 @@ const head = computed(() => ({
   start: ['left', 'both', 'up', 'both-y'].includes(dir.value),
   end: ['right', 'both', 'down', 'both-y'].includes(dir.value),
 }))
+
+const place = inject(StagePlaceKey, null)?.()
+const arriving = useArriving()
 </script>
 
 <template>
@@ -50,7 +58,9 @@ const head = computed(() => ({
     :data-tf-axis="vertical ? 'y' : undefined"
     :data-tf-flip="flip || undefined"
     :data-tf-hidden="hidden || undefined"
+    :data-tf-enter="place !== undefined && arriving || undefined"
     :data-tf-name="name"
+    :style="{ '--tf-enter-place': place }"
   >
     <span class="tf-stroke-sizer" aria-hidden="true">
       <span v-for="text in candidates" :key="text">{{ text }}</span>
