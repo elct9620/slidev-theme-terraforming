@@ -18,7 +18,8 @@ defineProps<{
 <template>
   <div
     class="tf-group"
-    :class="{ 'tf-group--column': column, 'is-hidden': hidden }"
+    :data-tf-column="column || undefined"
+    :data-tf-hidden="hidden || undefined"
     :style="{ gap }"
     :data-tf-name="name"
   >

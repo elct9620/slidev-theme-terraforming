@@ -23,7 +23,8 @@ defineProps<{
 <template>
   <div
     class="tf-block"
-    :class="[`tf-block--${color ?? 'gunJyo'}`, { 'is-hidden': hidden }]"
+    :data-tf-color="color ?? 'gunJyo'"
+    :data-tf-hidden="hidden || undefined"
     :data-tf-name="name"
   >
     <span><slot /></span>

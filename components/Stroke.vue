@@ -47,11 +47,9 @@ const head = computed(() => ({
 <template>
   <div
     class="tf-stroke-group"
-    :class="{
-      'tf-stroke-group--y': vertical,
-      'tf-stroke-group--flip': flip,
-      'is-hidden': hidden,
-    }"
+    :data-tf-axis="vertical ? 'y' : undefined"
+    :data-tf-flip="flip || undefined"
+    :data-tf-hidden="hidden || undefined"
     :data-tf-name="name"
   >
     <span class="tf-stroke-sizer" aria-hidden="true">

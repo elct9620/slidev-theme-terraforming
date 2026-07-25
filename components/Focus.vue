@@ -35,6 +35,8 @@ const names = computed(() => {
   return (Array.isArray(value) ? value : value.split(',')).map(n => n.trim()).filter(Boolean)
 })
 
+const off = computed(() => props.of !== undefined && !box.value)
+
 let observer: ResizeObserver | undefined
 
 function measure() {
@@ -83,7 +85,8 @@ watch(names, measure)
 <template>
   <div
     class="tf-focus"
-    :class="[`tf-focus--${color ?? 'jinZamOmi'}`, { 'is-off': of !== undefined && !box }]"
+    :data-tf-color="color ?? 'jinZamOmi'"
+    :data-tf-off="off || undefined"
     :style="box ? {
       left: `${box.left}px`,
       top: `${box.top}px`,

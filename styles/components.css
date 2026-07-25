@@ -18,6 +18,12 @@
  * Class names carry a tf- prefix because they live in the global stylesheet; decks
  * compose the components rather than these classes, so the prefix costs nothing at
  * the point of use.
+ *
+ * A component's outermost element states its variants through data-tf-* attributes
+ * rather than class names, because that element is where `v-click` lands: the
+ * directive toggles its classes with classList, while a reactive :class binding
+ * rewrites className wholesale and would erase them. Elements inside a component are
+ * never a directive's target, so those keep ordinary modifier classes.
  */
 
 /* ── Stage ─────────────────────────────────────────────────
@@ -57,7 +63,7 @@
   gap: var(--tf-stage-gap);
 }
 
-.tf-group--column {
+.tf-group[data-tf-column] {
   flex-direction: column;
 }
 
@@ -95,22 +101,22 @@
 /* Red is the everyday focus; the other hues are for framing a second, different kind
    of grouping on the same page — "these belong to one layer" alongside "this is what
    I am talking about". */
-.tf-focus--jinZamOmi { color: var(--color-jinZamOmi-500); }
-.tf-focus--gunJyo    { color: var(--color-gunJyo-500); }
-.tf-focus--tamago    { color: var(--color-tamago-500); }
-.tf-focus--gray      { color: var(--color-gray-500); }
+.tf-focus[data-tf-color="jinZamOmi"] { color: var(--color-jinZamOmi-500); }
+.tf-focus[data-tf-color="gunJyo"]    { color: var(--color-gunJyo-500); }
+.tf-focus[data-tf-color="tamago"]    { color: var(--color-tamago-500); }
+.tf-focus[data-tf-color="gray"]      { color: var(--color-gray-500); }
 
 /* Nothing to frame at this step. Only the box fades; it keeps its last geometry so
    that coming back does not make it fly in from a corner. */
-.tf-focus.is-off {
+.tf-focus[data-tf-off] {
   opacity: 0;
 }
 
 /* Not yet revealed: still occupies its place, just cannot be seen. Taking it out of
    the DOM instead would reflow the whole row on every click. */
-.tf-block.is-hidden,
-.tf-group.is-hidden,
-.tf-stroke-group.is-hidden {
+.tf-block[data-tf-hidden],
+.tf-group[data-tf-hidden],
+.tf-stroke-group[data-tf-hidden] {
   opacity: 0;
 }
 
@@ -139,22 +145,22 @@
   transition: opacity 0.6s ease;
 }
 
-.tf-block--gunJyo {
+.tf-block[data-tf-color="gunJyo"] {
   --tf-block-fill: var(--color-gunJyo-500);
   color: var(--color-white);
 }
 
-.tf-block--tamago {
+.tf-block[data-tf-color="tamago"] {
   --tf-block-fill: var(--color-tamago-500);
   color: var(--color-kon-500);
 }
 
-.tf-block--jinZamOmi {
+.tf-block[data-tf-color="jinZamOmi"] {
   --tf-block-fill: var(--color-jinZamOmi-500);
   color: var(--color-white);
 }
 
-.tf-block--gray {
+.tf-block[data-tf-color="gray"] {
   --tf-block-fill: var(--color-gray-500);
   color: var(--color-white);
 }
@@ -175,7 +181,7 @@
   transition: opacity 0.6s ease;
 }
 
-.tf-stroke-group--y {
+.tf-stroke-group[data-tf-axis="y"] {
   flex-direction: row;
 }
 
@@ -197,7 +203,7 @@
   display: block;
 }
 
-.tf-stroke-group--y .tf-stroke-sizer {
+.tf-stroke-group[data-tf-axis="y"] .tf-stroke-sizer {
   display: none;
 }
 
@@ -218,14 +224,14 @@
   transition: opacity 0.6s ease;
 }
 
-.tf-stroke-group--flip .tf-stroke-label {
+.tf-stroke-group[data-tf-flip] .tf-stroke-label {
   bottom: auto;
   top: 100%;
   margin-bottom: 0;
   margin-top: calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
 }
 
-.tf-stroke-group--y .tf-stroke-label {
+.tf-stroke-group[data-tf-axis="y"] .tf-stroke-label {
   bottom: auto;
   top: 50%;
   left: 100%;
@@ -233,7 +239,7 @@
   margin: 0 0 0 calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2);
 }
 
-.tf-stroke-group--y.tf-stroke-group--flip .tf-stroke-label {
+.tf-stroke-group[data-tf-axis="y"][data-tf-flip] .tf-stroke-label {
   left: auto;
   right: 100%;
   margin: 0 calc(var(--tf-stroke-label-gap) - var(--tf-stroke-head) / 2) 0 0;
