@@ -53,10 +53,6 @@ const current = computed(() => props.steps
 
 const values = computed(() => props.items.map(i => i.value))
 
-// The annotation column exists for the whole chart or not at all, so that the bars
-// start at the same offset whether or not a given row has something to annotate.
-const annotated = computed(() => props.items.some(i => i.via))
-
 // The log range is rounded out to powers of ten, with one extra decade below the
 // smallest value so that the shortest bar still has a visible length.
 const logMin = computed(() => Math.floor(Math.log10(Math.min(...values.value))) - 1)

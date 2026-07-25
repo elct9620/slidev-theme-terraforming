@@ -201,9 +201,9 @@ longer matching the rest of the deck.
 
 | Component | Props |
 |-----------|-------|
-| `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `log`, `axisStart`, `axisEnd` |
+| `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `reveal`, `log`, `axisStart`, `axisEnd` |
 | `Axis`    | `startLabel`, `endLabel` |
-| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `steps`, `active` |
+| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `steps`, `active`, `reveal` |
 
 Both charts take the same red frame as a block, and move it with `steps` the way a
 `Focus` does — each entry naming the row or point under discussion, `null` for none:
@@ -223,9 +223,9 @@ row's index and -1 for none.
 
 `Bars` accepts `log` for data spanning orders of magnitude; using it obliges you to
 label both ends of the axis, since lengths on a log scale otherwise invite a linear
-reading. Rows are laid out in fixed columns so entries line up down the chart; the
-annotation column collapses when no row carries a `via`. Override `--tf-bar-label-w`
-or `--tf-bar-via-w` on `.tf-bars` for longer text.
+reading. Every row shares one set of columns through subgrid, so each text column ends up
+as wide as the widest entry in it — long labels need nothing said about them, and the
+annotation column takes no more than its own gap when no row carries a `via`.
 
 ## Arrival
 
