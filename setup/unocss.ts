@@ -46,6 +46,19 @@ export default defineUnoSetup(() => ({
       body: 'var(--leading-body)',
     },
 
+    // Motion a deck adds itself keeps time with the motion the theme already has,
+    // rather than restating a length that would then drift from it.
+    duration: {
+      travel: 'var(--tf-motion-travel)',
+      settle: 'var(--tf-motion-settle)',
+      touch: 'var(--tf-motion-touch)',
+      stagger: 'var(--tf-motion-stagger)',
+    },
+
+    easing: {
+      motion: 'var(--tf-motion-ease)',
+    },
+
     fontFamily: {
       sans: 'var(--font-sans)',
       mono: 'var(--font-mono)',

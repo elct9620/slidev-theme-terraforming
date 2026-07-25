@@ -61,6 +61,7 @@ for what they are, using the Tailwind v4 `@theme` namespaces:
 | `--text-*`     | `title` 64 · `heading` 48 · `body` 36 · `sub` 32 · `note` 16    |
 | `--leading-*`  | `none` 1 · `heading` 1.25 · `body` 1.5                          |
 | `--font-*`     | `sans` `mono`                                                   |
+| `--tf-motion-*`| `travel` 600ms · `settle` 500ms · `touch` 200ms · `stagger` 100ms · `ease` · `rise` 20 |
 | `--spacing-*`  | `line` 5 · `shadow` 10 · `sidebar` 296 · `slash` 100 · `block-w` 270 · `block-h` 162 |
 | `--container-*`| `content` 1380                                                  |
 
@@ -247,16 +248,25 @@ The prop is on the charts alone because they own their pieces. A `Stage`'s piece
 written by the deck, so a deck paces those with `v-click` or `hidden` — see
 [Clicks](#clicks).
 
-The timings come off [Material 3's motion durations](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)
-rather than being chosen by eye, and an arriving piece decelerates on the curve M3
-gives elements entering the screen.
+### Motion
 
-| Token | |
-|-------|--|
-| `--tf-enter-duration` | 500ms — M3 `duration.long2`, how long one piece takes to arrive |
-| `--tf-enter-stagger`  | 100ms — M3 `duration.short2`, the gap between one piece and the next |
-| `--tf-enter-ease`     | M3 `easing.emphasized.decelerate` |
-| `--tf-enter-rise`     | 20, how far a piece travels on the way in — set it to 0 for a plain fade |
+How long a change takes is a question about the change rather than about what is
+changing, so there are three answers and every rule in the theme picks one. The
+lengths are [Material 3's duration tokens](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)
+rather than numbers chosen by eye; a slide is read from further away and with less
+urgency than an interface, so each takes the slower end of what M3 offers.
+
+| Token | | |
+|-------|--|--|
+| `--tf-motion-travel`  | 600ms · M3 `long4`  | something moving or resizing, which has ground to cover — the focus frame crossing a diagram, the red frame stepping down a chart |
+| `--tf-motion-settle`  | 500ms · M3 `long2`  | something arriving or leaving in place, which has none. Slidev's slide transition follows it |
+| `--tf-motion-touch`   | 200ms · M3 `short4` | direct feedback to the pointer, where anything slower reads as lag |
+| `--tf-motion-stagger` | 100ms · M3 `short2` | the wait between one arriving piece and the next |
+| `--tf-motion-ease`    | M3 `emphasized.decelerate` | off the mark quickly and then settling, so a piece reads as coming to rest where it belongs |
+| `--tf-motion-rise`    | 20 | how far an arriving piece travels — set it to 0 for a plain fade |
+
+They reach UnoCSS too, so motion a deck adds itself keeps time with the theme's:
+`duration-travel`, `duration-settle`, `duration-touch`, `ease-motion`.
 
 ## Clicks
 

@@ -37,13 +37,13 @@
 @keyframes tf-enter {
   from {
     opacity: 0;
-    translate: 0 var(--tf-enter-rise);
+    translate: 0 var(--tf-motion-rise);
   }
 }
 
 [data-tf-enter] {
-  animation: tf-enter var(--tf-enter-duration) var(--tf-enter-ease) backwards;
-  animation-delay: calc(var(--tf-enter-place, 0) * var(--tf-enter-stagger));
+  animation: tf-enter var(--tf-motion-settle) var(--tf-motion-ease) backwards;
+  animation-delay: calc(var(--tf-enter-place, 0) * var(--tf-motion-stagger));
 }
 
 /* Waiting for the click that calls it in. This one is a state rather than an
@@ -116,12 +116,14 @@
           calc(-1 * (var(--tf-focus-inset) + var(--spacing-line)));
   pointer-events: none;
   border: var(--spacing-line) solid currentColor;
+  /* The geometry travels; only the presence settles. Fading the box out faster than
+     it moves would let it vanish part-way through a journey it is still making. */
   transition:
-    left 0.6s ease,
-    top 0.6s ease,
-    width 0.6s ease,
-    height 0.6s ease,
-    opacity 0.3s ease;
+    left var(--tf-motion-travel) var(--tf-motion-ease),
+    top var(--tf-motion-travel) var(--tf-motion-ease),
+    width var(--tf-motion-travel) var(--tf-motion-ease),
+    height var(--tf-motion-travel) var(--tf-motion-ease),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease);
 }
 
 /* Red is the everyday focus; the other hues are for framing a second, different kind
@@ -168,7 +170,7 @@
   text-align: center;
   font-size: var(--text-body);
   font-weight: 500;
-  transition: opacity 0.6s ease;
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
 }
 
 .tf-block[data-tf-color="gunJyo"] {
@@ -204,7 +206,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  transition: opacity 0.6s ease;
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
 }
 
 .tf-stroke-group[data-tf-axis="y"] {
@@ -247,7 +249,7 @@
   line-height: var(--leading-none);
   white-space: nowrap;
   color: var(--slidev-theme-primary);
-  transition: opacity 0.6s ease;
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease);
 }
 
 .tf-stroke-group[data-tf-flip] .tf-stroke-label {
@@ -338,7 +340,9 @@
   box-sizing: border-box;
   border: var(--spacing-line) solid transparent;
   padding: 1rem calc(1rem + var(--spacing-shadow)) calc(1rem + var(--spacing-shadow)) 1rem;
-  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) var(--tf-enter-ease);
+  transition:
+    border-color var(--tf-motion-travel) var(--tf-motion-ease),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease);
 }
 
 .tf-bar-row.is-active {
@@ -500,7 +504,9 @@
   font-size: var(--text-body);
   font-weight: 500;
   white-space: nowrap;
-  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) var(--tf-enter-ease);
+  transition:
+    border-color var(--tf-motion-travel) var(--tf-motion-ease),
+    opacity var(--tf-motion-settle) var(--tf-motion-ease);
   transform: translate(-50%, 50%);
 }
 
