@@ -11,7 +11,16 @@
   off the page entirely. Nothing here refers to coordinates — the geometry is measured
   from the pieces themselves, so inserting a block never renumbers anything.
 
-  Leave `of` out to place the box by hand instead, which is what `v-drag` needs in
+  `steps` says what to frame at each click and takes the place of `of`. The slide
+  learns its length from it, so the walk through a diagram is stated once instead of
+  being split between a frontmatter count and a chain of `$clicks` comparisons:
+
+    <Focus :steps="[null, 'object', 'proxy', ['proxy', 'object']]" />
+
+  A `null` entry frames nothing, which is how the box waits offstage until the click
+  it belongs to.
+
+  Leave both out to place the box by hand instead, which is what `v-drag` needs in
   order to frame something the stage does not own:
 
     <Focus v-drag="[420, 180, 660, 220]" />
@@ -19,41 +28,48 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { StageKey } from '../composables/stage'
+import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
   of?: string | string[]
+  steps?: (string | string[] | null)[]
   color?: 'jinZamOmi' | 'gunJyo' | 'tamago' | 'gray'
 }>()
 
+const step = useSteps(() => props.steps)
+
 const stage = inject(StageKey, null)
 
+// The last geometry measured, kept even while the box frames nothing, so that a
+// focus which comes back resumes from where it was rather than flying in from the
+// corner the element would otherwise collapse to.
 const box = ref<{ left: number, top: number, width: number, height: number }>()
+const framing = ref(false)
+
 const names = computed(() => {
-  const value = props.of
+  const value = props.steps ? step.value : props.of
   if (!value)
     return []
   return (Array.isArray(value) ? value : value.split(',')).map(n => n.trim()).filter(Boolean)
 })
 
-const off = computed(() => props.of !== undefined && !box.value)
+// Placing the box by hand is the one case where framing nothing is the point, so
+// the fade applies only once a deck has said what to frame.
+const off = computed(() => (props.of !== undefined || props.steps !== undefined) && !framing.value)
 
 let observer: ResizeObserver | undefined
 
 function measure() {
   const root = stage?.value
-  if (!root || !names.value.length) {
-    box.value = undefined
-    return
-  }
+  const targets = root && names.value.length
+    ? names.value
+        .map(name => root.querySelector(`[data-tf-name="${CSS.escape(name)}"]`))
+        .filter((el): el is HTMLElement => el instanceof HTMLElement)
+    : []
 
-  const targets = names.value
-    .map(name => root.querySelector(`[data-tf-name="${CSS.escape(name)}"]`))
-    .filter((el): el is HTMLElement => el instanceof HTMLElement)
-
-  if (!targets.length) {
-    box.value = undefined
+  framing.value = targets.length > 0
+  if (!framing.value)
     return
-  }
 
   // offsetLeft and friends report layout values from before any transform, measured
   // against the offsetParent — which is the stage, since it is the positioned
