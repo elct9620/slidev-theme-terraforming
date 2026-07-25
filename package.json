@@ -13,6 +13,16 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "files": [
+    "assets",
+    "components",
+    "composables",
+    "layouts",
+    "setup",
+    "styles",
+    "slide-bottom.vue",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",

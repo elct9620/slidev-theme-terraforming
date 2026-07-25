@@ -318,3 +318,7 @@ What a test can answer here stops short of what a slide looks like: the suite co
 parts that fail silently — a component declaring the wrong length, a figure deciding it
 should be arriving — while how a rule cascades and how long a transition takes are still
 read off a running deck.
+
+`package.json` lists what ships. A new file at the top level that Slidev is meant to load
+has to be added there, or it will be missing from the published package while working
+perfectly in this repository.
