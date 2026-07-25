@@ -1,7 +1,16 @@
 <!--
   A bar chart in the same vocabulary as the flow diagrams: right-angled fills, a
   same-hue shadow, and a red frame marking the row under discussion. There is one
-  movement only — `active` names the row the frame sits on, -1 for none.
+  movement only: the frame travels down the chart.
+
+  `steps` says which row the frame sits on at each click, by label, and the slide
+  learns its length from it — so the walk is stated once and adding a row renumbers
+  nothing. A `null` entry frames no row:
+
+    <Bars :steps="[null, 'WebAssembly', 'Container']" :items="[...]" />
+
+  `active` is the alternative, for a chart driven from a `$clicks` expression: it
+  takes the row's index, -1 for none. `steps` wins when both are given.
 
   Each item's `value` sets the length and `text` is the figure to be read aloud,
   units included. `via` is the annotation that explains how the figure came about.
@@ -14,15 +23,25 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
   items: { label: string, value: number, text: string, via?: string }[]
   max?: number
+  steps?: (string | null)[]
   active?: number
   log?: boolean
   axisStart?: string
   axisEnd?: string
 }>()
+
+const step = useSteps(() => props.steps)
+
+// Naming a row that is not there leaves the chart unframed rather than throwing, the
+// same answer an out-of-range `active` already gave.
+const current = computed(() => props.steps
+  ? props.items.findIndex(item => item.label === step.value)
+  : props.active ?? -1)
 
 const values = computed(() => props.items.map(i => i.value))
 
@@ -50,7 +69,7 @@ const width = (value: number) => {
       v-for="(item, i) in items"
       :key="item.label"
       class="tf-bar-row"
-      :class="{ 'is-active': active === i }"
+      :class="{ 'is-active': current === i }"
     >
       <span class="tf-bar-label">{{ item.label }}</span>
       <span class="tf-bar-via">{{ item.via }}</span>

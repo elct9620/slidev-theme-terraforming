@@ -8,16 +8,36 @@
 
   The stage is a fixed height and points are placed by percentage, so adding or
   removing a point leaves the rest where the audience last saw them.
+
+  `steps` says which point the frame sits on at each click, by label, and the slide
+  learns its length from it. A `null` entry frames no point:
+
+    <Map2D :steps="[null, 'WebAssembly']" :points="[...]" />
+
+  `active` is the alternative, for a chart driven from a `$clicks` expression: it
+  takes the point's index, -1 for none. `steps` wins when both are given.
 -->
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+import { useSteps } from '../composables/steps'
+
+const props = defineProps<{
   xStart: string
   xEnd: string
   yStart: string
   yEnd: string
   points: { label: string, x: number, y: number, tone?: 'gunJyo' | 'gray' }[]
+  steps?: (string | null)[]
   active?: number
 }>()
+
+const step = useSteps(() => props.steps)
+
+// Naming a point that is not there leaves the chart unframed rather than throwing, the
+// same answer an out-of-range `active` already gave.
+const current = computed(() => props.steps
+  ? props.points.findIndex(point => point.label === step.value)
+  : props.active ?? -1)
 
 // Points near either end anchor by their near edge so the label stays on the chart;
 // everything in between reads better centred on its position.
@@ -48,7 +68,7 @@ function anchor(x: number) {
         :class="[
           `tf-map-point--${point.tone ?? 'gray'}`,
           anchor(point.x),
-          { 'is-active': active === i },
+          { 'is-active': current === i },
         ]"
         :style="{ left: `${point.x}%`, bottom: `${point.y}%` }"
       >{{ point.label }}</span>
