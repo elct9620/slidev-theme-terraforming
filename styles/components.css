@@ -1,8 +1,8 @@
 /**
- * Diagram vocabulary.
+ * How every component looks.
  *
- * Every diagram in this theme is built from the same four ideas, so that a deck only
- * ever has to teach its audience one visual language:
+ * Most of the file is one vocabulary. Every diagram in this theme is built from the same
+ * four ideas, so that a deck only ever has to teach its audience one visual language:
  *
  *   fill    a right-angled block of flat colour, with a same-hue shadow at 40% offset
  *           down and to the right — never scaled, never softened
@@ -340,14 +340,11 @@
   stroke-linejoin: miter;
 }
 
-
 /* ── Bars ──────────────────────────────────────────────────
    Each row is itself a focus frame, so the emphasis vocabulary matches the flow
-   diagrams. The name and value columns are fixed width and the track takes what is
-   left, which is what makes the bars line up with each other. */
-/* Bars lays its own rows out, so a row carries its frame directly rather than having
-   one measured over it. The border is always present and only changes colour, which
-   is what keeps the chart still as the emphasis moves down it.
+   diagrams. Bars lays its own rows out, so a row carries that frame directly rather than
+   having one measured over it. The border is always present and only changes colour,
+   which is what keeps the chart still as the emphasis moves down it.
 
    The columns are declared once on the chart and inherited by every row through
    subgrid, so each text column ends up as wide as the widest entry in it rather than
@@ -477,8 +474,9 @@
 /* ── Map ───────────────────────────────────────────────────
    Two axes read at once, which is what shows a combination rather than a winner on
    any single measure. The stage is a fixed size and points are placed by percentage,
-   so adding or removing a point leaves the others where they were. */
-/* The Y units sit outside the axis line, so they get a column of their own sized to
+   so adding or removing a point leaves the others where they were.
+
+   The Y units sit outside the axis line, so they get a column of their own sized to
    whatever they say. Reserving a fixed gutter instead would put the longest label
    partly outside the content box, where it collides with the sidebar. Sizing the
    column to its content means the stage gives up width and the chart stays inside its
