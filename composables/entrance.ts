@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted } from 'vue'
-import { useIsSlideActive, useSlideContext } from '@slidev/client'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useIsSlideActive, useNav, useSlideContext } from '@slidev/client'
 
 let sequence = 0
 
@@ -10,9 +10,28 @@ let sequence = 0
  * Slides stay mounted whether or not they are being shown, so mounting is no signal
  * that anyone has seen a figure yet: an arrival keyed to it would have finished
  * playing several slides before its own.
+ *
+ * Printing reports every slide it renders as the one on screen, and a page is
+ * captured on a timer rather than after the motion on it has run its course — so an
+ * arrival left to play there is caught halfway and printed halfway. Nothing arrives
+ * on a page that is being printed; it is already where it was going.
+ *
+ * The first click ends it. An arrival is the audience being shown the slide, and the
+ * speaker asking for the next step says they are past that — a figure still holding
+ * pieces back at that point is withholding them from someone who has moved on. It
+ * begins again when the slide is next arrived at rather than when the clicks are
+ * wound back, since going back a step is still the same visit.
  */
 export function useArriving() {
-  return useIsSlideActive()
+  const isActive = useIsSlideActive()
+  const { isPrintMode } = useNav()
+  const { $clicks } = useSlideContext()
+  const spoken = ref($clicks.value > 0)
+
+  watch(isActive, active => active && (spoken.value = $clicks.value > 0))
+  watch($clicks, clicks => clicks > 0 && (spoken.value = true))
+
+  return computed(() => isActive.value && !isPrintMode.value && !spoken.value)
 }
 
 /**

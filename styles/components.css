@@ -139,6 +139,23 @@
     opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
+/* The frame is drawn around pieces, so it waits for them. Its place already falls
+   after theirs; half an arrival on top of that lets the last of them get most of the
+   way there first, because a frame around a space nothing has arrived in yet reads as
+   a mistake rather than as emphasis. Waiting for that piece to settle completely
+   would be truer and cost the speaker a beat they may not have to give.
+
+   It fades only. A frame that rose into place would be moving on its own account at
+   the same time as it transitions the position and size it takes from the pieces. */
+.tf-focus[data-tf-enter] {
+  animation-name: tf-enter-fade;
+  animation-delay: calc(
+    var(--tf-motion-delay)
+    + var(--tf-enter-place, 0) * var(--tf-motion-stagger)
+    + var(--tf-motion-settle) / 2
+  );
+}
+
 /* Red is the everyday focus; the other hues are for framing a second, different kind
    of grouping on the same page — "these belong to one layer" alongside "this is what
    I am talking about". */

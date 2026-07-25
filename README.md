@@ -234,9 +234,13 @@ narration has a moment on each before the next one arrives. A `Stage` deals its
 pieces out along the row; `Bars` and `Map2D` deal out their rows and points. A `Group`
 arrives whole — it exists so that several pieces read as one thing.
 
-Nothing is asked of the deck: the arrival plays when the slide is reached. It is
-purely additive, so a context that never reports reaching a slide — export, print,
-the overview — shows every figure whole rather than showing nothing.
+Nothing is asked of the deck: the arrival plays when the slide is reached, and the
+first click ends it — asking for the next step says you are past being shown the
+slide, so whatever is still on its way is simply there. Export and print show every
+figure whole; nothing arrives on a page being captured on a timer.
+
+The focus frame waits for the pieces it frames, since a frame around a space nothing
+has arrived in reads as a mistake rather than as emphasis.
 
 `reveal` hands the pacing to the speaker instead, one row or point per click:
 

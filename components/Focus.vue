@@ -27,7 +27,8 @@
 -->
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { StageKey } from '../composables/stage'
+import { useArriving } from '../composables/entrance'
+import { StageKey, StagePlaceKey } from '../composables/stage'
 import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
@@ -39,6 +40,11 @@ const props = defineProps<{
 const step = useSteps(() => props.steps)
 
 const stage = inject(StageKey, null)
+
+// Written after the pieces it frames, so its place falls after theirs and the frame
+// is drawn once there is something inside it to frame.
+const place = inject(StagePlaceKey, null)?.()
+const arriving = useArriving()
 
 // The last geometry measured, kept even while the box frames nothing, so that a
 // focus which comes back resumes from where it was rather than flying in from the
@@ -103,11 +109,15 @@ watch(names, measure)
     class="tf-focus"
     :data-tf-color="color ?? 'jinZamOmi'"
     :data-tf-off="off || undefined"
-    :style="box ? {
-      left: `${box.left}px`,
-      top: `${box.top}px`,
-      width: `${box.width}px`,
-      height: `${box.height}px`,
-    } : undefined"
+    :data-tf-enter="place !== undefined && arriving || undefined"
+    :style="{
+      '--tf-enter-place': place,
+      ...(box ? {
+        left: `${box.left}px`,
+        top: `${box.top}px`,
+        width: `${box.width}px`,
+        height: `${box.height}px`,
+      } : {}),
+    }"
   />
 </template>
