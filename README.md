@@ -120,16 +120,17 @@ across clicks without the layout shifting underneath it.
 | `Block`   | `color` (`gunJyo` \| `tamago` \| `jinZamOmi` \| `gray`), `name`, `sub`, `hidden` |
 | `Group`   | `name`, `column`, `gap`, `hidden` |
 | `Stroke`  | `dir` (`right` \| `left` \| `both` \| `up` \| `down` \| `both-y` \| `none`), `label`, `labels`, `name`, `flip`, `length`, `hidden` |
-| `Focus`   | `of`, `color` |
+| `Focus`   | `steps`, `of`, `color` |
 | `Caption` | — |
 
 `Focus` is the selection box. It is positioned absolutely and takes no space, so it
 never disturbs what it frames, and it transitions its position and size rather than
 fading — moving the focus reads as one rectangle travelling and resizing.
 
-Name the pieces and point `of` at them. Several names give the box that contains them
-all, so neighbours read as a range; an empty value lifts the focus off the page. There
-are no coordinates and no indices, so inserting a block renumbers nothing.
+Name the pieces and let `steps` say what the frame holds at each click. Several names
+give the box that contains them all, so neighbours read as a range; `null` frames
+nothing, which is how the box waits offstage until the click it belongs to. There are
+no coordinates and no indices, so inserting a block renumbers nothing.
 
 ```html
 <Stage>
@@ -137,14 +138,21 @@ are no coordinates and no indices, so inserting a block renumbers nothing.
   <Stroke :label="$clicks === 1 ? 'call' : ''" :labels="['call', 'result']" />
   <Block name="object" color="gunJyo">Object</Block>
 
-  <Focus :of="$clicks === 1 ? 'proxy' : ['proxy', 'object']" />
+  <Focus :steps="['proxy', ['proxy', 'object']]" />
 </Stage>
 
 <Caption>The real <strong>object</strong> lives on the far side.</Caption>
 ```
 
-To frame something the stage does not own, leave `of` out and place the box by hand.
-Slidev's `v-drag` can then position it in the preview and write the result back into
+The list is what tells the slide how long it is — see [Clicks](#clicks) — so the walk
+through a diagram is written in one place instead of being split between a frontmatter
+count and a chain of comparisons. Entries are addressed by absolute click number, so
+`steps[0]` is the state before the first click.
+
+`of` is the alternative, for a box driven from a `$clicks` expression of your own. It
+takes the same names as one entry of `steps` and the page then has to declare its own
+clicks. To frame something the stage does not own, leave both out and place the box by
+hand — Slidev's `v-drag` can position it in the preview and write the result back into
 the markdown:
 
 ```html
@@ -166,15 +174,56 @@ longer matching the rest of the deck.
 
 | Component | Props |
 |-----------|-------|
-| `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `active`, `log`, `axisStart`, `axisEnd` |
+| `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `log`, `axisStart`, `axisEnd` |
 | `Axis`    | `startLabel`, `endLabel` |
-| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `active` |
+| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `steps`, `active` |
+
+Both charts take the same red frame as a block, and move it with `steps` the way a
+`Focus` does — each entry naming the row or point under discussion, `null` for none:
+
+```html
+<Bars
+  :steps="[null, 'WebAssembly', 'Container']"
+  :items="[
+    { label: 'Container', value: 220, text: '220 μs' },
+    { label: 'WebAssembly', value: 12, text: '12 μs' },
+  ]"
+/>
+```
+
+`active` is the alternative for a chart driven from a `$clicks` expression, taking the
+row's index and -1 for none.
 
 `Bars` accepts `log` for data spanning orders of magnitude; using it obliges you to
 label both ends of the axis, since lengths on a log scale otherwise invite a linear
 reading. Rows are laid out in fixed columns so entries line up down the chart; the
 annotation column collapses when no row carries a `via`. Override `--tf-bar-label-w`
 or `--tf-bar-via-w` on `.tf-bars` for longer text.
+
+## Clicks
+
+Slidev works out how long a slide is from what registers with it — `v-click`,
+`v-clicks`, `v-switch`, `v-click-gap` — while reading `$clicks` in an expression
+registers nothing. Slidev's own `v-motion` reads clicks the same way, so this is the
+division of labour rather than an oversight in it.
+
+`steps` puts a component on the declaring side: giving one to a `Focus`, `Bars` or
+`Map2D` is enough on its own, and a page whose only content is that figure will walk
+through every entry before moving on.
+
+Anything driven from a `$clicks` expression — `of`, `active`, `hidden`, a `Stroke`'s
+`label` — only reads, so a page built that way has to say how long it is. Often a
+`v-switch` in the narration already covers it; otherwise the frontmatter says so:
+
+```yaml
+---
+clicks: 3
+---
+```
+
+That count *overrides* every registration on the page rather than adding to it, so a
+slide already carrying `steps` should leave it out — declaring both cuts the slide to
+whatever the frontmatter says.
 
 ## Contributing
 

@@ -96,7 +96,6 @@ One visual language: fill, focus, stroke, absence
 ---
 layout: diagram
 hideInToc: true
-clicks: 3
 ---
 
 <Stage>
@@ -111,7 +110,7 @@ clicks: 3
 
   <Block name="object" color="gunJyo">Object</Block>
 
-  <Focus :of="$clicks === 1 || $clicks === 3 ? 'proxy' : 'object'" />
+  <Focus :steps="['object', 'proxy', 'object', 'proxy']" />
 </Stage>
 
 <Caption>
@@ -126,7 +125,6 @@ clicks: 3
 ---
 layout: diagram
 hideInToc: true
-clicks: 2
 ---
 
 <Stage fit>
@@ -140,7 +138,7 @@ clicks: 2
 
   <Block name="sandbox" color="tamago" :hidden="$clicks < 2">Sandbox</Block>
 
-  <Focus :of="$clicks === 1 ? 'pool' : $clicks === 2 ? ['template', 'sandbox'] : 'template'" />
+  <Focus :steps="['template', 'pool', ['template', 'sandbox']]" />
 </Stage>
 
 <Caption>
@@ -180,7 +178,7 @@ The row under discussion takes the same red frame as a block
     { label: 'Container', value: 220, text: '220 μs', via: 'namespace' },
     { label: 'WebAssembly', value: 12, text: '12 μs', via: 'linear memory' },
   ]"
-  :active="$clicks - 1"
+  :steps="[null, 'Process', 'Container', 'WebAssembly']"
 />
 
 ---
@@ -230,7 +228,7 @@ Two measures at once, showing a combination rather than a single winner
     { label: 'Container', x: 30, y: 62 },
     { label: 'WebAssembly', x: 66, y: 80, tone: 'gunJyo' },
   ]"
-  :active="$clicks - 1"
+  :steps="[null, 'eval', 'Container', 'WebAssembly']"
 />
 
 ---
