@@ -15,9 +15,7 @@
   pace the row by hand instead, a deck reaches for `v-click` or `hidden`.
 -->
 <script setup lang="ts">
-import { inject } from 'vue'
-import { useArriving } from '../composables/entrance'
-import { StagePlaceKey } from '../composables/stage'
+import { useEntrance } from '../composables/entrance'
 
 defineProps<{
   color?: 'gunJyo' | 'tamago' | 'jinZamOmi' | 'gray'
@@ -26,18 +24,16 @@ defineProps<{
   sub?: string
 }>()
 
-const place = inject(StagePlaceKey, null)?.()
-const arriving = useArriving()
+const entrance = useEntrance()
 </script>
 
 <template>
   <div
     class="tf-block"
+    v-bind="entrance"
     :data-tf-color="color ?? 'gunJyo'"
     :data-tf-hidden="hidden || undefined"
-    :data-tf-enter="place !== undefined && arriving || undefined"
     :data-tf-name="name"
-    :style="{ '--tf-enter-place': place }"
   >
     <span><slot /></span>
     <span v-if="sub" class="tf-block-sub">{{ sub }}</span>

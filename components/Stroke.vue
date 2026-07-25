@@ -23,9 +23,8 @@
   line drawn between two blocks that have not turned up yet has nothing to connect.
 -->
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import { useArriving } from '../composables/entrance'
-import { StagePlaceKey } from '../composables/stage'
+import { computed } from 'vue'
+import { useEntrance } from '../composables/entrance'
 
 const props = defineProps<{
   dir?: 'right' | 'left' | 'both' | 'up' | 'down' | 'both-y' | 'none'
@@ -48,19 +47,17 @@ const head = computed(() => ({
   end: ['right', 'both', 'down', 'both-y'].includes(dir.value),
 }))
 
-const place = inject(StagePlaceKey, null)?.()
-const arriving = useArriving()
+const entrance = useEntrance()
 </script>
 
 <template>
   <div
     class="tf-stroke-group"
+    v-bind="entrance"
     :data-tf-axis="vertical ? 'y' : undefined"
     :data-tf-flip="flip || undefined"
     :data-tf-hidden="hidden || undefined"
-    :data-tf-enter="place !== undefined && arriving || undefined"
     :data-tf-name="name"
-    :style="{ '--tf-enter-place': place }"
   >
     <span class="tf-stroke-sizer" aria-hidden="true">
       <span v-for="text in candidates" :key="text">{{ text }}</span>

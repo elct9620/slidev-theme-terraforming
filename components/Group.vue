@@ -10,8 +10,8 @@
   are not dealt out one at a time behind it.
 -->
 <script setup lang="ts">
-import { inject, provide } from 'vue'
-import { useArriving } from '../composables/entrance'
+import { provide } from 'vue'
+import { useEntrance } from '../composables/entrance'
 import { StagePlaceKey } from '../composables/stage'
 
 defineProps<{
@@ -21,8 +21,7 @@ defineProps<{
   hidden?: boolean
 }>()
 
-const place = inject(StagePlaceKey, null)?.()
-const arriving = useArriving()
+const entrance = useEntrance()
 
 provide(StagePlaceKey, null)
 </script>
@@ -30,10 +29,10 @@ provide(StagePlaceKey, null)
 <template>
   <div
     class="tf-group"
+    v-bind="entrance"
     :data-tf-column="column || undefined"
     :data-tf-hidden="hidden || undefined"
-    :data-tf-enter="place !== undefined && arriving || undefined"
-    :style="{ gap, '--tf-enter-place': place }"
+    :style="{ gap }"
     :data-tf-name="name"
   >
     <slot />

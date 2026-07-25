@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
-import { useArriving, useReveal } from '../composables/entrance'
+import { nextTick, provide } from 'vue'
+import { useArriving, useEntrance, useReveal } from '../composables/entrance'
+import { StagePlaceKey } from '../composables/stage'
 import { withSetup } from './support/composable'
 import { clicks, declaredLengths, isActive, isPrintMode, resetSlide } from './support/slide'
 
@@ -72,6 +73,54 @@ describe('useArriving', () => {
     await nextTick()
 
     expect(arriving.value).toBe(true)
+  })
+})
+
+describe('useEntrance', () => {
+  /** A stage, handing each piece the place it holds in the arrangement. */
+  function stage() {
+    let places = 0
+    return () => provide(StagePlaceKey, () => places++)
+  }
+
+  it('has a piece on a stage arriving in its turn', () => {
+    const { result: entrance } = withSetup(useEntrance, stage())
+
+    expect(entrance.value['data-tf-enter']).toBe(true)
+    expect(entrance.value.style['--tf-enter-place']).toBe(0)
+  })
+
+  it('deals the places out in the order the pieces are read', () => {
+    const onStage = stage()
+
+    const first = withSetup(useEntrance, onStage)
+    const second = withSetup(useEntrance, onStage)
+
+    expect(first.result.value.style['--tf-enter-place']).toBe(0)
+    expect(second.result.value.style['--tf-enter-place']).toBe(1)
+  })
+
+  it('leaves a piece outside any stage to arrive with the slide', () => {
+    const { result: entrance } = withSetup(useEntrance)
+
+    expect(entrance.value['data-tf-enter']).toBeUndefined()
+    expect(entrance.value.style['--tf-enter-place']).toBeUndefined()
+  })
+
+  it('gives what a group holds no turn of its own, because a group arrives whole', () => {
+    const { result: entrance } = withSetup(useEntrance, () => provide(StagePlaceKey, null))
+
+    expect(entrance.value['data-tf-enter']).toBeUndefined()
+  })
+
+  it('keeps a piece where it sits once the arrival is over', async () => {
+    const { result: entrance } = withSetup(useEntrance, stage())
+
+    clicks.value = 1
+    await nextTick()
+
+    expect(entrance.value['data-tf-enter']).toBeUndefined()
+    expect(entrance.value.style['--tf-enter-place']).toBe(0)
   })
 })
 
