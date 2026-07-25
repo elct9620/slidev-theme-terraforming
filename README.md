@@ -32,6 +32,24 @@ Mermaid sizes its diagrams from its own text metrics, so its base type is set to
 body step to keep a diagram proportionate to the canvas. An individual block can still
 take `{scale: n}` when it needs to be larger or smaller than that.
 
+## Transition
+
+Slides cross over with `tf-fade`, the theme's own transition. Only the content fades:
+the sidebar is the same on every slide, so fading the whole page would dissolve it
+into an identical copy of itself and put motion in the one part of the canvas that
+never changes. It runs for `--slidev-transition-duration`, the same variable Slidev's
+own transitions read.
+
+A deck can name any of Slidev's builtins instead:
+
+```yaml
+---
+transition: slide-left
+---
+```
+
+Note that the builtins fade or slide the whole page, sidebar included.
+
 ## Design Tokens
 
 Tokens are defined in two layers in `styles/tokens.css`. The first layer names values

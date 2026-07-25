@@ -24,6 +24,28 @@ html {
   height: 100%;
 }
 
+/* ── Slide transition ──────────────────────────────────────
+   `tf-fade` is the theme's own transition, declared in package.json and defined here.
+   Naming it rather than borrowing one of Slidev's is what lets the rule below decide
+   what crosses over; a deck that wants something else names a builtin instead.
+
+   Only the content crosses over. The sidebar is the same on every slide, so fading the
+   whole page dissolves it into an identical copy of itself — motion in the one part of
+   the canvas that never changes. Slides are stacked on top of each other while a
+   transition runs, so leaving both sidebars opaque reads as one that never moved.
+
+   Slidev's own transitions time off --slidev-transition-duration, so following it
+   keeps every transition on a deck the same length whichever one is in play. */
+.tf-fade-enter-active .slidev-layout,
+.tf-fade-leave-active .slidev-layout {
+  transition: opacity var(--slidev-transition-duration) ease;
+}
+
+.tf-fade-enter-from .slidev-layout,
+.tf-fade-leave-to .slidev-layout {
+  opacity: 0;
+}
+
 /* ── Sidebar ───────────────────────────────────────────────
    Three parts: the solid block, a margin reserving room for the diagonal, and an
    ::after that draws it. The diagonal is absolutely positioned and takes no space,
