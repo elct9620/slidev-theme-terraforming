@@ -187,10 +187,11 @@ hideInToc: true
 
 # Log Scale
 
-Spanning orders of magnitude, so both ends of the axis are labelled
+Spanning orders of magnitude, and revealed a row per click
 
 <Bars
   log
+  reveal
   axis-start="1 μs"
   axis-end="10 ms"
   :items="[

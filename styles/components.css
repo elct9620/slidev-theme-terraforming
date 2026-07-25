@@ -26,6 +26,32 @@
  * never a directive's target, so those keep ordinary modifier classes.
  */
 
+/* ── Arrival ───────────────────────────────────────────────
+   A piece is visible at rest and the animation only ever plays from hidden towards
+   that resting state, never the other way round. That is what makes it safe to leave
+   out: export, print and the overview never say a slide has been reached, and a
+   figure that is never told to arrive simply shows itself whole.
+
+   `backwards` is what holds a piece back through its own delay; without it every
+   piece would be visible until its turn came and then blink. */
+@keyframes tf-enter {
+  from {
+    opacity: 0;
+    translate: 0 var(--tf-enter-rise);
+  }
+}
+
+[data-tf-enter] {
+  animation: tf-enter var(--tf-enter-duration) ease backwards;
+  animation-delay: calc(var(--tf-enter-place, 0) * var(--tf-enter-stagger));
+}
+
+/* Waiting for the click that calls it in. This one is a state rather than an
+   arrival, so it holds the piece back until the speaker asks for it. */
+[data-tf-held] {
+  opacity: 0;
+}
+
 /* ── Stage ─────────────────────────────────────────────────
    Owns direction only. Spacing belongs to the elements being arranged, so swapping
    in a third block or turning the row into a column needs no measurements here.
@@ -312,7 +338,7 @@
   box-sizing: border-box;
   border: var(--spacing-line) solid transparent;
   padding: 1rem calc(1rem + var(--spacing-shadow)) calc(1rem + var(--spacing-shadow)) 1rem;
-  transition: border-color 0.6s ease;
+  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) ease;
 }
 
 .tf-bar-row.is-active {
@@ -474,7 +500,7 @@
   font-size: var(--text-body);
   font-weight: 500;
   white-space: nowrap;
-  transition: border-color 0.6s ease;
+  transition: border-color 0.6s ease, opacity var(--tf-enter-duration) ease;
   transform: translate(-50%, 50%);
 }
 

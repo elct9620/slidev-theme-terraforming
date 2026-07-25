@@ -95,6 +95,15 @@
   --tf-focus-inset: 1.5rem;     /* 24 */
   --tf-stage-gap: 3rem;         /* 48 */
 
+  /* How a figure arrives. The pieces land in the order they are read, a stagger
+     apart, so the narration has a moment on each before the next one lands. The rise
+     is a `translate`, which composes with whatever `transform` a piece already
+     carries and leaves the layout untouched — the figure has to be measurable while
+     it arrives, since a Focus takes its geometry from the pieces themselves. */
+  --tf-enter-duration: 0.4s;
+  --tf-enter-stagger: 0.08s;
+  --tf-enter-rise: 1.25rem;     /* 20 */
+
   /* A stroke is as long as the widest caption it will ever carry, plus room at each
      end for a chevron and clear space between the two — an arrowhead reaching under
      the text reads as a line that is too short for what it is labelling.

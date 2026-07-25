@@ -5,14 +5,26 @@
   Framing a group is the Focus's job, so a group only has to say how its contents sit
   together. Giving it a `name` lets a Focus point at the whole arrangement in one word
   instead of listing what it holds.
+
+  It arrives whole for the same reason: what it holds is one thing, so its contents
+  are not dealt out one at a time behind it.
 -->
 <script setup lang="ts">
+import { inject, provide } from 'vue'
+import { useArriving } from '../composables/entrance'
+import { StagePlaceKey } from '../composables/stage'
+
 defineProps<{
   name?: string
   column?: boolean
   gap?: string
   hidden?: boolean
 }>()
+
+const place = inject(StagePlaceKey, null)?.()
+const arriving = useArriving()
+
+provide(StagePlaceKey, null)
 </script>
 
 <template>
@@ -20,7 +32,8 @@ defineProps<{
     class="tf-group"
     :data-tf-column="column || undefined"
     :data-tf-hidden="hidden || undefined"
-    :style="{ gap }"
+    :data-tf-enter="place !== undefined && arriving || undefined"
+    :style="{ gap, '--tf-enter-place': place }"
     :data-tf-name="name"
   >
     <slot />

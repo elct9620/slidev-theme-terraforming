@@ -226,6 +226,33 @@ reading. Rows are laid out in fixed columns so entries line up down the chart; t
 annotation column collapses when no row carries a `via`. Override `--tf-bar-label-w`
 or `--tf-bar-via-w` on `.tf-bars` for longer text.
 
+## Arrival
+
+A figure's pieces land in the order they are read rather than all at once, so the
+narration has a moment on each before the next one arrives. A `Stage` deals its
+`Block`s and `Groups` out along the row; `Bars` and `Map2D` deal out their rows and
+points. A `Group` arrives whole — it exists so that several pieces read as one thing.
+
+Nothing is asked of the deck: the arrival plays when the slide is reached. It is
+purely additive, so a context that never reports reaching a slide — export, print,
+the overview — shows every figure whole rather than showing nothing.
+
+`reveal` hands the pacing to the speaker instead, one row or point per click:
+
+```html
+<Bars reveal :items="[...]" />
+```
+
+The prop is on the charts alone because they own their pieces. A `Stage`'s pieces are
+written by the deck, so a deck paces those with `v-click` or `hidden` — see
+[Clicks](#clicks).
+
+| Token | |
+|-------|--|
+| `--tf-enter-duration` | 0.4s, how long one piece takes to arrive |
+| `--tf-enter-stagger`  | 0.08s, the gap between one piece and the next |
+| `--tf-enter-rise`     | 20, how far a piece travels on the way in — set it to 0 for a plain fade |
+
 ## Clicks
 
 Slidev works out how long a slide is from what registers with it — `v-click`,

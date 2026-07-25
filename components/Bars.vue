@@ -12,6 +12,10 @@
   `active` is the alternative, for a chart driven from a `$clicks` expression: it
   takes the row's index, -1 for none. `steps` wins when both are given.
 
+  The rows arrive top to bottom when the slide is reached, so the chart is read in
+  order rather than met all at once. `reveal` hands that pacing to the speaker
+  instead — one row per click, before whatever `steps` goes on to do.
+
   Each item's `value` sets the length and `text` is the figure to be read aloud,
   units included. `via` is the annotation that explains how the figure came about.
 
@@ -23,6 +27,7 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useArriving, useReveal } from '../composables/entrance'
 import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
@@ -30,12 +35,15 @@ const props = defineProps<{
   max?: number
   steps?: (string | null)[]
   active?: number
+  reveal?: boolean
   log?: boolean
   axisStart?: string
   axisEnd?: string
 }>()
 
 const step = useSteps(() => props.steps)
+const arriving = useArriving()
+const held = useReveal(() => props.items.length, () => props.reveal)
 
 // Naming a row that is not there leaves the chart unframed rather than throwing, the
 // same answer an out-of-range `active` already gave.
@@ -70,6 +78,9 @@ const width = (value: number) => {
       :key="item.label"
       class="tf-bar-row"
       :class="{ 'is-active': current === i }"
+      :data-tf-enter="!reveal && arriving || undefined"
+      :data-tf-held="held(i) || undefined"
+      :style="{ '--tf-enter-place': i }"
     >
       <span class="tf-bar-label">{{ item.label }}</span>
       <span class="tf-bar-via">{{ item.via }}</span>

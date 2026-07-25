@@ -14,7 +14,7 @@
 -->
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { StageKey } from '../composables/stage'
+import { StageKey, StagePlaceKey } from '../composables/stage'
 
 const props = defineProps<{
   column?: boolean
@@ -27,6 +27,11 @@ const stage = ref<HTMLElement>()
 const scale = ref(1)
 
 provide(StageKey, stage)
+
+// Pieces take their place as they set themselves up, which is the order they are
+// written in — the same order the arrangement is read in.
+let places = 0
+provide(StagePlaceKey, () => places++)
 
 let observer: ResizeObserver | undefined
 

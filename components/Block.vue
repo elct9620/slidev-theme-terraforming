@@ -10,14 +10,24 @@
 
   `hidden` withholds the block without giving up its place in the row.
   `sub` is the second line of text, one step smaller.
+
+  A block on a stage arrives when the slide is reached, in its turn along the row. To
+  pace the row by hand instead, a deck reaches for `v-click` or `hidden`.
 -->
 <script setup lang="ts">
+import { inject } from 'vue'
+import { useArriving } from '../composables/entrance'
+import { StagePlaceKey } from '../composables/stage'
+
 defineProps<{
   color?: 'gunJyo' | 'tamago' | 'jinZamOmi' | 'gray'
   name?: string
   hidden?: boolean
   sub?: string
 }>()
+
+const place = inject(StagePlaceKey, null)?.()
+const arriving = useArriving()
 </script>
 
 <template>
@@ -25,7 +35,9 @@ defineProps<{
     class="tf-block"
     :data-tf-color="color ?? 'gunJyo'"
     :data-tf-hidden="hidden || undefined"
+    :data-tf-enter="place !== undefined && arriving || undefined"
     :data-tf-name="name"
+    :style="{ '--tf-enter-place': place }"
   >
     <span><slot /></span>
     <span v-if="sub" class="tf-block-sub">{{ sub }}</span>

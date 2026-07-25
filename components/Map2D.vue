@@ -16,9 +16,14 @@
 
   `active` is the alternative, for a chart driven from a `$clicks` expression: it
   takes the point's index, -1 for none. `steps` wins when both are given.
+
+  The points arrive in the order they are listed when the slide is reached, so the
+  chart is built up rather than met all at once. `reveal` hands that pacing to the
+  speaker instead — one point per click, before whatever `steps` goes on to do.
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useArriving, useReveal } from '../composables/entrance'
 import { useSteps } from '../composables/steps'
 
 const props = defineProps<{
@@ -29,9 +34,12 @@ const props = defineProps<{
   points: { label: string, x: number, y: number, tone?: 'gunJyo' | 'gray' }[]
   steps?: (string | null)[]
   active?: number
+  reveal?: boolean
 }>()
 
 const step = useSteps(() => props.steps)
+const arriving = useArriving()
+const held = useReveal(() => props.points.length, () => props.reveal)
 
 // Naming a point that is not there leaves the chart unframed rather than throwing, the
 // same answer an out-of-range `active` already gave.
@@ -70,7 +78,9 @@ function anchor(x: number) {
           anchor(point.x),
           { 'is-active': current === i },
         ]"
-        :style="{ left: `${point.x}%`, bottom: `${point.y}%` }"
+        :data-tf-enter="!reveal && arriving || undefined"
+        :data-tf-held="held(i) || undefined"
+        :style="{ left: `${point.x}%`, bottom: `${point.y}%`, '--tf-enter-place': i }"
       >{{ point.label }}</span>
     </div>
   </div>

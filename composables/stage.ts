@@ -7,3 +7,14 @@ import type { InjectionKey, Ref } from 'vue'
  * including markup a deck writes itself.
  */
 export const StageKey: InjectionKey<Ref<HTMLElement | undefined>> = Symbol('tf-stage')
+
+/**
+ * A stage hands each piece the place it holds in the arrangement, so the pieces
+ * arrive in the order they are read. Counting here rather than through CSS index
+ * selectors means inserting a piece shifts only what comes after it, and a piece
+ * placed outside any stage simply has no place and arrives with the slide.
+ *
+ * A group hands out no places at all: it exists so that several pieces read as one
+ * thing, and one thing arrives whole rather than dealing its contents out.
+ */
+export const StagePlaceKey: InjectionKey<(() => number) | null> = Symbol('tf-stage-place')
