@@ -309,6 +309,27 @@ A chart stepped from a `$clicks` expression says how long its page is
 </Caption>
 
 ---
+layout: diagram
+hideInToc: true
+---
+
+<Bars
+  log
+  axis-start="1 μs"
+  axis-end="10 ms"
+  :items="[
+    { label: 'Process', value: 1200, text: '1.2 ms' },
+    { label: 'Container', value: 220, text: '220 μs' },
+    { label: 'WebAssembly', value: 12, text: '12 μs' },
+  ]"
+  :steps="[null, 'WebAssembly']"
+/>
+
+<Caption>
+<span>A chart on a page with no heading still spans the content width.</span>
+</Caption>
+
+---
 layout: section
 ---
 

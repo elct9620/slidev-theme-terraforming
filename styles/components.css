@@ -353,10 +353,17 @@
 
    The two text columns sit close together because a label and how it was achieved are
    one fact stated twice; the gap before the track is wider, so the bars separate from
-   the text rather than floating among it. */
+   the text rather than floating among it.
+
+   The chart states the content width itself, as the other full-width figures do. The
+   track is the column that gives way, and a fill sized as a share of it has no width to
+   contribute back — so a container that sizes to its contents, as a centred layout does,
+   leaves the track with nothing and the bars collapse. */
 .tf-bars {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: max-content max-content 1fr max-content;
+  width: var(--container-content);
 }
 
 .tf-bar-row {
