@@ -1,6 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Bars from '../components/Bars.vue'
+import Map2D from '../components/Map2D.vue'
+import Point from '../components/Point.vue'
 import { barScale, pointAnchor, useHighlight } from '../composables/chart'
 import { withSetup } from './support/composable'
 import { clicks, declaredLengths, resetSlide } from './support/slide'
@@ -97,6 +99,63 @@ describe('useHighlight', () => {
       useHighlight(rows, () => ['Container'], () => 1))
 
     expect(current.value).toBe(0)
+  })
+})
+
+describe('a map of two measures', () => {
+  /** A chart as a deck writes it, in the order the marks are read. */
+  function plot(props: Record<string, unknown> = {}) {
+    return mount(Map2D, {
+      props: { xStart: 'Hard', xEnd: 'Easy', yStart: 'Weak', yEnd: 'Strong', ...props },
+      global: { components: { Point } },
+      slots: {
+        default: [
+          '<Point name="container" :x="30" :y="62">Container</Point>',
+          '<Point name="wasm" :x="66" :y="80" tone="gunJyo">WebAssembly</Point>',
+        ].join(''),
+      },
+    })
+  }
+
+  it('places each mark where it says, and tones the one set apart', () => {
+    const marks = plot().findAll('.tf-map-point')
+
+    expect(marks.map(mark => mark.text())).toEqual(['Container', 'WebAssembly'])
+    expect(marks[0].attributes('style')).toContain('left: 30%')
+    expect(marks[0].classes()).toContain('tf-map-point--gray')
+    expect(marks[1].classes()).toContain('tf-map-point--gunJyo')
+  })
+
+  // The mark is named rather than matched on what it says, so renaming the label leaves
+  // the walk through the chart alone.
+  it('frames the mark a step names, and declares the walk as the slide\'s length', async () => {
+    const chart = plot({ steps: [null, 'wasm'] })
+
+    expect(chart.findAll('.is-active')).toHaveLength(0)
+    expect(declaredLengths()).toEqual([{ max: 1, delta: 0 }])
+
+    clicks.value = 1
+    await chart.vm.$nextTick()
+
+    expect(chart.findAll('.tf-map-point')[1].classes()).toContain('is-active')
+  })
+
+  it('takes a place from a deck driving the chart itself, declaring nothing', () => {
+    const chart = plot({ active: 0 })
+
+    expect(chart.findAll('.tf-map-point')[0].classes()).toContain('is-active')
+    expect(declaredLengths()).toEqual([])
+  })
+
+  it('holds a mark back until the speaker calls it in', async () => {
+    const chart = plot({ reveal: true })
+
+    expect(chart.findAll('.tf-map-point')[0].attributes('data-tf-held')).toBe('true')
+
+    clicks.value = 1
+    await chart.vm.$nextTick()
+
+    expect(chart.findAll('.tf-map-point')[0].attributes('data-tf-held')).toBeUndefined()
   })
 })
 

@@ -1,4 +1,6 @@
-import { computed } from 'vue'
+import type { ComputedRef, InjectionKey } from 'vue'
+import { computed, inject, onUnmounted, provide, ref, useId } from 'vue'
+import { useArriving, useReveal } from './entrance'
 import { useSteps } from './steps'
 
 /**
@@ -58,4 +60,92 @@ export function pointAnchor(x: number) {
   if (x >= 88)
     return 'tf-map-point--end'
   return ''
+}
+
+/**
+ * What a chart tells the marks plotted on it.
+ *
+ * The marks are written as children, so the chart never holds a list of them: it holds
+ * only what it decides for the whole — which one is being spoken about, how the reading
+ * is paced, whether the figure is still arriving — and each mark asks about itself. A
+ * mark inserted anywhere therefore renumbers nothing, the way a block on a stage does.
+ */
+interface Plot {
+  join: (id: string, name: () => string | undefined) => number
+  leave: (id: string) => void
+  isCurrent: (place: number) => boolean
+  isHeld: (place: number) => boolean
+  arriving: ComputedRef<boolean>
+}
+
+const PlotKey: InjectionKey<Plot> = Symbol('tf-plot')
+
+/**
+ * The chart's side: it keeps who joined so that it can turn a name into a place, count
+ * the marks for a paced reading, and say which of them the frame is on.
+ *
+ * `steps` names the mark at each click and declares the slide's length with it, while
+ * `active` takes an index from a `$clicks` expression the deck writes itself — the same
+ * two sides of the click system every other figure offers. Naming a mark that is not
+ * there leaves the chart unframed rather than throwing.
+ */
+export function providePlot(
+  steps: () => readonly (string | null)[] | undefined,
+  active: () => number | undefined,
+  reveal: () => boolean | undefined,
+) {
+  const members = ref<{ id: string, name: () => string | undefined }[]>([])
+  const total = computed(() => members.value.length)
+
+  const step = useSteps(steps)
+  const arriving = useArriving()
+  const held = useReveal(() => total.value, reveal)
+
+  const current = computed(() => {
+    if (!steps())
+      return active() ?? -1
+
+    const named = step.value
+    return named ? members.value.findIndex(mark => mark.name() === named) : -1
+  })
+
+  provide(PlotKey, {
+    join(id, name) {
+      const joined = members.value.findIndex(mark => mark.id === id)
+      if (joined !== -1)
+        return joined
+
+      members.value.push({ id, name })
+      return members.value.length - 1
+    },
+    leave(id) {
+      const joined = members.value.findIndex(mark => mark.id === id)
+      if (joined !== -1)
+        members.value.splice(joined, 1)
+    },
+    isCurrent: place => current.value === place,
+    isHeld: place => held(place),
+    arriving: computed(() => !reveal() && arriving.value),
+  })
+
+  return total
+}
+
+/**
+ * A mark's side: where it sits in the reading order, and what the chart currently says
+ * about it. A mark written outside any chart simply sits still and is never framed.
+ */
+export function usePlot(name: () => string | undefined) {
+  const plot = inject(PlotKey, null)
+  const id = useId()!
+  const place = plot?.join(id, name) ?? 0
+
+  onUnmounted(() => plot?.leave(id))
+
+  return {
+    place,
+    isCurrent: computed(() => plot?.isCurrent(place) ?? false),
+    isHeld: computed(() => plot?.isHeld(place) ?? false),
+    arriving: computed(() => plot?.arriving.value ?? false),
+  }
 }

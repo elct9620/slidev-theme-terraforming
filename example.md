@@ -14,8 +14,11 @@ hideInToc: true
 ---
 
 <About>
-https://blog.aotoki.me/<br />
-@elct9620
+  <Name>蒼時弦也</Name>
+  <Title>Associate Software Architect</Title>
+  <Title>Software Architect</Title>
+  <Contact>https://blog.aotoki.me/</Contact>
+  <Contact>@elct9620</Contact>
 </About>
 
 ---
@@ -114,12 +117,10 @@ hideInToc: true
 </Stage>
 
 <Caption>
-<v-switch>
-<template #0><span>The real <strong>object</strong> lives on the far side.</span></template>
-<template #1><span>Calling the proxy sends the request <strong>across the wire</strong>.</span></template>
-<template #2><span>The work happens <strong>where the object is</strong>.</span></template>
-<template #3><span>Only the <strong>result</strong> comes back; the object never moved.</span></template>
-</v-switch>
+  <Line>The real <strong>object</strong> lives on the far side.</Line>
+  <Line>Calling the proxy sends the request <strong>across the wire</strong>.</Line>
+  <Line>The work happens <strong>where the object is</strong>.</Line>
+  <Line>Only the <strong>result</strong> comes back; the object never moved.</Line>
 </Caption>
 
 ---
@@ -142,11 +143,9 @@ hideInToc: true
 </Stage>
 
 <Caption>
-<v-switch>
-<template #0><span>The frame starts on the template alone.</span></template>
-<template #1><span>It grows to say these are <strong>one thing</strong>, not three.</span></template>
-<template #2><span>It travels and resizes — it never cuts to a new box.</span></template>
-</v-switch>
+  <Line>The frame starts on the template alone.</Line>
+  <Line>It grows to say these are <strong>one thing</strong>, not three.</Line>
+  <Line>It travels and resizes — it never cuts to a new box.</Line>
 </Caption>
 
 ---
@@ -172,9 +171,7 @@ hideInToc: true
   <Focus :steps="['source', 'module', 'instances']" />
 </Stage>
 
-<Caption>
-<span>A narrower row sits centred over the widest one, and the frame follows it there.</span>
-</Caption>
+<Caption>A narrower row sits centred over the widest one, and the frame follows it there.</Caption>
 
 ---
 layout: diagram
@@ -187,9 +184,7 @@ hideInToc: true
   <Block color="tamago">Guest</Block>
 </Stage>
 
-<Caption>
-<span>A column stage with a vertical arrow; the label sits beside the line.</span>
-</Caption>
+<Caption>A column stage with a vertical arrow; the label sits beside the line.</Caption>
 
 ---
 layout: diagram
@@ -211,11 +206,9 @@ hideInToc: true
 </Stage>
 
 <Caption>
-<v-switch>
-<template #0><span>A second frame says what belongs to <strong>one layer</strong> for the whole page.</span></template>
-<template #1><span>The red one is what is being spoken about <strong>right now</strong>.</span></template>
-<template #2><span>It leaves the layer; the blue frame stays where it was.</span></template>
-</v-switch>
+  <Line>A second frame says what belongs to <strong>one layer</strong> for the whole page.</Line>
+  <Line>The red one is what is being spoken about <strong>right now</strong>.</Line>
+  <Line>It leaves the layer; the blue frame stays where it was.</Line>
 </Caption>
 
 ---
@@ -278,13 +271,12 @@ Two measures at once, showing a combination rather than a single winner
   x-end="Easy to use"
   y-start="Weak isolation"
   y-end="Strong isolation"
-  :points="[
-    { label: 'eval', x: 88, y: 4 },
-    { label: 'Container', x: 30, y: 62 },
-    { label: 'WebAssembly', x: 66, y: 80, tone: 'gunJyo' },
-  ]"
-  :steps="[null, 'eval', 'Container', 'WebAssembly']"
-/>
+  :steps="[null, 'eval', 'container', 'wasm']"
+>
+  <Point name="eval" :x="88" :y="4">eval</Point>
+  <Point name="container" :x="30" :y="62">Container</Point>
+  <Point name="wasm" :x="66" :y="80" tone="gunJyo">WebAssembly</Point>
+</Map2D>
 
 ---
 hideInToc: true
@@ -304,9 +296,7 @@ A chart stepped from a `$clicks` expression says how long its page is
   ]"
 />
 
-<Caption>
-<span>The bars are measured against a stated ceiling, so two charts can be compared.</span>
-</Caption>
+<Caption>The bars are measured against a stated ceiling, so two charts can be compared.</Caption>
 
 ---
 layout: diagram
@@ -325,9 +315,7 @@ hideInToc: true
   :steps="[null, 'WebAssembly']"
 />
 
-<Caption>
-<span>A chart on a page with no heading still spans the content width.</span>
-</Caption>
+<Caption>A chart on a page with no heading still spans the content width.</Caption>
 
 ---
 layout: section

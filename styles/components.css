@@ -561,14 +561,28 @@
 /* ── Caption ───────────────────────────────────────────────
    One line of narration under a diagram. The height is fixed at two lines so that
    swapping in a longer or shorter sentence leaves the diagram above it in place. */
+/* Every line the narration will say occupies the same place, so one gives way to the
+   next by fading rather than by cutting, and the height stays what two lines come to
+   however many there are. A caption that says one thing writes no line at all, and lands
+   in that same place by being the only thing in the grid. */
 .tf-caption {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-areas: 'line';
+  justify-items: center;
   height: 4.875rem;                     /* 78 */
   margin-top: 3rem;
   text-align: center;
   font-size: var(--text-body);
   font-weight: 400;
+}
+
+.tf-caption .tf-caption-line {
+  grid-area: line;
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
+}
+
+.tf-caption .tf-caption-line.is-off {
+  opacity: 0;
 }
 
 /* Emphasis inside narration is colour, matching the rule the diagrams follow */
@@ -578,9 +592,9 @@
 }
 
 /* ── About ─────────────────────────────────────────────────
-   The speaker introduction. Its three lines are the top three steps of the type scale,
-   so the page is proportioned by the same system as every other rather than by its own
-   set of numbers.
+   The speaker introduction. Its three kinds of line are the top three steps of the type
+   scale, so the page is proportioned by the same system as every other rather than by
+   its own set of numbers.
 
    ⚠ The selectors need the .tf-about prefix to reach (0,2,0). Both this theme's
    layout.css and Slidev's layouts-base style `.slidev-layout h1` at (0,1,1), and their
@@ -597,35 +611,54 @@
   border-radius: 50%;
 }
 
+/* A deck writes its lines in the order they are read; where each one lands is decided
+   here. The name and the role hold named rows, so several roles share one place instead
+   of stacking down the column, and anything else — contact lines, or a kind this theme
+   has yet to learn — flows into the rows after them in the order it was written. All of
+   them share one left edge, so the block reads as a single column whether the name is
+   Latin or CJK. */
 .tf-about .tf-about-lines {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
+  display: grid;
+  grid-template-areas:
+    'name'
+    'role';
+  justify-items: start;
   text-align: left;
 }
 
-/* Senobi Gothic sets the name. All three lines share one left edge, so the block reads
-   as a single column whether the name is Latin or CJK. */
 .tf-about .tf-about-name {
+  grid-area: name;
   margin: 0;
   font-family: 'Senobi Gothic', sans-serif;
   font-size: var(--text-title);
   line-height: var(--leading-none);
 }
 
+/* Every role the talk states occupies the same row, so the column is as wide as the
+   longest of them and as tall as one line: changing which role is legible moves neither
+   the lines below it nor the portrait beside it. The change is a fade in place rather
+   than a cut, which is what a word being replaced is. */
 .tf-about .tf-about-title {
+  grid-area: role;
   margin: 1rem 0 0;
   font-size: var(--text-heading);
   line-height: var(--leading-none);
   text-transform: uppercase;
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
 }
 
-/* The contact lines are the one part a deck fills in, so they take the copy leading:
-   whatever it puts here may run to several lines. */
-.tf-about .tf-about-extra {
-  margin-top: 1rem;
+.tf-about .tf-about-title.is-off {
+  opacity: 0;
+}
+
+/* A contact line may run to several lines of its own, so it takes the copy leading. */
+.tf-about .tf-about-contact {
+  margin: 0;
   font-size: var(--text-body);
   line-height: var(--leading-body);
   color: var(--slidev-theme-primary);
+}
+
+.tf-about .tf-about-contact:first-of-type {
+  margin-top: 1rem;
 }

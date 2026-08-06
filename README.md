@@ -124,16 +124,53 @@ Loaded from a CDN when Mermaid is used:
 
 ## Components
 
+What the audience reads is written as children; what it does not — geometry, data, a
+resource, a presentational choice — is a prop. So a deck writes its content in the order
+it is read, and where each part lands is the theme's to decide.
+
 ### About
 
-The speaker introduction.
+The speaker introduction, written as the lines it is made of.
 
 ```html
-<About name="蒼時弦也" title="Software Architect">
-https://blog.aotoki.me/<br />
-@elct9620
+<About>
+  <Name>蒼時弦也</Name>
+  <Title>Software Architect</Title>
+  <Contact>https://blog.aotoki.me/</Contact>
+  <Contact>@elct9620</Contact>
 </About>
 ```
+
+| Component | Props |
+|-----------|-------|
+| `About`   | `avatar`, `alt` |
+| `Name`    | — |
+| `Title`   | — |
+| `Contact` | — |
+
+Write a `Title` for each role the talk gives the speaker and they are taken in turn, a
+click apart — the opening that says what the speaker used to be. The page learns its
+length from them, so there is no `clicks:` to write. All of them are laid out in the same
+place, so the column stays as wide as the longest and neither it nor the portrait beside
+it moves; the role fades rather than cuts.
+
+```html
+<About>
+  <Name>蒼時弦也</Name>
+  <Title>Associate AI Engineer</Title>
+  <Title>AI Engineer</Title>
+  <Contact>https://blog.aotoki.me/</Contact>
+</About>
+```
+
+Each kind counts its own turns, so a `Title` that changes on the first click is a
+sequence of its own — nothing about it decides when any other part of the introduction
+may change.
+
+`avatar` is a prop because a portrait is a resource the page is given rather than
+something read off it. It carries no `alt` of its own: the name is written beside it, and
+repeating it would have a screen reader say it twice. `alt` is there for the deck that
+puts a face beside no name at all.
 
 ### Diagram vocabulary
 
@@ -149,6 +186,7 @@ across clicks without the layout shifting underneath it.
 | `Stroke`  | `dir` (`right` \| `left` \| `both` \| `up` \| `down` \| `both-y` \| `none`), `label`, `labels`, `name`, `flip`, `length`, `hidden` |
 | `Focus`   | `steps`, `of`, `color` |
 | `Caption` | — |
+| `Line`    | — |
 
 `Focus` is the selection box. It is positioned absolutely and takes no space, so it
 never disturbs what it frames, and it transitions its position and size rather than
@@ -175,6 +213,17 @@ The list is what tells the slide how long it is — see [Clicks](#clicks) — so
 through a diagram is written in one place instead of being split between a frontmatter
 count and a chain of comparisons. Entries are addressed by absolute click number, so
 `steps[0]` is the state before the first click.
+
+A caption that says something new at each click writes a `Line` for each. They are taken
+in turn a click apart, and all of them occupy one place, so the narration fades from one
+to the next and the diagram above it never moves:
+
+```html
+<Caption>
+  <Line>The real <strong>object</strong> lives on the far side.</Line>
+  <Line>Calling the proxy sends the request <strong>across the wire</strong>.</Line>
+</Caption>
+```
 
 `of` is the alternative, for a box driven from a `$clicks` expression of your own. It
 takes the same names as one entry of `steps` and the page then has to declare its own
@@ -203,27 +252,34 @@ longer matching the rest of the deck.
 |-----------|-------|
 | `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `reveal`, `log`, `axisStart`, `axisEnd` |
 | `Axis`    | `start`, `end` |
-| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `points` (`{ label, x, y, tone? }[]`), `steps`, `active`, `reveal` |
+| `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `steps`, `active`, `reveal` |
+| `Point`   | `x`, `y`, `name`, `tone` (`gunJyo` \| `gray`) |
 
 The two ends of an axis are `start` and `end`. Where the axis is one part of a chart
 rather than the whole of it, they say which axis: `axisStart` and `axisEnd` on `Bars`,
-`xStart` and `yStart` on `Map2D`.
+`xStart` and `yStart` on `Map2D`. They stay props because they name the space a chart is
+read in rather than anything plotted in it.
 
-Both charts take the same red frame as a block, and move it with `steps` the way a
-`Focus` does — each entry naming the row or point under discussion, `null` for none:
+A `Map2D` is written as the marks on it. `x` and `y` are relative positions from 0 to 100
+and there are no ticks: the chart is an argument about where things sit in relation to
+each other, and printed coordinates would be taken for measurements.
 
 ```html
-<Bars
-  :steps="[null, 'WebAssembly', 'Container']"
-  :items="[
-    { label: 'Container', value: 220, text: '220 μs' },
-    { label: 'WebAssembly', value: 12, text: '12 μs' },
-  ]"
-/>
+<Map2D x-start="Hard to use" x-end="Easy to use"
+       y-start="Weak isolation" y-end="Strong isolation"
+       :steps="[null, 'wasm']">
+  <Point :x="88" :y="4">eval</Point>
+  <Point name="wasm" :x="66" :y="80" tone="gunJyo">WebAssembly</Point>
+</Map2D>
 ```
 
+Both charts take the same red frame as a block, and move it with `steps` the way a
+`Focus` does — each entry naming the row or mark under discussion, `null` for none. A
+`Point` is named the way a `Block` is, so `steps` refers to it without depending on what
+it says.
+
 `active` is the alternative for a chart driven from a `$clicks` expression, taking the
-row's index and -1 for none.
+row's or mark's place and -1 for none.
 
 `Bars` accepts `log` for data spanning orders of magnitude; using it obliges you to
 label both ends of the axis, since lengths on a log scale otherwise invite a linear
