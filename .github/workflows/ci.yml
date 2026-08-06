@@ -32,7 +32,10 @@ jobs:
       # The fixture deck exercises every layout and component, so building it is what
       # says the theme still loads.
       - run: pnpm build
+      # A warm pnpm store restores playwright-chromium as already built, so the postinstall
+      # that fetches the browser never runs, and the browser lives outside the store where
+      # no cache carries it. Ask for it rather than assume the install left it behind.
+      - run: pnpm exec playwright install chromium
       # Slower than the rest put together: it boots Slidev and a browser to ask what the
-      # deck turned out to be. The browser is already here, since playwright-chromium
-      # fetches it on install.
+      # deck turned out to be.
       - run: pnpm test:deck
