@@ -3,8 +3,11 @@
  *
  * The root is 16px, so a px measurement from the design file divided by 16 is written
  * straight in as rem, with no correction factor in between.
- * 1920 = 396 sidebar (296 solid + 100 diagonal) + 1524 main (48 left, 96 right, and
- * 1380 of content between them).
+ *
+ * Widths are handed down rather than restated: the sidebar takes what its logo and
+ * padding come to, main takes the rest, and a layout's container fills main. Every
+ * figure therefore inherits its width from the page instead of naming one, and the
+ * only page dimension written down is the sidebar's diagonal.
  *
  * The skeleton is plain CSS over tokens so that specificity stays readable at the
  * point of use: @apply expands to longhand that sorts after user styles and wins on
@@ -49,11 +52,14 @@ html {
 /* ── Sidebar ───────────────────────────────────────────────
    Three parts: the solid block, a margin reserving room for the diagonal, and an
    ::after that draws it. The diagonal is absolutely positioned and takes no space,
-   so margin-right is what pushes main out to 396. */
+   so margin-right is what pushes main out past it.
+
+   The block takes whatever its contents come to — the logo plus its padding — rather
+   than a width of its own. The design file's 296 is that sum, so stating it as well
+   would be a second place for it to be wrong. */
 .sidebar {
   position: relative;
   flex: none;
-  width: var(--spacing-sidebar);
   padding: 3rem;                        /* 48 */
   margin-right: var(--spacing-slash);
   background: var(--slidev-theme-surface);
@@ -71,16 +77,23 @@ html {
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
-/* 296 − 48×2 = 200, exactly the logo width in the design file, so it need not be
-   stated a second time */
+/* The one measurement the sidebar is given: everything about its width follows from
+   this and the padding around it. */
 .sidebar .logo {
-  width: 100%;
+  width: var(--spacing-logo);
 }
 
 /* ── Main ──────────────────────────────────────────────────
-   Padding sets the content width on its own, so individual elements never need one.
-   The right side is the wider of the two: the sidebar's diagonal tapers away down the
-   page and leaves more air on the left than a matching padding would.
+   Padding sets the content width on its own, so individual elements never need one —
+   and it is the only place the content width is decided, so moving an edge moves every
+   figure on the page with it.
+
+   The right side is the wider of the two because the left boundary is not a straight
+   line: the sidebar's diagonal recedes from 396 at the top of the page to 296 at the
+   bottom, leaving 48 of air beside a heading and 148 beside the last line. Content here
+   is centred vertically, where that gap is 98 — so 96 on the right is what makes the
+   two sides read as the same amount of air.
+
    Grid is what lets a layout choose its vertical position through auto margins: a
    centred layout wraps its content in my-auto and the auto margins absorb the
    leftover space, while a content page omits it so the wrapper stretches full height

@@ -80,7 +80,7 @@
      scale would only be a synonym for the built-in one. */
   --spacing-line: 0.3125rem;    /* 5    stroke and frame width */
   --spacing-shadow: 0.625rem;   /* 10   shadow offset, down and to the right */
-  --spacing-sidebar: 18.5rem;   /* 296  solid part of the sidebar */
+  --spacing-logo: 12.5rem;      /* 200  the sidebar's width follows from this */
   --spacing-slash: 6.25rem;     /* 100  the diagonal cut on its right edge */
   --spacing-block-w: 16.875rem; /* 270  block body, border included */
   --spacing-block-h: 10.125rem; /* 162 */
@@ -155,14 +155,6 @@
   --tf-stroke-min: 6.25rem;     /* 100 length with no caption */
   --tf-stroke-head: 2.5rem;     /* 40  chevron box */
   --tf-stroke-label-gap: 2.25rem; /* 36  line to caption */
-
-  /* Content width: the shared left/right boundary for every full-width element.
-     The sidebar's diagonal tapers away down the page, so the whitespace it leaves on
-     the left averages wider than a matching padding on the right would. The right
-     padding carries that difference (96 against 48) to put the content box on the
-     optical centre rather than the arithmetic one.
-     1920 − 396 sidebar − 48 left − 96 right. */
-  --container-content: 86.25rem; /* 1380 */
 
   /* ── Semantic layer ──────────────────────────────────────
      `primary` and `secondary` are the names Slidev's own shortcuts read

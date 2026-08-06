@@ -355,15 +355,12 @@
    one fact stated twice; the gap before the track is wider, so the bars separate from
    the text rather than floating among it.
 
-   The chart states the content width itself, as the other full-width figures do. The
-   track is the column that gives way, and a fill sized as a share of it has no width to
-   contribute back — so a container that sizes to its contents, as a centred layout does,
-   leaves the track with nothing and the bars collapse. */
+   The track is the column that gives way, and a fill sized as a share of it has no
+   width of its own to contribute back, so the chart is only as wide as its container
+   says. That is the page's answer to give, and every layout gives it. */
 .tf-bars {
-  box-sizing: border-box;
   display: grid;
   grid-template-columns: max-content max-content 1fr max-content;
-  width: var(--container-content);
 }
 
 .tf-bar-row {
@@ -449,13 +446,15 @@
 }
 
 /* ── Axis ──────────────────────────────────────────────────
-   One line spanning the full content width with meaning at each end, for when the
-   row above it is a continuous spectrum rather than a set of exclusive options.
-   The stroke reuses .tf-stroke so it shares the visual language. */
+   One line with meaning at each end, for when the row above it is a continuous spectrum
+   rather than a set of exclusive options. The stroke reuses .tf-stroke so it shares the
+   visual language.
+
+   The line stops short of the container so that the row it describes — blocks, which
+   sit centred — reads as being spanned by the axis rather than as sharing its edges. */
 .tf-axis {
   box-sizing: border-box;
-  width: var(--container-content);
-  padding: 0 11.25rem;                  /* 180  inset, leaving the line at 1068 */
+  padding: 0 11.25rem;                  /* 180 */
   margin-top: 2rem;
 }
 
@@ -492,7 +491,6 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: max-content 1fr;
-  width: var(--container-content);
   margin-top: 2rem;
   padding-bottom: 3.25rem;              /* room for the X units under the line */
 }
