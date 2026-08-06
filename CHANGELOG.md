@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.7.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.6.1...v0.7.0) (2026-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **bars:** Bars takes Bar children in place of `items`, and `steps` names a row through Bar's `name` rather than through the label it shows.
+* About takes Name, Title and Contact in place of its name and title props, Caption takes Line in place of a v-switch, and Map2D takes Point in place of points.
+* **layout:** --container-content and --spacing-sidebar are gone, and a deck that named either should let the page decide instead. --spacing-logo replaces them as the single measurement the sidebar is given.
+* **axis:** Axis takes `start` and `end` in place of `startLabel` and `endLabel`.
+
+### Features
+
+* **axis:** name the ends of an axis the way every chart does ([5f97acd](https://github.com/elct9620/slidev-theme-terraforming/commit/5f97acdbb7e5005a544679733118efb5b2d8becf))
+* **bars:** write a chart as the rows it is of ([f6cb501](https://github.com/elct9620/slidev-theme-terraforming/commit/f6cb5017010dd501ef3a430e4be495a867a784dc))
+* write what the audience reads as children, not as props ([07c164c](https://github.com/elct9620/slidev-theme-terraforming/commit/07c164c5e6ba5ecada2d43792739e2684054ba91))
+
+
+### Bug Fixes
+
+* **bars:** let a chart say the width it spans, as the other figures do ([0dbaaec](https://github.com/elct9620/slidev-theme-terraforming/commit/0dbaaeca0905577c9361d024554af93d683e30a9))
+* **code:** let a listing fade between steps like everything else ([5e53b69](https://github.com/elct9620/slidev-theme-terraforming/commit/5e53b69142be4638cdda530b9cf5f0ac9d6f2549))
+* **focus:** watch the pieces a frame is drawn around, not just the stage ([028bf3b](https://github.com/elct9620/slidev-theme-terraforming/commit/028bf3b7af49a4966f3c386c9092b392bb1e8d1d))
+* **layout:** let the page hand its width down instead of naming it everywhere ([92803b8](https://github.com/elct9620/slidev-theme-terraforming/commit/92803b88ba4be99b1466fd317f747c140761e8cc))
+* **pkg:** publish only the files a deck loads ([f808880](https://github.com/elct9620/slidev-theme-terraforming/commit/f80888066039dfc0f7805f50c8b9b041c33092d3))
+
 ## [0.6.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.6.0...v0.6.1) (2026-07-25)
 
 
