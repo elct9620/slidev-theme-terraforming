@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.7.0...v0.7.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* **layout:** let the sidebar's diagonal overlap the block it grows from ([a935b32](https://github.com/elct9620/slidev-theme-terraforming/commit/a935b324457db714da2325ffea47426dfddeaee1))
+
 ## [0.7.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.6.1...v0.7.0) (2026-08-06)
 
 
