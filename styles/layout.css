@@ -246,3 +246,13 @@ html {
 .slidev-code code {
   text-wrap: auto;
 }
+
+/* Stepping through a listing recedes every line but the ones being read, which Slidev
+   does by opacity alone and instantly. A cut is the one thing this theme never does to
+   an opacity: a block being withheld, a focus leaving the page and a caption changing
+   its line all take the same length to fade, and a listing that snaps between steps
+   reads as a different slide rather than as the same one being walked through. */
+.slidev-code .slidev-code-highlighted,
+.slidev-code .slidev-code-dishonored {
+  transition: opacity var(--tf-motion-settle) var(--tf-motion-ease-fade);
+}

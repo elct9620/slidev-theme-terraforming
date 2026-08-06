@@ -308,9 +308,9 @@ layout: section
 
 # Code
 
-Code is content here, so it carries no background, radius or padding
+Stepping through a listing recedes the lines that are not being read
 
-```ts
+```ts {all|1-5|8|10-11}
 interface User {
   id: number
   firstName: string
