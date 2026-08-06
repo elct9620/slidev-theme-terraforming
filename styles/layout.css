@@ -70,7 +70,8 @@ html {
   content: '';
   position: absolute;
   top: 0;
-  left: 100%;
+  left: 99.9%;                          /* overlap the block, so the deck's scaling cannot
+                                           leave a white seam between the two */
   width: var(--spacing-slash);
   height: 100%;
   background: var(--slidev-theme-surface);
