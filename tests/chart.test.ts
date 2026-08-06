@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Bar from '../components/Bar.vue'
 import Bars from '../components/Bars.vue'
 import Map2D from '../components/Map2D.vue'
 import Point from '../components/Point.vue'
@@ -160,39 +161,67 @@ describe('a map of two measures', () => {
 })
 
 describe('a bar chart', () => {
-  const items = [
-    { label: 'Container', value: 220, text: '220 μs' },
-    { label: 'WebAssembly', value: 12, text: '12 μs' },
-  ]
+  /** A chart as a deck writes it, in the order the rows are read. */
+  function chart(props: Record<string, unknown> = {}) {
+    return mount(Bars, {
+      props,
+      global: { components: { Bar } },
+      slots: {
+        default: [
+          '<Bar name="container" :value="220" text="220 μs">Container</Bar>',
+          '<Bar name="wasm" :value="12" text="12 μs" via="linear memory">WebAssembly</Bar>',
+        ].join(''),
+      },
+    })
+  }
 
-  it('gives each bar its share of the track', () => {
-    const chart = mount(Bars, { props: { items } })
+  it('is whatever rows the deck writes, each saying what it is of', () => {
+    const rows = chart().findAll('.tf-bar-row')
 
-    const [longest, shortest] = chart.findAll('.tf-bar-fill')
+    expect(rows.map(row => row.find('.tf-bar-label').text())).toEqual(['Container', 'WebAssembly'])
+    expect(rows[1].find('.tf-bar-value').text()).toBe('12 μs')
+    expect(rows[1].find('.tf-bar-via').text()).toBe('linear memory')
+  })
+
+  // No row can know its share until every other row has said how long it is, so this is
+  // what the collecting is for: written alone, the first bar would fill the track.
+  it('gives each bar its share of the track, measured against all of them', () => {
+    const [longest, shortest] = chart().findAll('.tf-bar-fill')
 
     expect(longest.attributes('style')).toContain('width: 100%')
     expect(shortest.attributes('style')).toContain('width: 5.45')
   })
 
-  it('walks the frame down the rows as the steps say', async () => {
-    const chart = mount(Bars, { props: { items, steps: [null, 'WebAssembly'] } })
+  it('measures against a ceiling the chart states, so two charts can be compared', () => {
+    const [longest] = chart({ max: 440 }).findAll('.tf-bar-fill')
 
-    expect(chart.findAll('.is-active')).toHaveLength(0)
+    expect(longest.attributes('style')).toContain('width: 50%')
+  })
+
+  it('walks the frame down the rows as the steps say', async () => {
+    const bars = chart({ steps: [null, 'wasm'] })
+
+    expect(bars.findAll('.is-active')).toHaveLength(0)
 
     clicks.value = 1
-    await chart.vm.$nextTick()
+    await bars.vm.$nextTick()
 
-    expect(chart.findAll('.tf-bar-row')[1].classes()).toContain('is-active')
+    expect(bars.findAll('.tf-bar-row')[1].classes()).toContain('is-active')
   })
 
   it('holds a row back until the speaker calls it in', async () => {
-    const chart = mount(Bars, { props: { items, reveal: true } })
+    const bars = chart({ reveal: true })
 
-    expect(chart.findAll('.tf-bar-row')[0].attributes('data-tf-held')).toBe('true')
+    expect(bars.findAll('.tf-bar-row')[0].attributes('data-tf-held')).toBe('true')
 
     clicks.value = 1
-    await chart.vm.$nextTick()
+    await bars.vm.$nextTick()
 
-    expect(chart.findAll('.tf-bar-row')[0].attributes('data-tf-held')).toBeUndefined()
+    expect(bars.findAll('.tf-bar-row')[0].attributes('data-tf-held')).toBeUndefined()
+  })
+
+  it('carries the log scale itself, so a row need not be told about it', () => {
+    expect(chart({ log: true }).classes()).toContain('tf-bars--log')
+    expect(chart().classes()).not.toContain('tf-bars--log')
   })
 })

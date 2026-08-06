@@ -219,14 +219,11 @@ hideInToc: true
 
 The row under discussion takes the same red frame as a block
 
-<Bars
-  :items="[
-    { label: 'Process', value: 1200, text: '1.2 ms', via: 'fork' },
-    { label: 'Container', value: 220, text: '220 μs', via: 'namespace' },
-    { label: 'WebAssembly', value: 12, text: '12 μs', via: 'linear memory' },
-  ]"
-  :steps="[null, 'Process', 'Container', 'WebAssembly']"
-/>
+<Bars :steps="[null, 'process', 'container', 'wasm']">
+  <Bar name="process" :value="1200" text="1.2 ms" via="fork">Process</Bar>
+  <Bar name="container" :value="220" text="220 μs" via="namespace">Container</Bar>
+  <Bar name="wasm" :value="12" text="12 μs" via="linear memory">WebAssembly</Bar>
+</Bars>
 
 ---
 hideInToc: true
@@ -236,17 +233,11 @@ hideInToc: true
 
 Spanning orders of magnitude, and revealed a row per click
 
-<Bars
-  log
-  reveal
-  axis-start="1 μs"
-  axis-end="10 ms"
-  :items="[
-    { label: 'Process', value: 1200, text: '1.2 ms' },
-    { label: 'Container', value: 220, text: '220 μs' },
-    { label: 'WebAssembly', value: 12, text: '12 μs' },
-  ]"
-/>
+<Bars log reveal axis-start="1 μs" axis-end="10 ms">
+  <Bar :value="1200" text="1.2 ms">Process</Bar>
+  <Bar :value="220" text="220 μs">Container</Bar>
+  <Bar :value="12" text="12 μs">WebAssembly</Bar>
+</Bars>
 
 ---
 hideInToc: true
@@ -287,14 +278,10 @@ clicks: 2
 
 A chart stepped from a `$clicks` expression says how long its page is
 
-<Bars
-  :max="2000"
-  :active="$clicks - 1"
-  :items="[
-    { label: 'Process', value: 1200, text: '1.2 ms' },
-    { label: 'Container', value: 220, text: '220 μs' },
-  ]"
-/>
+<Bars :max="2000" :active="$clicks - 1">
+  <Bar :value="1200" text="1.2 ms">Process</Bar>
+  <Bar :value="220" text="220 μs">Container</Bar>
+</Bars>
 
 <Caption>The bars are measured against a stated ceiling, so two charts can be compared.</Caption>
 
@@ -303,17 +290,11 @@ layout: diagram
 hideInToc: true
 ---
 
-<Bars
-  log
-  axis-start="1 μs"
-  axis-end="10 ms"
-  :items="[
-    { label: 'Process', value: 1200, text: '1.2 ms' },
-    { label: 'Container', value: 220, text: '220 μs' },
-    { label: 'WebAssembly', value: 12, text: '12 μs' },
-  ]"
-  :steps="[null, 'WebAssembly']"
-/>
+<Bars log axis-start="1 μs" axis-end="10 ms" :steps="[null, 'wasm']">
+  <Bar :value="1200" text="1.2 ms">Process</Bar>
+  <Bar :value="220" text="220 μs">Container</Bar>
+  <Bar name="wasm" :value="12" text="12 μs">WebAssembly</Bar>
+</Bars>
 
 <Caption>A chart on a page with no heading still spans the content width.</Caption>
 

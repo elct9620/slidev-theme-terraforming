@@ -420,8 +420,9 @@
 }
 
 /* On a log axis the lengths already separate cleanly, and a floor would flatten two
-   bars a hundredfold apart into the same apparent magnitude. */
-.tf-bar-fill--log {
+   bars a hundredfold apart into the same apparent magnitude. The scale is the chart's
+   decision, so it is the chart that carries it and the rows read it off the cascade. */
+.tf-bars--log .tf-bar-fill {
   min-width: 0.5rem;
 }
 

@@ -70,12 +70,18 @@ export function pointAnchor(x: number) {
  * is paced, whether the figure is still arriving — and each mark asks about itself. A
  * mark inserted anywhere therefore renumbers nothing, the way a block on a stage does.
  */
+interface Mark {
+  name: () => string | undefined
+  value: () => number | undefined
+}
+
 interface Plot {
-  join: (id: string, name: () => string | undefined) => number
+  join: (id: string, mark: Mark) => number
   leave: (id: string) => void
   isCurrent: (place: number) => boolean
   isHeld: (place: number) => boolean
   arriving: ComputedRef<boolean>
+  width: (place: number) => string | undefined
 }
 
 const PlotKey: InjectionKey<Plot> = Symbol('tf-plot')
@@ -88,13 +94,21 @@ const PlotKey: InjectionKey<Plot> = Symbol('tf-plot')
  * `active` takes an index from a `$clicks` expression the deck writes itself — the same
  * two sides of the click system every other figure offers. Naming a mark that is not
  * there leaves the chart unframed rather than throwing.
+ *
+ * `scale` is for the chart whose marks are measured against each other rather than
+ * placed at coordinates of their own. It is the whole reason a chart collects its marks
+ * instead of leaving each to render alone: no bar can know its share of the track until
+ * every other bar has said how long it is. A mark joining or leaving therefore remeasures
+ * the lot, which is what keeps a chart correct as it is edited.
  */
-export function providePlot(
-  steps: () => readonly (string | null)[] | undefined,
-  active: () => number | undefined,
-  reveal: () => boolean | undefined,
-) {
-  const members = ref<{ id: string, name: () => string | undefined }[]>([])
+export function providePlot(options: {
+  steps: () => readonly (string | null)[] | undefined
+  active: () => number | undefined
+  reveal: () => boolean | undefined
+  scale?: () => { max?: number, log?: boolean }
+}) {
+  const { steps, active, reveal, scale } = options
+  const members = ref<{ id: string, mark: Mark }[]>([])
   const total = computed(() => members.value.length)
 
   const step = useSteps(steps)
@@ -106,26 +120,38 @@ export function providePlot(
       return active() ?? -1
 
     const named = step.value
-    return named ? members.value.findIndex(mark => mark.name() === named) : -1
+    return named ? members.value.findIndex(({ mark }) => mark.name() === named) : -1
+  })
+
+  const measure = computed(() => {
+    const values = members.value.map(({ mark }) => mark.value()).filter(v => v !== undefined)
+    if (!scale || !values.length)
+      return undefined
+
+    return barScale(values, scale())
   })
 
   provide(PlotKey, {
-    join(id, name) {
-      const joined = members.value.findIndex(mark => mark.id === id)
+    join(id, mark) {
+      const joined = members.value.findIndex(member => member.id === id)
       if (joined !== -1)
         return joined
 
-      members.value.push({ id, name })
+      members.value.push({ id, mark })
       return members.value.length - 1
     },
     leave(id) {
-      const joined = members.value.findIndex(mark => mark.id === id)
+      const joined = members.value.findIndex(member => member.id === id)
       if (joined !== -1)
         members.value.splice(joined, 1)
     },
     isCurrent: place => current.value === place,
     isHeld: place => held(place),
     arriving: computed(() => !reveal() && arriving.value),
+    width(place) {
+      const value = members.value[place]?.mark.value()
+      return value === undefined ? undefined : measure.value?.(value)
+    },
   })
 
   return total
@@ -135,10 +161,10 @@ export function providePlot(
  * A mark's side: where it sits in the reading order, and what the chart currently says
  * about it. A mark written outside any chart simply sits still and is never framed.
  */
-export function usePlot(name: () => string | undefined) {
+export function usePlot(name: () => string | undefined, value: () => number | undefined = () => undefined) {
   const plot = inject(PlotKey, null)
   const id = useId()!
-  const place = plot?.join(id, name) ?? 0
+  const place = plot?.join(id, { name, value }) ?? 0
 
   onUnmounted(() => plot?.leave(id))
 
@@ -147,5 +173,6 @@ export function usePlot(name: () => string | undefined) {
     isCurrent: computed(() => plot?.isCurrent(place) ?? false),
     isHeld: computed(() => plot?.isHeld(place) ?? false),
     arriving: computed(() => plot?.arriving.value ?? false),
+    width: computed(() => plot?.width(place)),
   }
 }

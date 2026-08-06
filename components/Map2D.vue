@@ -39,7 +39,11 @@ const props = defineProps<{
   reveal?: boolean
 }>()
 
-providePlot(() => props.steps, () => props.active, () => props.reveal)
+providePlot({
+  steps: () => props.steps,
+  active: () => props.active,
+  reveal: () => props.reveal,
+})
 </script>
 
 <template>

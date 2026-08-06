@@ -250,10 +250,28 @@ longer matching the rest of the deck.
 
 | Component | Props |
 |-----------|-------|
-| `Bars`    | `items` (`{ label, value, text, via? }[]`), `max`, `steps`, `active`, `reveal`, `log`, `axisStart`, `axisEnd` |
+| `Bars`    | `max`, `steps`, `active`, `reveal`, `log`, `axisStart`, `axisEnd` |
+| `Bar`     | `value`, `text`, `via`, `name` |
 | `Axis`    | `start`, `end` |
 | `Map2D`   | `xStart`, `xEnd`, `yStart`, `yEnd`, `steps`, `active`, `reveal` |
 | `Point`   | `x`, `y`, `name`, `tone` (`gunJyo` \| `gray`) |
+
+Both charts are written as the marks on them. What a mark is of is its content; `value`
+and `x`/`y` say where it goes, and the rest qualifies that one datum — `text` is the
+figure to be read aloud, units included, and `via` is the annotation saying how it came
+about, the second line a `Block`'s `sub` is.
+
+```html
+<Bars log axis-start="1 μs" axis-end="10 ms" :steps="[null, 'wasm']">
+  <Bar :value="1200" text="1.2 ms" via="fork">Process</Bar>
+  <Bar name="wasm" :value="12" text="12 μs" via="linear memory">WebAssembly</Bar>
+</Bars>
+```
+
+A bar has no length of its own — it is a share of the track, and no row can know its
+share until every other row has said how long it is. That is what the chart is for: it
+collects what its rows say and answers each of them, so a row added anywhere remeasures
+the lot.
 
 The two ends of an axis are `start` and `end`. Where the axis is one part of a chart
 rather than the whole of it, they say which axis: `axisStart` and `axisEnd` on `Bars`,
@@ -275,8 +293,8 @@ each other, and printed coordinates would be taken for measurements.
 
 Both charts take the same red frame as a block, and move it with `steps` the way a
 `Focus` does — each entry naming the row or mark under discussion, `null` for none. A
-`Point` is named the way a `Block` is, so `steps` refers to it without depending on what
-it says.
+`Bar` and a `Point` are named the way a `Block` is, so `steps` refers to one without
+depending on what it says.
 
 `active` is the alternative for a chart driven from a `$clicks` expression, taking the
 row's or mark's place and -1 for none.
@@ -305,7 +323,10 @@ has arrived in reads as a mistake rather than as emphasis.
 `reveal` hands the pacing to the speaker instead, one row or point per click:
 
 ```html
-<Bars reveal :items="[...]" />
+<Bars reveal>
+  <Bar :value="1200" text="1.2 ms">Process</Bar>
+  <Bar :value="220" text="220 μs">Container</Bar>
+</Bars>
 ```
 
 The prop is on the charts alone because they own their pieces. A `Stage`'s pieces are
