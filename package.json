@@ -41,7 +41,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^9.2.0",
     "@slidev/cli": "^52.18.0",
-    "@slidev/client": "^52.18.0",
+    "@slidev/client": "^52.19.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/test-utils": "^2.4.11",
     "eslint": "^10.8.0",
