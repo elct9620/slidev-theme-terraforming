@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.7.1...v0.7.2) (2026-08-11)
+
+
+### Bug Fixes
+
+* **layout:** deepen the sidebar's overlap past a subpixel seam ([11a8ddf](https://github.com/elct9620/slidev-theme-terraforming/commit/11a8ddf42383a8ee02f59e8ae643a8d2008e01d9))
+
 ## [0.7.1](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.7.0...v0.7.1) (2026-08-06)
 
 
