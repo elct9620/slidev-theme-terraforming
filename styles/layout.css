@@ -70,7 +70,7 @@ html {
   content: '';
   position: absolute;
   top: 0;
-  left: 99.9%;                          /* overlap the block, so the deck's scaling cannot
+  left: 99%;                            /* overlap the block, so the deck's scaling cannot
                                            leave a white seam between the two */
   width: var(--spacing-slash);
   height: 100%;
