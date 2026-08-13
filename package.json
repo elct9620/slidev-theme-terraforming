@@ -36,7 +36,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@slidev/types": "^52.18.0"
+    "@slidev/types": "^52.19.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.2.0",
