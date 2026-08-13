@@ -39,7 +39,7 @@
     "@slidev/types": "^52.18.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.2.0",
+    "@antfu/eslint-config": "^9.3.0",
     "@slidev/cli": "^52.18.0",
     "@slidev/client": "^52.19.0",
     "@vitejs/plugin-vue": "^6.0.8",
