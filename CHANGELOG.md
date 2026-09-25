@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.7.2...v0.8.0) (2026-09-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Slidev 53 requires Node.js >= 22.12.0, so the theme now declares the same engine requirement.
+
+### Miscellaneous Chores
+
+* **deps:** upgrade Slidev to 53 ([419230d](https://github.com/elct9620/slidev-theme-terraforming/commit/419230d531588f188a9596a888119d764fadedd8))
+
 ## [0.7.2](https://github.com/elct9620/slidev-theme-terraforming/compare/v0.7.1...v0.7.2) (2026-08-11)
 
 
