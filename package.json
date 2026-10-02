@@ -44,7 +44,7 @@
     "@slidev/client": "^53.0.0",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.1",
-    "eslint": "^10.10.0",
+    "eslint": "^10.11.0",
     "happy-dom": "^20.14.5",
     "playwright-chromium": "^1.63.0",
     "typescript": "^6.0.3",
