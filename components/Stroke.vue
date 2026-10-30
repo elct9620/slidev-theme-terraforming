@@ -39,7 +39,11 @@ const props = defineProps<{
 const dir = computed(() => props.dir ?? 'right')
 const vertical = computed(() => ['up', 'down', 'both-y'].includes(dir.value))
 const candidates = computed(() =>
-  props.labels?.length ? props.labels : (props.label ? [props.label] : []),
+  props.labels?.length
+    ? props.labels
+    : (props.label
+        ? [props.label]
+        : []),
 )
 
 const head = computed(() => ({

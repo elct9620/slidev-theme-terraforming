@@ -70,7 +70,9 @@ export function provideTurns() {
 
   const longest = computed(() => Math.max(0, ...Object.values(turns.value).map(kind => kind.length)))
 
-  useDeclaredClicks(() => (longest.value > 1 ? longest.value - 1 : undefined))
+  useDeclaredClicks(() => (longest.value > 1
+    ? longest.value - 1
+    : undefined))
 
   return longest
 }

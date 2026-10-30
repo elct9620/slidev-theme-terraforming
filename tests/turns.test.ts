@@ -26,7 +26,9 @@ function group(kinds: string[]) {
       return () => h('div', slots.default?.())
     },
   }), {
-    slots: { default: () => kinds.map(kind => h(occupant(kind))) },
+    slots: {
+      default: () => kinds.map(kind => h(occupant(kind))),
+    },
   })
 }
 
@@ -62,7 +64,9 @@ describe('taking turns', () => {
   it('declares a length one short of the turns, so the last has a click to sit on', () => {
     group(['line', 'line', 'line'])
 
-    expect(declaredLengths()).toEqual([{ max: 2, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 2, delta: 0 },
+    ])
   })
 
   it('declares nothing when nothing takes a second turn', () => {
@@ -74,7 +78,13 @@ describe('taking turns', () => {
   // The reason turns are counted per kind: a component gaining a second thing to change
   // must leave the first meaning what it meant.
   it('counts each kind separately, so kinds run alongside rather than interleaved', async () => {
-    const turns = group(['title', 'avatar', 'title', 'avatar', 'title'])
+    const turns = group([
+      'title',
+      'avatar',
+      'title',
+      'avatar',
+      'title',
+    ])
 
     expect(current(turns)).toEqual([true, true, false, false, false])
 
@@ -85,9 +95,17 @@ describe('taking turns', () => {
   })
 
   it('comes to the longest kind rather than to their sum', () => {
-    group(['title', 'title', 'title', 'avatar', 'avatar'])
+    group([
+      'title',
+      'title',
+      'title',
+      'avatar',
+      'avatar',
+    ])
 
-    expect(declaredLengths()).toEqual([{ max: 2, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 2, delta: 0 },
+    ])
   })
 
   it('is always the current one where there is no group to take a turn in', () => {

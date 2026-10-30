@@ -63,7 +63,12 @@ afterEach(() => vi.unstubAllGlobals())
 describe('a focus', () => {
   function framing() {
     const stage = mount(Stage, {
-      slots: { default: () => [h(Block, { name: 'proxy' }, () => 'Proxy'), h(Focus, { of: 'proxy' })] },
+      slots: {
+        default: () => [
+          h(Block, { name: 'proxy' }, () => 'Proxy'),
+          h(Focus, { of: 'proxy' }),
+        ],
+      },
     })
 
     return {
@@ -104,7 +109,9 @@ describe('a stage told to fit', () => {
   function fitting(fit: boolean) {
     const stage = mount(Stage, {
       props: { fit },
-      slots: { default: () => h(Block, null, () => 'wide') },
+      slots: {
+        default: () => h(Block, null, () => 'wide'),
+      },
     })
     const frame = stage.element
     const row = stage.find('.tf-stage').element
@@ -113,7 +120,11 @@ describe('a stage told to fit', () => {
     sized(frame, { clientWidth: 1000 })
     sized(row, { offsetWidth: 2000 })
 
-    return { stage, row, scale: () => stage.find('.tf-stage').attributes('style') ?? '' }
+    return {
+      stage,
+      row,
+      scale: () => stage.find('.tf-stage').attributes('style') ?? '',
+    }
   }
 
   it('scales the row down to what it has room for', async () => {

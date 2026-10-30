@@ -56,17 +56,44 @@ describe('placeIn', () => {
 
 describe('bounds', () => {
   it('gives one piece its own box', () => {
-    expect(bounds([{ left: 10, top: 20, width: 30, height: 40 }]))
-      .toEqual({ left: 10, top: 20, width: 30, height: 40 })
+    expect(bounds([
+      {
+        left: 10,
+        top: 20,
+        width: 30,
+        height: 40,
+      },
+    ]))
+      .toEqual({
+        left: 10,
+        top: 20,
+        width: 30,
+        height: 40,
+      })
   })
 
   it('gives several pieces the box that contains them all', () => {
     const box = bounds([
-      { left: 100, top: 50, width: 100, height: 100 },
-      { left: 0, top: 80, width: 50, height: 200 },
+      {
+        left: 100,
+        top: 50,
+        width: 100,
+        height: 100,
+      },
+      {
+        left: 0,
+        top: 80,
+        width: 50,
+        height: 200,
+      },
     ])
 
-    expect(box).toEqual({ left: 0, top: 50, width: 200, height: 230 })
+    expect(box).toEqual({
+      left: 0,
+      top: 50,
+      width: 200,
+      height: 230,
+    })
   })
 
   it('frames nothing when there is nothing to contain', () => {

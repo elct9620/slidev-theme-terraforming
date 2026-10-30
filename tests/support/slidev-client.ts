@@ -32,7 +32,9 @@ export const useSlideContext: typeof SlidevClient.useSlideContext = () =>
 
 // A test drives the state; a component only reads it, exactly as Slidev hands it over.
 export const useNav: typeof SlidevClient.useNav = () =>
-  ({ isPrintMode: computed(() => isPrintMode.value) })
+  ({
+    isPrintMode: computed(() => isPrintMode.value),
+  })
 
 export const useIsSlideActive: typeof SlidevClient.useIsSlideActive = () =>
   computed(() => isActive.value)

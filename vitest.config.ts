@@ -19,7 +19,9 @@ export default defineConfig({
   test: {
     projects: [
       {
-        plugins: [vue()],
+        plugins: [
+          vue(),
+        ],
         test: {
           name: 'unit',
           environment: 'happy-dom',

@@ -13,7 +13,9 @@ beforeEach(resetSlide)
 /** An introduction as a deck writes it, in the order the lines are read. */
 function introduce(titles: string[], contacts: string[] = []) {
   return mount(About, {
-    global: { components: { Name, Title, Contact } },
+    global: {
+      components: { Name, Title, Contact },
+    },
     slots: {
       default: [
         '<Name>蒼時弦也</Name>',
@@ -36,7 +38,9 @@ describe('the speaker introduction', () => {
 
   it('ships a portrait for the speaker it was written for, and takes another', () => {
     expect(mount(About).find('.tf-about-portrait').attributes('src')).toContain('avatar')
-    expect(mount(About, { props: { avatar: '/ada.png' } })
+    expect(mount(About, {
+      props: { avatar: '/ada.png' },
+    })
       .find('.tf-about-portrait').attributes('src')).toBe('/ada.png')
   })
 
@@ -44,7 +48,9 @@ describe('the speaker introduction', () => {
   // have a screen reader say it twice.
   it('leaves the portrait to the name beside it unless the deck says otherwise', () => {
     expect(mount(About).find('.tf-about-portrait').attributes('alt')).toBe('')
-    expect(mount(About, { props: { alt: 'Ada Lovelace' } })
+    expect(mount(About, {
+      props: { alt: 'Ada Lovelace' },
+    })
       .find('.tf-about-portrait').attributes('alt')).toBe('Ada Lovelace')
   })
 
@@ -54,7 +60,9 @@ describe('the speaker introduction', () => {
     it('gives the slide a click for every role after the first', () => {
       introduce(roles)
 
-      expect(declaredLengths()).toEqual([{ max: 1, delta: 0 }])
+      expect(declaredLengths()).toEqual([
+        { max: 1, delta: 0 },
+      ])
     })
 
     // Both are on the page throughout: the one leaving has to be there to fade out, and

@@ -20,7 +20,9 @@ export function useSteps<T>(steps: () => readonly T[] | undefined) {
   // One click fewer than there are entries: the first is what the slide opens on.
   useDeclaredClicks(() => {
     const length = steps()?.length
-    return length ? length - 1 : undefined
+    return length
+      ? length - 1
+      : undefined
   })
 
   return computed(() => {

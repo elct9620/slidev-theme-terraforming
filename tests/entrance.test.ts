@@ -128,7 +128,9 @@ describe('useReveal', () => {
   it('declares one click per piece, so the speaker calls each one in', () => {
     withSetup(() => useReveal(() => 3, () => true))
 
-    expect(declaredLengths()).toEqual([{ max: 3, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 3, delta: 0 },
+    ])
   })
 
   it('declares nothing when the deck never asked for the pacing', () => {

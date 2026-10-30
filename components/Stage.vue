@@ -43,7 +43,9 @@ function measure() {
   const available = frame.value.clientWidth
   const natural = stage.value.offsetWidth
 
-  scale.value = available > 0 && natural > available ? available / natural : 1
+  scale.value = available > 0 && natural > available
+    ? available / natural
+    : 1
 }
 
 // Watched whether or not this stage fits, so that one told to fit after it was mounted is

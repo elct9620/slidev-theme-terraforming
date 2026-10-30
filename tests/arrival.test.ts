@@ -25,7 +25,12 @@ beforeEach(resetSlide)
 describe('a piece on a stage', () => {
   it('states its arrival and its turn as attributes, leaving the class alone', () => {
     const stage = mount(Stage, {
-      slots: { default: () => [h(Block, null, () => 'first'), h(Block, null, () => 'second')] },
+      slots: {
+        default: () => [
+          h(Block, null, () => 'first'),
+          h(Block, null, () => 'second'),
+        ],
+      },
     })
 
     const [first, second] = stage.findAll('.tf-block')
@@ -38,7 +43,13 @@ describe('a piece on a stage', () => {
 
   it('counts a stroke in among the pieces it connects', () => {
     const stage = mount(Stage, {
-      slots: { default: () => [h(Block, null, () => 'first'), h(Stroke), h(Block, null, () => 'second')] },
+      slots: {
+        default: () => [
+          h(Block, null, () => 'first'),
+          h(Stroke),
+          h(Block, null, () => 'second'),
+        ],
+      },
     })
 
     expect(stage.find('.tf-stroke-group').attributes('style')).toContain('--tf-enter-place: 1')
@@ -47,7 +58,9 @@ describe('a piece on a stage', () => {
 
   it('keeps a variant of its own out of the class attribute', () => {
     const stage = mount(Stage, {
-      slots: { default: () => h(Block, { color: 'tamago', hidden: true, name: 'sandbox' }, () => 'held') },
+      slots: {
+        default: () => h(Block, { color: 'tamago', hidden: true, name: 'sandbox' }, () => 'held'),
+      },
     })
 
     const block = stage.find('.tf-block')
@@ -59,7 +72,11 @@ describe('a piece on a stage', () => {
   })
 
   it('stops arriving at the first click, and stays where it was put', async () => {
-    const stage = mount(Stage, { slots: { default: () => h(Block, null, () => 'first') } })
+    const stage = mount(Stage, {
+      slots: {
+        default: () => h(Block, null, () => 'first'),
+      },
+    })
 
     clicks.value = 1
     await stage.vm.$nextTick()
@@ -77,7 +94,12 @@ describe('a focus on a stage', () => {
   // from two different bindings on the same element.
   it('carries the box it measured alongside its turn in the arrangement', async () => {
     const stage = mount(Stage, {
-      slots: { default: () => [h(Block, { name: 'proxy' }, () => 'Proxy'), h(Focus, { of: 'proxy' })] },
+      slots: {
+        default: () => [
+          h(Block, { name: 'proxy' }, () => 'Proxy'),
+          h(Focus, { of: 'proxy' }),
+        ],
+      },
     })
 
     // The frame measures as it mounts, so the geometry reaches the element on the patch
@@ -94,7 +116,12 @@ describe('a focus on a stage', () => {
 describe('a group on a stage', () => {
   it('arrives whole, dealing no turn out to what it holds', () => {
     const stage = mount(Stage, {
-      slots: { default: () => h(Group, { name: 'pool' }, () => [h(Block, null, () => 'a'), h(Block, null, () => 'b')]) },
+      slots: {
+        default: () => h(Group, { name: 'pool' }, () => [
+          h(Block, null, () => 'a'),
+          h(Block, null, () => 'b'),
+        ]),
+      },
     })
 
     expect(stage.find('.tf-group').attributes('data-tf-enter')).toBe('true')

@@ -24,7 +24,9 @@ export function useHighlight(
       return active() ?? -1
 
     const named = step.value
-    return named ? labels().indexOf(named) : -1
+    return named
+      ? labels().indexOf(named)
+      : -1
   })
 }
 
@@ -120,7 +122,9 @@ export function providePlot(options: {
       return active() ?? -1
 
     const named = step.value
-    return named ? members.value.findIndex(({ mark }) => mark.name() === named) : -1
+    return named
+      ? members.value.findIndex(({ mark }) => mark.name() === named)
+      : -1
   })
 
   const measure = computed(() => {
@@ -150,7 +154,9 @@ export function providePlot(options: {
     arriving: computed(() => !reveal() && arriving.value),
     width(place) {
       const value = members.value[place]?.mark.value()
-      return value === undefined ? undefined : measure.value?.(value)
+      return value === undefined
+        ? undefined
+        : measure.value?.(value)
     },
   })
 

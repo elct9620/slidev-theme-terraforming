@@ -63,7 +63,12 @@ const off = computed(() => (props.of !== undefined || props.steps !== undefined)
 /** The stage the frame is placed against, and the pieces its geometry comes from. */
 function framed() {
   const root = stage?.value
-  return root ? [root, ...piecesNamed(root, names.value)] : []
+  return root
+    ? [
+        root,
+        ...piecesNamed(root, names.value),
+      ]
+    : []
 }
 
 function measure([root, ...targets]: HTMLElement[]) {

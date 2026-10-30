@@ -25,5 +25,7 @@ export function resetSlide() {
 
 /** The lengths declared, without the keys, which carry a counter no test can predict. */
 export function declaredLengths() {
-  return [...registrations.values()]
+  return [
+    ...registrations.values(),
+  ]
 }

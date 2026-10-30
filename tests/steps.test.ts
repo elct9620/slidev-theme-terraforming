@@ -12,7 +12,9 @@ describe('useSteps', () => {
   it('declares a length one short of its entries, so the last one has a click to sit on', () => {
     withSetup(() => useSteps(() => ['a', 'b', 'c']))
 
-    expect(declaredLengths()).toEqual([{ max: 2, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 2, delta: 0 },
+    ])
   })
 
   it('declares its entries as absolute click numbers', () => {
@@ -69,7 +71,9 @@ describe('useSteps', () => {
     entries.value = ['a', 'b', 'c', 'd']
     clicks.value = 3
 
-    expect(declaredLengths()).toEqual([{ max: 1, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 1, delta: 0 },
+    ])
     expect(step.value).toBe('d')
   })
 

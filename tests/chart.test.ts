@@ -66,7 +66,9 @@ describe('useHighlight', () => {
       useHighlight(rows, () => [null, 'WebAssembly'], () => undefined))
 
     expect(current.value).toBe(-1)
-    expect(declaredLengths()).toEqual([{ max: 1, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 1, delta: 0 },
+    ])
 
     clicks.value = 1
 
@@ -107,8 +109,16 @@ describe('a map of two measures', () => {
   /** A chart as a deck writes it, in the order the marks are read. */
   function plot(props: Record<string, unknown> = {}) {
     return mount(Map2D, {
-      props: { xStart: 'Hard', xEnd: 'Easy', yStart: 'Weak', yEnd: 'Strong', ...props },
-      global: { components: { Point } },
+      props: {
+        xStart: 'Hard',
+        xEnd: 'Easy',
+        yStart: 'Weak',
+        yEnd: 'Strong',
+        ...props,
+      },
+      global: {
+        components: { Point },
+      },
       slots: {
         default: [
           '<Point name="container" :x="30" :y="62">Container</Point>',
@@ -130,10 +140,14 @@ describe('a map of two measures', () => {
   // The mark is named rather than matched on what it says, so renaming the label leaves
   // the walk through the chart alone.
   it('frames the mark a step names, and declares the walk as the slide\'s length', async () => {
-    const chart = plot({ steps: [null, 'wasm'] })
+    const chart = plot({
+      steps: [null, 'wasm'],
+    })
 
     expect(chart.findAll('.is-active')).toHaveLength(0)
-    expect(declaredLengths()).toEqual([{ max: 1, delta: 0 }])
+    expect(declaredLengths()).toEqual([
+      { max: 1, delta: 0 },
+    ])
 
     clicks.value = 1
     await chart.vm.$nextTick()
@@ -165,7 +179,9 @@ describe('a bar chart', () => {
   function chart(props: Record<string, unknown> = {}) {
     return mount(Bars, {
       props,
-      global: { components: { Bar } },
+      global: {
+        components: { Bar },
+      },
       slots: {
         default: [
           '<Bar name="container" :value="220" text="220 μs">Container</Bar>',
@@ -199,7 +215,9 @@ describe('a bar chart', () => {
   })
 
   it('walks the frame down the rows as the steps say', async () => {
-    const bars = chart({ steps: [null, 'wasm'] })
+    const bars = chart({
+      steps: [null, 'wasm'],
+    })
 
     expect(bars.findAll('.is-active')).toHaveLength(0)
 

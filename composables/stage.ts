@@ -42,7 +42,9 @@ export interface Box {
 export function namesOf(value: string | readonly string[] | null | undefined): string[] {
   if (!value)
     return []
-  return (Array.isArray(value) ? value : String(value).split(','))
+  return (Array.isArray(value)
+    ? value
+    : String(value).split(','))
     .map(name => name.trim())
     .filter(Boolean)
 }
@@ -107,5 +109,10 @@ export function bounds(boxes: readonly Box[]): Box | undefined {
   const right = Math.max(...boxes.map(b => b.left + b.width))
   const bottom = Math.max(...boxes.map(b => b.top + b.height))
 
-  return { left, top, width: right - left, height: bottom - top }
+  return {
+    left,
+    top,
+    width: right - left,
+    height: bottom - top,
+  }
 }

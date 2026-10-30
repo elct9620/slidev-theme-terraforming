@@ -52,7 +52,9 @@ export function useEntrance() {
   const arriving = useArriving()
 
   return computed(() => ({
-    'data-tf-enter': place !== undefined && arriving.value ? true : undefined,
+    'data-tf-enter': place !== undefined && arriving.value
+      ? true
+      : undefined,
     'style': { '--tf-enter-place': place },
   }))
 }
@@ -72,7 +74,9 @@ export function useReveal(count: () => number, enabled: () => boolean | undefine
 
   useDeclaredClicks(() => {
     const pieces = count()
-    return enabled() && pieces ? pieces : undefined
+    return enabled() && pieces
+      ? pieces
+      : undefined
   })
 
   // Printing needs no exception here: Slidev winds the clicks past the end of a slide
