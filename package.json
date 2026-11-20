@@ -42,7 +42,7 @@
     "@antfu/eslint-config": "^10.0.0",
     "@slidev/cli": "^53.1.0",
     "@slidev/client": "^53.1.0",
-    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitejs/plugin-vue": "^6.0.11",
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.14.0",
     "happy-dom": "^21.0.4",
